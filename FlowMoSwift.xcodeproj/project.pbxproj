@@ -1,0 +1,524 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D3641C10C0E100A8014F /* AppDelegate.swift */; };
+		93F4D3671C10C0E100A8014F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D3661C10C0E100A8014F /* ViewController.swift */; };
+		93F4D36A1C10C0E100A8014F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93F4D3681C10C0E100A8014F /* Main.storyboard */; };
+		93F4D36D1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D36B1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld */; };
+		93F4D36F1C10C0E100A8014F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93F4D36E1C10C0E100A8014F /* Assets.xcassets */; };
+		93F4D3721C10C0E100A8014F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93F4D3701C10C0E100A8014F /* LaunchScreen.storyboard */; };
+		93F4D37D1C10C0E100A8014F /* FlowMoSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D37C1C10C0E100A8014F /* FlowMoSwiftTests.swift */; };
+		93F4D3881C10C0E100A8014F /* FlowMoSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D3871C10C0E100A8014F /* FlowMoSwiftUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		93F4D3791C10C0E100A8014F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93F4D3591C10C0E100A8014F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93F4D3601C10C0E100A8014F;
+			remoteInfo = FlowMoSwift;
+		};
+		93F4D3841C10C0E100A8014F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93F4D3591C10C0E100A8014F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93F4D3601C10C0E100A8014F;
+			remoteInfo = FlowMoSwift;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		93F4D3611C10C0E100A8014F /* FlowMoSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlowMoSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		93F4D3641C10C0E100A8014F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		93F4D3661C10C0E100A8014F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		93F4D3691C10C0E100A8014F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		93F4D36C1C10C0E100A8014F /* FlowMoSwift.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FlowMoSwift.xcdatamodel; sourceTree = "<group>"; };
+		93F4D36E1C10C0E100A8014F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		93F4D3711C10C0E100A8014F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		93F4D3731C10C0E100A8014F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93F4D3781C10C0E100A8014F /* FlowMoSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlowMoSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		93F4D37C1C10C0E100A8014F /* FlowMoSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowMoSwiftTests.swift; sourceTree = "<group>"; };
+		93F4D37E1C10C0E100A8014F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93F4D3831C10C0E100A8014F /* FlowMoSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlowMoSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		93F4D3871C10C0E100A8014F /* FlowMoSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowMoSwiftUITests.swift; sourceTree = "<group>"; };
+		93F4D3891C10C0E100A8014F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		93F4D35E1C10C0E100A8014F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93F4D3751C10C0E100A8014F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93F4D3801C10C0E100A8014F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		93F4D3581C10C0E100A8014F = {
+			isa = PBXGroup;
+			children = (
+				93F4D3631C10C0E100A8014F /* FlowMoSwift */,
+				93F4D37B1C10C0E100A8014F /* FlowMoSwiftTests */,
+				93F4D3861C10C0E100A8014F /* FlowMoSwiftUITests */,
+				93F4D3621C10C0E100A8014F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		93F4D3621C10C0E100A8014F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				93F4D3611C10C0E100A8014F /* FlowMoSwift.app */,
+				93F4D3781C10C0E100A8014F /* FlowMoSwiftTests.xctest */,
+				93F4D3831C10C0E100A8014F /* FlowMoSwiftUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		93F4D3631C10C0E100A8014F /* FlowMoSwift */ = {
+			isa = PBXGroup;
+			children = (
+				93F4D3641C10C0E100A8014F /* AppDelegate.swift */,
+				93F4D3661C10C0E100A8014F /* ViewController.swift */,
+				93F4D3681C10C0E100A8014F /* Main.storyboard */,
+				93F4D36E1C10C0E100A8014F /* Assets.xcassets */,
+				93F4D3701C10C0E100A8014F /* LaunchScreen.storyboard */,
+				93F4D3731C10C0E100A8014F /* Info.plist */,
+				93F4D36B1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld */,
+			);
+			path = FlowMoSwift;
+			sourceTree = "<group>";
+		};
+		93F4D37B1C10C0E100A8014F /* FlowMoSwiftTests */ = {
+			isa = PBXGroup;
+			children = (
+				93F4D37C1C10C0E100A8014F /* FlowMoSwiftTests.swift */,
+				93F4D37E1C10C0E100A8014F /* Info.plist */,
+			);
+			path = FlowMoSwiftTests;
+			sourceTree = "<group>";
+		};
+		93F4D3861C10C0E100A8014F /* FlowMoSwiftUITests */ = {
+			isa = PBXGroup;
+			children = (
+				93F4D3871C10C0E100A8014F /* FlowMoSwiftUITests.swift */,
+				93F4D3891C10C0E100A8014F /* Info.plist */,
+			);
+			path = FlowMoSwiftUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		93F4D3601C10C0E100A8014F /* FlowMoSwift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 93F4D38C1C10C0E100A8014F /* Build configuration list for PBXNativeTarget "FlowMoSwift" */;
+			buildPhases = (
+				93F4D35D1C10C0E100A8014F /* Sources */,
+				93F4D35E1C10C0E100A8014F /* Frameworks */,
+				93F4D35F1C10C0E100A8014F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FlowMoSwift;
+			productName = FlowMoSwift;
+			productReference = 93F4D3611C10C0E100A8014F /* FlowMoSwift.app */;
+			productType = "com.apple.product-type.application";
+		};
+		93F4D3771C10C0E100A8014F /* FlowMoSwiftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 93F4D38F1C10C0E100A8014F /* Build configuration list for PBXNativeTarget "FlowMoSwiftTests" */;
+			buildPhases = (
+				93F4D3741C10C0E100A8014F /* Sources */,
+				93F4D3751C10C0E100A8014F /* Frameworks */,
+				93F4D3761C10C0E100A8014F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				93F4D37A1C10C0E100A8014F /* PBXTargetDependency */,
+			);
+			name = FlowMoSwiftTests;
+			productName = FlowMoSwiftTests;
+			productReference = 93F4D3781C10C0E100A8014F /* FlowMoSwiftTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		93F4D3821C10C0E100A8014F /* FlowMoSwiftUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 93F4D3921C10C0E100A8014F /* Build configuration list for PBXNativeTarget "FlowMoSwiftUITests" */;
+			buildPhases = (
+				93F4D37F1C10C0E100A8014F /* Sources */,
+				93F4D3801C10C0E100A8014F /* Frameworks */,
+				93F4D3811C10C0E100A8014F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				93F4D3851C10C0E100A8014F /* PBXTargetDependency */,
+			);
+			name = FlowMoSwiftUITests;
+			productName = FlowMoSwiftUITests;
+			productReference = 93F4D3831C10C0E100A8014F /* FlowMoSwiftUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		93F4D3591C10C0E100A8014F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = "Bryan Ryczek";
+				TargetAttributes = {
+					93F4D3601C10C0E100A8014F = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					93F4D3771C10C0E100A8014F = {
+						CreatedOnToolsVersion = 7.1;
+						TestTargetID = 93F4D3601C10C0E100A8014F;
+					};
+					93F4D3821C10C0E100A8014F = {
+						CreatedOnToolsVersion = 7.1;
+						TestTargetID = 93F4D3601C10C0E100A8014F;
+					};
+				};
+			};
+			buildConfigurationList = 93F4D35C1C10C0E100A8014F /* Build configuration list for PBXProject "FlowMoSwift" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 93F4D3581C10C0E100A8014F;
+			productRefGroup = 93F4D3621C10C0E100A8014F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				93F4D3601C10C0E100A8014F /* FlowMoSwift */,
+				93F4D3771C10C0E100A8014F /* FlowMoSwiftTests */,
+				93F4D3821C10C0E100A8014F /* FlowMoSwiftUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		93F4D35F1C10C0E100A8014F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93F4D3721C10C0E100A8014F /* LaunchScreen.storyboard in Resources */,
+				93F4D36F1C10C0E100A8014F /* Assets.xcassets in Resources */,
+				93F4D36A1C10C0E100A8014F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93F4D3761C10C0E100A8014F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93F4D3811C10C0E100A8014F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		93F4D35D1C10C0E100A8014F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93F4D3671C10C0E100A8014F /* ViewController.swift in Sources */,
+				93F4D36D1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld in Sources */,
+				93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93F4D3741C10C0E100A8014F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93F4D37D1C10C0E100A8014F /* FlowMoSwiftTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93F4D37F1C10C0E100A8014F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93F4D3881C10C0E100A8014F /* FlowMoSwiftUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		93F4D37A1C10C0E100A8014F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93F4D3601C10C0E100A8014F /* FlowMoSwift */;
+			targetProxy = 93F4D3791C10C0E100A8014F /* PBXContainerItemProxy */;
+		};
+		93F4D3851C10C0E100A8014F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93F4D3601C10C0E100A8014F /* FlowMoSwift */;
+			targetProxy = 93F4D3841C10C0E100A8014F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		93F4D3681C10C0E100A8014F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93F4D3691C10C0E100A8014F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		93F4D3701C10C0E100A8014F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93F4D3711C10C0E100A8014F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		93F4D38A1C10C0E100A8014F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		93F4D38B1C10C0E100A8014F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		93F4D38D1C10C0E100A8014F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = FlowMoSwift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.flowmo.FlowMoSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		93F4D38E1C10C0E100A8014F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = FlowMoSwift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.flowmo.FlowMoSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		93F4D3901C10C0E100A8014F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = FlowMoSwiftTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.flowmo.FlowMoSwiftTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlowMoSwift.app/FlowMoSwift";
+			};
+			name = Debug;
+		};
+		93F4D3911C10C0E100A8014F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = FlowMoSwiftTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.flowmo.FlowMoSwiftTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlowMoSwift.app/FlowMoSwift";
+			};
+			name = Release;
+		};
+		93F4D3931C10C0E100A8014F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = FlowMoSwiftUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.flowmo.FlowMoSwiftUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = FlowMoSwift;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		93F4D3941C10C0E100A8014F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = FlowMoSwiftUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.flowmo.FlowMoSwiftUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = FlowMoSwift;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		93F4D35C1C10C0E100A8014F /* Build configuration list for PBXProject "FlowMoSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93F4D38A1C10C0E100A8014F /* Debug */,
+				93F4D38B1C10C0E100A8014F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		93F4D38C1C10C0E100A8014F /* Build configuration list for PBXNativeTarget "FlowMoSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93F4D38D1C10C0E100A8014F /* Debug */,
+				93F4D38E1C10C0E100A8014F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		93F4D38F1C10C0E100A8014F /* Build configuration list for PBXNativeTarget "FlowMoSwiftTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93F4D3901C10C0E100A8014F /* Debug */,
+				93F4D3911C10C0E100A8014F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		93F4D3921C10C0E100A8014F /* Build configuration list for PBXNativeTarget "FlowMoSwiftUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93F4D3931C10C0E100A8014F /* Debug */,
+				93F4D3941C10C0E100A8014F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		93F4D36B1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				93F4D36C1C10C0E100A8014F /* FlowMoSwift.xcdatamodel */,
+			);
+			currentVersion = 93F4D36C1C10C0E100A8014F /* FlowMoSwift.xcdatamodel */;
+			path = FlowMoSwift.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 93F4D3591C10C0E100A8014F /* Project object */;
+}
