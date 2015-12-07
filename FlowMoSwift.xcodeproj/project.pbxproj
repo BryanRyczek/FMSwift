@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9382707E1C15E1F60092E0D9 /* FlowMoCam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */; };
 		93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D3641C10C0E100A8014F /* AppDelegate.swift */; };
 		93F4D3671C10C0E100A8014F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D3661C10C0E100A8014F /* ViewController.swift */; };
 		93F4D36A1C10C0E100A8014F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93F4D3681C10C0E100A8014F /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoCam.swift; path = ../FlowMoCam.swift; sourceTree = "<group>"; };
 		93F4D3611C10C0E100A8014F /* FlowMoSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlowMoSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93F4D3641C10C0E100A8014F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93F4D3661C10C0E100A8014F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 		93F4D3631C10C0E100A8014F /* FlowMoSwift */ = {
 			isa = PBXGroup;
 			children = (
+				9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */,
 				93F4D3641C10C0E100A8014F /* AppDelegate.swift */,
 				93F4D3661C10C0E100A8014F /* ViewController.swift */,
 				93F4D3681C10C0E100A8014F /* Main.storyboard */,
@@ -262,6 +265,7 @@
 				93F4D3671C10C0E100A8014F /* ViewController.swift in Sources */,
 				93F4D36D1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld in Sources */,
 				93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */,
+				9382707E1C15E1F60092E0D9 /* FlowMoCam.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,6 +492,7 @@
 				93F4D38E1C10C0E100A8014F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		93F4D38F1C10C0E100A8014F /* Build configuration list for PBXNativeTarget "FlowMoSwiftTests" */ = {
 			isa = XCConfigurationList;
@@ -496,6 +501,7 @@
 				93F4D3911C10C0E100A8014F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		93F4D3921C10C0E100A8014F /* Build configuration list for PBXNativeTarget "FlowMoSwiftUITests" */ = {
 			isa = XCConfigurationList;
@@ -504,6 +510,7 @@
 				93F4D3941C10C0E100A8014F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
