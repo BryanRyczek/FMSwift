@@ -8,9 +8,12 @@
 
 import UIKit
 import AVFoundation
+import AVKit
+import CoreMedia
 
-class FlowMoCam: UIViewController {
-
+class FlowMoCam: UIViewController, AVCaptureFileOutputRecordingDelegate {
+    
+    
     // define capture session
     let captureSession = AVCaptureSession()
     // define device output
@@ -18,9 +21,10 @@ class FlowMoCam: UIViewController {
     // var to denote recording status
     var isRecording = false
     
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
         print("1")
+        super.viewDidLoad()
         //set camera to highest resolution device will support
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
         // create array of available devices (front camera, back camera, microphone)
@@ -59,6 +63,7 @@ class FlowMoCam: UIViewController {
         cameraPreviewLayer?.frame = view.layer.frame
         
         captureSession.startRunning()
+        captureButton()
         
     }
     
@@ -67,15 +72,56 @@ class FlowMoCam: UIViewController {
         if !isRecording {
             // set recording bool to true
             isRecording = true
-            
+            print ("start recording")
             let outputPath = NSTemporaryDirectory() + "output.mov"
             let outputFileURL = NSURL(fileURLWithPath: outputPath)
-  //          videoFileOutput?.startRecordingToOutputFileURL(outputFileURL, recordingDelegate: self)
+            videoFileOutput?.startRecordingToOutputFileURL(outputFileURL, recordingDelegate: self)
         } else {
             isRecording = false
+            videoFileOutput?.stopRecording()
+            print ("stop recording")
         }
     }
     
+    
+    func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
+        if error != nil {
+            print(error)
+            return
+        }
+        let urlString = outputFileURL.absoluteString
+        UISaveVideoAtPathToSavedPhotosAlbum(urlString, nil, nil, nil)
+        generateImageSequence(outputFileURL)
+    }
+    
+    func generateImageSequence(outputFileURL: NSURL) {
+        let avURLAsset = AVURLAsset(URL: outputFileURL, options:nil)
+        
+        let imageGenerator = AVAssetImageGenerator.init(asset: avURLAsset)
+        imageGenerator.requestedTimeToleranceAfter=kCMTimeZero
+        imageGenerator.requestedTimeToleranceBefore=kCMTimeZero
+        
+        var imageHashRate: [NSValue] = []
+        var loopDuration = avURLAsset.duration.value
+        let timeValue = Float(CMTimeGetSeconds(avURLAsset.duration))
+        print (loopDuration)
+        
+        for var t = 0; t < 1800; t + 20 {
+            var cmTime = CMTimeMake(Int64(t), avURLAsset.duration.timescale)
+            var timeValue = NSValue(CMTime: cmTime)
+            imageHashRate.append(timeValue)
+        }
+    }
+    
+
+    func captureButton() {
+        let captureButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
+        captureButton.frame = CGRectMake((self.view.frame.width/2)-35, (self.view.frame.height)-105, 70, 70)
+        captureButton.backgroundColor = UIColor.whiteColor()
+        captureButton.addTarget(self, action: "capture:", forControlEvents: .TouchUpInside)
+        self.view.addSubview(captureButton)
+    }
+
 
     /*
     // MARK: - Navigation

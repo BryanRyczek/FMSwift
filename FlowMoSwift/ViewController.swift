@@ -15,8 +15,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        let flowmo = FlowMoCam()
+        flowmo.viewDidLoad()
         
-        FlowMoCam().viewDidLoad()
             }
     
     override func didReceiveMemoryWarning() {
