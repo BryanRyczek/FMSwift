@@ -13,56 +13,67 @@ class FlowMoCam: UIViewController {
 
     // define capture session
     let captureSession = AVCaptureSession()
-    var previewLayer : AVCaptureVideoPreviewLayer?
-    
-    // if a device is found, it is stored in the captureDevice variable.
-    // Colon denotes type annotation, which defines what type of value the variable can store, in this case a CaptureDevice
-    var captureDevice : AVCaptureDevice?
-
+    // define device output
+    var videoFileOutput : AVCaptureMovieFileOutput?
+    // var to denote recording status
+    var isRecording = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("1")
-        
         //set camera to highest resolution device will support
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
         // create array of available devices (front camera, back camera, microphone)
-        let devices = AVCaptureDevice.devices()
-        
+        var currentDevice:AVCaptureDevice?
+        let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
         
         for device in devices {
-            // Check to see if device supports video
-            if (device.hasMediaType(AVMediaTypeVideo)) {
-                // set device position as rear camera
-                if(device.position == AVCaptureDevicePosition.Back) {
-                    //use of as? tries to cast the value to the given type and if it doesn’t succeed returns nil.
-                    captureDevice = device as? AVCaptureDevice
-                }
+            if device.position == AVCaptureDevicePosition.Back {
+                currentDevice = device
             }
         }
         
-        // init capture session
-        if captureDevice != nil {
-            beginSession()
+        let captureDeviceInput:AVCaptureDeviceInput
+        do {
+            captureDeviceInput = try AVCaptureDeviceInput(device: currentDevice)
+        } catch {
+            print(error)
+            return
         }
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        //create instance used to save data for movie file
+        videoFileOutput = AVCaptureMovieFileOutput()
+        videoFileOutput?.maxRecordedDuration
+        
+        //Assign the input and output devices to the capture session
+        captureSession.addInput(captureDeviceInput)
+        captureSession.addOutput(videoFileOutput)
+        
+        //instance variable with the p
+        var cameraPreviewLayer:AVCaptureVideoPreviewLayer?
+        
+        //camera preview layer
+        cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        view.layer.addSublayer(cameraPreviewLayer!)
+        cameraPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+        cameraPreviewLayer?.frame = view.layer.frame
+        
+        captureSession.startRunning()
+        
     }
     
-    func beginSession() {
-        
-        captureSession.addInput(try! AVCaptureDeviceInput(device: captureDevice))
-        
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        self.view.layer.addSublayer(previewLayer!)
-        previewLayer?.frame = self.view.layer.frame
-        captureSession.startRunning()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func capture(sender: AnyObject) {
+        //if we are not currently recording
+        if !isRecording {
+            // set recording bool to true
+            isRecording = true
+            
+            let outputPath = NSTemporaryDirectory() + "output.mov"
+            let outputFileURL = NSURL(fileURLWithPath: outputPath)
+  //          videoFileOutput?.startRecordingToOutputFileURL(outputFileURL, recordingDelegate: self)
+        } else {
+            isRecording = false
+        }
     }
     
 
