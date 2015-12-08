@@ -11,7 +11,6 @@
 		93E2E84F1C1734040092F589 /* FlowMo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2E84E1C1734040092F589 /* FlowMo.swift */; };
 		93E2E8511C17340A0092F589 /* FlowMoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2E8501C17340A0092F589 /* FlowMoController.swift */; };
 		93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D3641C10C0E100A8014F /* AppDelegate.swift */; };
-		93F4D3671C10C0E100A8014F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D3661C10C0E100A8014F /* ViewController.swift */; };
 		93F4D36A1C10C0E100A8014F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93F4D3681C10C0E100A8014F /* Main.storyboard */; };
 		93F4D36D1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D36B1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld */; };
 		93F4D36F1C10C0E100A8014F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93F4D36E1C10C0E100A8014F /* Assets.xcassets */; };
@@ -43,7 +42,6 @@
 		93E2E8501C17340A0092F589 /* FlowMoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoController.swift; sourceTree = "<group>"; };
 		93F4D3611C10C0E100A8014F /* FlowMoSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlowMoSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93F4D3641C10C0E100A8014F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		93F4D3661C10C0E100A8014F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		93F4D3691C10C0E100A8014F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		93F4D36C1C10C0E100A8014F /* FlowMoSwift.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FlowMoSwift.xcdatamodel; sourceTree = "<group>"; };
 		93F4D36E1C10C0E100A8014F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -109,7 +107,6 @@
 				93E2E8501C17340A0092F589 /* FlowMoController.swift */,
 				93E2E84E1C1734040092F589 /* FlowMo.swift */,
 				93F4D3641C10C0E100A8014F /* AppDelegate.swift */,
-				93F4D3661C10C0E100A8014F /* ViewController.swift */,
 				93F4D3681C10C0E100A8014F /* Main.storyboard */,
 				93F4D36E1C10C0E100A8014F /* Assets.xcassets */,
 				93F4D3701C10C0E100A8014F /* LaunchScreen.storyboard */,
@@ -268,7 +265,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93F4D3671C10C0E100A8014F /* ViewController.swift in Sources */,
 				93F4D36D1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld in Sources */,
 				93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */,
 				93E2E8511C17340A0092F589 /* FlowMoController.swift in Sources */,
