@@ -8,6 +8,8 @@
 
 //CREATED FOR THE EXPRESS PURPOSE OF TESTING NEW CODE. NOT TO BE INCLUDED IN FINAL PROJECT.
 
+//Conor, replace "UISlider?" with "FlowMoSlider?" on lines 17, 26 and 71
+
 import UIKit
 
 class TextViewController: UIViewController {

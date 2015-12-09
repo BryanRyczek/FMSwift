@@ -21,7 +21,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     // var to denote recording status
     var isRecording = false
 
-    func capture(sender: AnyObject) {  //cont
+    func capture {  //cont
     //if we are not currently recording
         if !isRecording {
         // set recording bool to true
