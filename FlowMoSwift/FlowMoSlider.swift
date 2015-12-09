@@ -11,6 +11,7 @@ import UIKit
 class FlowMoSlider: UISlider {
 
     var thumbTouchSize : CGSize = CGSizeMake(200, 200)
+    var thumbSize = 200.00
     
     override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
         let bounds = CGRectInset(self.bounds, -thumbTouchSize.width, -thumbTouchSize.height);
@@ -19,7 +20,7 @@ class FlowMoSlider: UISlider {
     
     override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         let thumbPercent = (value - minimumValue) / (maximumValue - minimumValue)
-        let thumbSize = thumbImageForState(UIControlState.Normal)!.size.height
+        //let thumbSize = thumbImageForState(UIControlState.Normal)!.size.height
         let thumbPos = CGFloat(thumbSize) + (CGFloat(thumbPercent) * (CGFloat(bounds.size.width) - (2 * CGFloat(thumbSize))))
         let touchPoint = touch.locationInView(self)
         

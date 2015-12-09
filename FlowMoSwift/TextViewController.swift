@@ -14,7 +14,7 @@ import UIKit
 
 class TextViewController: UIViewController {
     
-    var flowmoSlider:UISlider?
+    var flowmoSlider:FlowMoSlider?
     var slider:UISlider?
     // These number values represent each slider position
     var numbers = [1, 2, 3, 4, 5, 6, 7] //Add your values here
@@ -23,7 +23,7 @@ class TextViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        flowmoSlider = UISlider(frame: self.view.bounds)
+        flowmoSlider = FlowMoSlider(frame: self.view.bounds)
         self.view.addSubview(flowmoSlider!)
         flowmoSlider!.maximumValue = 100
         flowmoSlider!.minimumValue = 0
@@ -68,7 +68,7 @@ class TextViewController: UIViewController {
 //        // Do any additional setup after loading the view.
 //    }
 //
-    func sliderValueDidChange(sender:UISlider!)
+    func sliderValueDidChange(sender:FlowMoSlider!)
     {
 //        var index = (Int)(flowmoSlider.value)
 //        flowmoSlider?.setValue(Float(index), animated: false)
