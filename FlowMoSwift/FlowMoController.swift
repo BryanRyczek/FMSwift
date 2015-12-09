@@ -21,10 +21,9 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     // var to denote recording status
     var isRecording = false
 
-    func capture {  //cont
+    func capture (sender: AnyObject) {  //cont
     //if we are not currently recording
         if !isRecording {
-        // set recording bool to true
             isRecording = true
             print ("start recording")
             let outputPath = NSTemporaryDirectory() + "output.mov"
