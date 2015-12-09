@@ -10,6 +10,8 @@
 		9382707E1C15E1F60092E0D9 /* FlowMoCam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */; };
 		93E2E84F1C1734040092F589 /* FlowMo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2E84E1C1734040092F589 /* FlowMo.swift */; };
 		93E2E8511C17340A0092F589 /* FlowMoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2E8501C17340A0092F589 /* FlowMoController.swift */; };
+		93E2E85E1C1776A70092F589 /* FlowMoSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2E85D1C1776A70092F589 /* FlowMoSlider.swift */; };
+		93E2E8601C1777780092F589 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2E85F1C1777780092F589 /* TextViewController.swift */; };
 		93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D3641C10C0E100A8014F /* AppDelegate.swift */; };
 		93F4D36A1C10C0E100A8014F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93F4D3681C10C0E100A8014F /* Main.storyboard */; };
 		93F4D36D1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 93F4D36B1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld */; };
@@ -40,6 +42,8 @@
 		9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoCam.swift; path = ../FlowMoCam.swift; sourceTree = "<group>"; };
 		93E2E84E1C1734040092F589 /* FlowMo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMo.swift; sourceTree = "<group>"; };
 		93E2E8501C17340A0092F589 /* FlowMoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoController.swift; sourceTree = "<group>"; };
+		93E2E85D1C1776A70092F589 /* FlowMoSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoSlider.swift; sourceTree = "<group>"; };
+		93E2E85F1C1777780092F589 /* TextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
 		93F4D3611C10C0E100A8014F /* FlowMoSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlowMoSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93F4D3641C10C0E100A8014F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93F4D3691C10C0E100A8014F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -80,6 +84,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		93E2E8611C17AF770092F589 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				93E2E85D1C1776A70092F589 /* FlowMoSlider.swift */,
+				93E2E84E1C1734040092F589 /* FlowMo.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		93E2E8621C17AF880092F589 /* TestingFIles */ = {
+			isa = PBXGroup;
+			children = (
+				93E2E85F1C1777780092F589 /* TextViewController.swift */,
+			);
+			name = TestingFIles;
+			sourceTree = "<group>";
+		};
+		93E2E8631C17AFB00092F589 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		93E2E8641C17B0AB0092F589 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				93E2E8501C17340A0092F589 /* FlowMoController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		93F4D3581C10C0E100A8014F = {
 			isa = PBXGroup;
 			children = (
@@ -103,9 +140,10 @@
 		93F4D3631C10C0E100A8014F /* FlowMoSwift */ = {
 			isa = PBXGroup;
 			children = (
-				9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */,
-				93E2E8501C17340A0092F589 /* FlowMoController.swift */,
-				93E2E84E1C1734040092F589 /* FlowMo.swift */,
+				93E2E8611C17AF770092F589 /* Model */,
+				93E2E8631C17AFB00092F589 /* View */,
+				93E2E8641C17B0AB0092F589 /* Controller */,
+				93E2E8621C17AF880092F589 /* TestingFIles */,
 				93F4D3641C10C0E100A8014F /* AppDelegate.swift */,
 				93F4D3681C10C0E100A8014F /* Main.storyboard */,
 				93F4D36E1C10C0E100A8014F /* Assets.xcassets */,
@@ -267,8 +305,10 @@
 			files = (
 				93F4D36D1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld in Sources */,
 				93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */,
+				93E2E85E1C1776A70092F589 /* FlowMoSlider.swift in Sources */,
 				93E2E8511C17340A0092F589 /* FlowMoController.swift in Sources */,
 				93E2E84F1C1734040092F589 /* FlowMo.swift in Sources */,
+				93E2E8601C1777780092F589 /* TextViewController.swift in Sources */,
 				9382707E1C15E1F60092E0D9 /* FlowMoCam.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

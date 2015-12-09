@@ -14,7 +14,7 @@ import CoreMedia
 class FlowMoCam: FlowMoController {
     
     override func viewDidLoad() {
-        print("1")
+
         super.viewDidLoad()
         //set camera to highest resolution device will support
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
