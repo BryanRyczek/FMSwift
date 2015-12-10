@@ -12,3 +12,17 @@ import AVFoundation
 import AVKit
 import CoreMedia
 
+//class FlowMo: NSObject {
+//    
+//    let flowMoArray: [UIImage]!
+////    let flowMoAudio: //audio format
+//    
+//    func generateFlowMo (flowMoArray, audioObject: flowMoAudio) -> UIView {
+//        
+//        let flowMoFrame = CGRect(
+//        
+//        //return FlowMoView with frame
+//        return flowMoView
+//    }
+//    
+//}
