@@ -25,6 +25,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     //if we are not currently recording
         if !isRecording {
             isRecording = true
+            captureAnimationBar()
             print ("start recording")
             let outputPath = NSTemporaryDirectory() + "output.mov"
             let outputFileURL = NSURL(fileURLWithPath: outputPath)
@@ -35,6 +36,22 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             print ("stop recording")
     }
 }
+    
+    func captureAnimationBar() {
+        let coloredSquare = UIView()
+        coloredSquare.backgroundColor = UIColor.blueColor()
+        coloredSquare.frame = CGRect(x: 0, y: 0, width: 0, height: 20)
+        self.view.addSubview(coloredSquare)
+        
+        UIView.animateWithDuration(3.0, animations: {
+            coloredSquare.backgroundColor = UIColor.redColor()
+            coloredSquare.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 20)
+            } , completion: { finished in
+                print("finished")
+        })
+        
+    }
+
     
     //cont
     func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
