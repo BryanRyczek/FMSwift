@@ -13,6 +13,10 @@ import CoreMedia
 
 class FlowMoCam: FlowMoController {
     
+    var backFacingCamera:AVCaptureDevice?
+    var frontFacingCamera:AVCaptureDevice?
+    var currentDevice:AVCaptureDevice?
+    
     override func viewDidLoad() {
 
         super.viewDidLoad()
@@ -21,12 +25,16 @@ class FlowMoCam: FlowMoController {
         // create array of available devices (front camera, back camera, microphone)
         var currentDevice:AVCaptureDevice?
         let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
+        print(devices)
         
         for device in devices {
             if device.position == AVCaptureDevicePosition.Back {
-                currentDevice = device
+                backFacingCamera = device
+            } else if device.position == AVCaptureDevicePosition.Front {
+                frontFacingCamera = device
             }
         }
+        currentDevice = backFacingCamera
         
         let captureDeviceInput:AVCaptureDeviceInput
         do {
@@ -55,6 +63,7 @@ class FlowMoCam: FlowMoController {
         
         captureSession.startRunning()
         captureButton()
+        toggleCameraButton()
         
     }
     
@@ -65,9 +74,44 @@ class FlowMoCam: FlowMoController {
         captureButton.backgroundColor = UIColor.whiteColor()
         captureButton.addTarget(self, action: "capture:", forControlEvents: .TouchUpInside)
         self.view.addSubview(captureButton)
+        
     }
-
-
+    
+    func toggleCameraButton() {
+        let toggleCameraButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
+        toggleCameraButton.frame = CGRectMake((self.view.frame.width/2)-105, (self.view.frame.height)-105, 70, 70)
+        toggleCameraButton.backgroundColor = UIColor.redColor()
+        toggleCameraButton.addTarget(self, action: "toggleCamera:", forControlEvents: .TouchUpInside)
+        self.view.addSubview(toggleCameraButton)
+    }
+    
+    func toggleCamera (sender: AnyObject) {
+            captureSession.beginConfiguration()
+                
+            // Change the device based on the current camera
+            let newDevice = (currentDevice?.position == AVCaptureDevicePosition.Front) ?
+            backFacingCamera : frontFacingCamera
+        
+            // Remove all inputs from the session
+            for input in captureSession.inputs {
+                captureSession.removeInput(input as! AVCaptureDeviceInput)
+            }
+                
+                // Change to the new input
+            let cameraInput:AVCaptureDeviceInput
+            do {
+                cameraInput = try AVCaptureDeviceInput(device: newDevice)
+            } catch {
+                print(error)
+                return
+            }
+                
+            if captureSession.canAddInput(cameraInput) {
+                captureSession.addInput(cameraInput)
+            }
+            currentDevice = newDevice
+            captureSession.commitConfiguration()
+    }
     /*
     // MARK: - Navigation
 
