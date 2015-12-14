@@ -24,22 +24,22 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     var isRecording = false
     
 
-    func capture (sender: AnyObject) {  //cont
+    func capture (sender: UILongPressGestureRecognizer) {  //cont
     //if we are not currently recording
-        if !isRecording {
+        if (sender.state == UIGestureRecognizerState.Ended){
+            isRecording = false
+            videoFileOutput?.stopRecording()
+            //fireTorch()
+            print ("stop recording")
+            }
+        else if (sender.state == UIGestureRecognizerState.Began){
             isRecording = true
             captureAnimationBar()
             print ("start recording")
             let outputPath = NSTemporaryDirectory() + "output.mov"
             let outputFileURL = NSURL(fileURLWithPath: outputPath)
             videoFileOutput?.startRecordingToOutputFileURL(outputFileURL, recordingDelegate: self)
-    }   else {
-            isRecording = false
-            videoFileOutput?.stopRecording()
-            
-            print ("stop recording")
-    }
-}
+            }}
     
     func captureAnimationBar() {
         let coloredSquare = UIView()
