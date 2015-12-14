@@ -11,6 +11,7 @@ import UIKit
 import AVFoundation
 import AVKit
 import CoreMedia
+import Photos
 
 class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
@@ -61,24 +62,27 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     //create instance used to save data for movie file
     videoFileOutput = AVCaptureMovieFileOutput()
     videoFileOutput?.maxRecordedDuration
+        
     //create instance used to save audio data
-    let audioDevices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeAudio) as! [AVCaptureDevice]
+        
+    let audioDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
         
     let audioInput:AVCaptureDeviceInput
         do {
-            audioInput = try AVCaptureDeviceInput(device:audioDevices[0])
+            audioInput = try AVCaptureDeviceInput(device:audioDevice)
         } catch {
             print(error)
             return
     }
     
-    
+    audioFileOutput = AVCaptureAudioDataOutput()
         
     //Assign the input and output devices to the capture session
     captureSession.addInput(captureDeviceInput)
     captureSession.addInput(audioInput)
     captureSession.addOutput(videoFileOutput)
-    //captureSession.addOutput()
+    captureSession.addOutput(audioFileOutput)
+        
     }
     
     func toggleCamera (sender: AnyObject) {
@@ -187,8 +191,16 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             return
         }
         let urlString = outputFileURL.absoluteString
-        UISaveVideoAtPathToSavedPhotosAlbum(urlString, nil, nil, nil)
+        saveVideoToCameraRoll(outputFileURL)
         generateImageSequence(outputFileURL)
+    }
+    
+    func saveVideoToCameraRoll(outputFileURL: NSURL!) {
+        PHPhotoLibrary.sharedPhotoLibrary().performChanges({
+            let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputFileURL)
+            }, completionHandler: { success, error in
+                if !success { NSLog("Failed to create video: %@", error!) }
+        })
     }
     
     
