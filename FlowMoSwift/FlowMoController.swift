@@ -22,6 +22,45 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     var audioFileOutput : AVCaptureAudioDataOutput?
     // var to denote recording status
     var isRecording = false
+    var backFacingCamera:AVCaptureDevice?
+    var frontFacingCamera:AVCaptureDevice?
+    var currentDevice:AVCaptureDevice?
+    var torchState = 0
+    
+    func loaded(){
+    //set camera to highest resolution device will support
+    captureSession.sessionPreset = AVCaptureSessionPresetHigh
+    // create array of available devices (front camera, back camera, microphone)
+    let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
+    print(devices)
+    
+    for device in devices {
+    if device.position == AVCaptureDevicePosition.Back {
+    backFacingCamera = device
+    } else if device.position == AVCaptureDevicePosition.Front {
+    frontFacingCamera = device
+    }
+    }
+    currentDevice = backFacingCamera
+    
+    let captureDeviceInput:AVCaptureDeviceInput
+    do {
+    captureDeviceInput = try AVCaptureDeviceInput(device: currentDevice)
+    } catch {
+    print(error)
+    return
+    }
+    
+    //create instance used to save data for movie file
+    videoFileOutput = AVCaptureMovieFileOutput()
+    videoFileOutput?.maxRecordedDuration
+    //create instance used to save audio data
+    
+    
+    //Assign the input and output devices to the capture session
+    captureSession.addInput(captureDeviceInput)
+    captureSession.addOutput(videoFileOutput)
+    }
     
 
     func capture (sender: UILongPressGestureRecognizer) {  //cont
@@ -29,13 +68,14 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         if (sender.state == UIGestureRecognizerState.Ended){
             isRecording = false
             videoFileOutput?.stopRecording()
-            //fireTorch()
+            fireTorch(sender)
             print ("stop recording")
             }
         else if (sender.state == UIGestureRecognizerState.Began){
             isRecording = true
             captureAnimationBar()
             print ("start recording")
+            fireTorch(sender)
             let outputPath = NSTemporaryDirectory() + "output.mov"
             let outputFileURL = NSURL(fileURLWithPath: outputPath)
             videoFileOutput?.startRecordingToOutputFileURL(outputFileURL, recordingDelegate: self)
@@ -54,6 +94,40 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
                 print("finished")
         })
         
+    }
+    
+    func fireTorch(sender: AnyObject) {
+        print("Called", currentDevice!)
+        if (currentDevice!.hasTorch && torchState==1) {
+            do {
+                print("Torch mode is working")
+                try currentDevice!.lockForConfiguration()
+                if (currentDevice!.torchMode == AVCaptureTorchMode.On) {
+                    currentDevice!.torchMode = AVCaptureTorchMode.Off
+                } else {
+                    do {
+                        try currentDevice!.setTorchModeOnWithLevel(1.0)
+                    } catch {
+                        print(error)
+                    }
+                }
+                currentDevice!.unlockForConfiguration()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func setTorchMode(sender: AnyObject) {
+        if (torchState == 0)
+        {
+            torchState++
+            print(torchState, "has changed")
+        }
+        else
+        {
+            torchState = 0
+        }
     }
 
     

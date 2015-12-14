@@ -8,28 +8,7 @@
 
 import Foundation
 import AVFoundation
+import UIKit
 
 class Torch: FlowMoCam {
-    
-    func fireTorch(sender: AnyObject) {
-        print("Called", currentDevice!)
-        if (currentDevice!.hasTorch && torchState==1) {
-            do {
-                print("Torch mode is working")
-                try currentDevice!.lockForConfiguration()
-                if (currentDevice!.torchMode == AVCaptureTorchMode.On) {
-                    currentDevice!.torchMode = AVCaptureTorchMode.Off
-                } else {
-                    do {
-                        try currentDevice!.setTorchModeOnWithLevel(1.0)
-                    } catch {
-                        print(error)
-                    }
-                }
-                currentDevice!.unlockForConfiguration()
-            } catch {
-                print(error)
-            }
-        }
-    }
 }

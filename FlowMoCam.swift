@@ -13,46 +13,10 @@ import CoreMedia
 
 class FlowMoCam: FlowMoController {
     
-    var backFacingCamera:AVCaptureDevice?
-    var frontFacingCamera:AVCaptureDevice?
-    var currentDevice:AVCaptureDevice?
-    var torchState: Int =  0
-    
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        //set camera to highest resolution device will support
-        captureSession.sessionPreset = AVCaptureSessionPresetHigh
-        // create array of available devices (front camera, back camera, microphone)
-        let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
-        print(devices)
-        
-        for device in devices {
-            if device.position == AVCaptureDevicePosition.Back {
-                backFacingCamera = device
-            } else if device.position == AVCaptureDevicePosition.Front {
-                frontFacingCamera = device
-            }
-        }
-        currentDevice = backFacingCamera
-        
-        let captureDeviceInput:AVCaptureDeviceInput
-        do {
-            captureDeviceInput = try AVCaptureDeviceInput(device: currentDevice)
-        } catch {
-            print(error)
-            return
-        }
-        
-        //create instance used to save data for movie file
-        videoFileOutput = AVCaptureMovieFileOutput()
-        videoFileOutput?.maxRecordedDuration
-        //create instance used to save audio data
-        
-        
-        //Assign the input and output devices to the capture session
-        captureSession.addInput(captureDeviceInput)
-        captureSession.addOutput(videoFileOutput)
+        loaded()
         
         //instance variable with the p
         var cameraPreviewLayer:AVCaptureVideoPreviewLayer?
@@ -64,10 +28,17 @@ class FlowMoCam: FlowMoController {
         cameraPreviewLayer?.frame = view.layer.frame
         
         captureSession.startRunning()
+        toggleTorchButton()
         captureButton()
         toggleCameraButton()
-        toggleTorchButton()
-        
+    }
+    
+    func toggleTorchButton() {
+        let toggleTorchButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
+        toggleTorchButton.frame = CGRectMake((self.view.frame.width/2)-175, (self.view.frame.height)-105, 70, 70)
+        toggleTorchButton.backgroundColor = UIColor.blueColor()
+        toggleTorchButton.addTarget(self, action: "setTorchMode:", forControlEvents: .TouchUpInside)
+        self.view.addSubview(toggleTorchButton)
     }
     
     func captureButton() {
@@ -76,8 +47,6 @@ class FlowMoCam: FlowMoController {
         captureButton.backgroundColor = UIColor.whiteColor()
         let longPressCaptureRecognizer = UILongPressGestureRecognizer(target: self, action: "capture:")
         longPressCaptureRecognizer.minimumPressDuration = 0.3
-        captureButton.addTarget(self, action: "controller:", forControlEvents: .TouchDown)
-        captureButton.addTarget(self, action: "setTorchMode:", forControlEvents: .TouchUpInside)
         captureButton.addGestureRecognizer(longPressCaptureRecognizer)
         self.view.addSubview(captureButton)
         
@@ -89,14 +58,6 @@ class FlowMoCam: FlowMoController {
         toggleCameraButton.backgroundColor = UIColor.redColor()
         toggleCameraButton.addTarget(self, action: "toggleCamera:", forControlEvents: .TouchUpInside)
         self.view.addSubview(toggleCameraButton)
-    }
-    
-    func toggleTorchButton() {
-        let toggleTorchButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
-        toggleTorchButton.frame = CGRectMake((self.view.frame.width/2)-175, (self.view.frame.height)-105, 70, 70)
-        toggleTorchButton.backgroundColor = UIColor.blueColor()
-        toggleTorchButton.addTarget(self, action: "setTorchMode:", forControlEvents: .TouchUpInside)
-        self.view.addSubview(toggleTorchButton)
     }
         
     func toggleCamera (sender: AnyObject) {
