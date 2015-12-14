@@ -13,25 +13,28 @@ import CoreMedia
 
 class FlowMoCam: FlowMoController {
     
+    // MARK: SETUP METHODS
+    
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        loaded()
         
-        //instance variable with the p
+        //Code to load Camera
+        loadCamera()
         var cameraPreviewLayer:AVCaptureVideoPreviewLayer?
-        
-        //camera preview layer
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         view.layer.addSublayer(cameraPreviewLayer!)
         cameraPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         cameraPreviewLayer?.frame = view.layer.frame
-        
         captureSession.startRunning()
+        
+        //Button Setup
         toggleTorchButton()
         captureButton()
         toggleCameraButton()
     }
+    
+    // MARK: BUTTON METHODS
     
     func toggleTorchButton() {
         let toggleTorchButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
@@ -54,40 +57,13 @@ class FlowMoCam: FlowMoController {
     
     func toggleCameraButton() {
         let toggleCameraButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
-        toggleCameraButton.frame = CGRectMake((self.view.frame.width/2)-105, (self.view.frame.height)-105, 70, 70)
+        toggleCameraButton.frame = CGRectMake((self.view.frame.width)-85, 85, 70, 70)
         toggleCameraButton.backgroundColor = UIColor.redColor()
         toggleCameraButton.addTarget(self, action: "toggleCamera:", forControlEvents: .TouchUpInside)
         self.view.addSubview(toggleCameraButton)
     }
         
-    func toggleCamera (sender: AnyObject) {
-            captureSession.beginConfiguration()
-                
-            // Change the device based on the current camera
-            let newDevice = (currentDevice?.position == AVCaptureDevicePosition.Front) ?
-            backFacingCamera : frontFacingCamera
-        
-            // Remove all inputs from the session
-            for input in captureSession.inputs {
-                captureSession.removeInput(input as! AVCaptureDeviceInput)
-            }
-                
-                // Change to the new input
-            let cameraInput:AVCaptureDeviceInput
-            do {
-                cameraInput = try AVCaptureDeviceInput(device: newDevice)
-            } catch {
-                print(error)
-                return
-            }
-                
-            if captureSession.canAddInput(cameraInput) {
-                captureSession.addInput(cameraInput)
-            }
-            currentDevice = newDevice
-            captureSession.commitConfiguration()
-    }
-    /*
+        /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
