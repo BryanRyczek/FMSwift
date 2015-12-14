@@ -16,10 +16,13 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
     // define capture session
     let captureSession = AVCaptureSession()
-    // define device output
+    // define video output
     var videoFileOutput : AVCaptureMovieFileOutput?
+    //defint audio output
+    var audioFileOutput : AVCaptureAudioDataOutput?
     // var to denote recording status
     var isRecording = false
+    
 
     func capture (sender: AnyObject) {  //cont
     //if we are not currently recording
@@ -33,6 +36,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     }   else {
             isRecording = false
             videoFileOutput?.stopRecording()
+            
             print ("stop recording")
     }
 }
@@ -44,7 +48,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         self.view.addSubview(coloredSquare)
         
         UIView.animateWithDuration(3.0, animations: {
-            coloredSquare.backgroundColor = UIColor.redColor()
+            coloredSquare.backgroundColor = UIColor.blueColor()
             coloredSquare.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 20)
             } , completion: { finished in
                 print("finished")
@@ -82,14 +86,12 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             let cmTime = CMTimeMake(Int64(t), avURLAsset.duration.timescale)
             let timeValue = NSValue(CMTime: cmTime)
             imageHashRate.append(timeValue)
-            print(imageHashRate)
             }
         
         var flowMoImageArray: [UIImage] = []
-        imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) { (requestedTime, image, actualTime, result, error) -> Void in
+        imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
             if (result == .Succeeded) {
                 flowMoImageArray.append(UIImage(CGImage: image!))
-                print("SUCCESS!")
             }
             if (result == .Failed) {
                 

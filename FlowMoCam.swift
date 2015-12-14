@@ -16,6 +16,7 @@ class FlowMoCam: FlowMoController {
     var backFacingCamera:AVCaptureDevice?
     var frontFacingCamera:AVCaptureDevice?
     var currentDevice:AVCaptureDevice?
+    var torchMode: Int =  0
     
     override func viewDidLoad() {
 
@@ -47,6 +48,8 @@ class FlowMoCam: FlowMoController {
         //create instance used to save data for movie file
         videoFileOutput = AVCaptureMovieFileOutput()
         videoFileOutput?.maxRecordedDuration
+        //create instance used to save audio data
+        
         
         //Assign the input and output devices to the capture session
         captureSession.addInput(captureDeviceInput)
@@ -67,12 +70,13 @@ class FlowMoCam: FlowMoController {
         
     }
     
-
     func captureButton() {
         let captureButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
         captureButton.frame = CGRectMake((self.view.frame.width/2)-35, (self.view.frame.height)-105, 70, 70)
         captureButton.backgroundColor = UIColor.whiteColor()
-        captureButton.addTarget(self, action: "capture:", forControlEvents: .TouchUpInside)
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
+        captureButton.addGestureRecognizer(longPressRecognizer)
+        //captureButton.addTarget(self, action: "capture:", forControlEvents: .TouchUpInside)
         self.view.addSubview(captureButton)
         
     }
@@ -83,6 +87,23 @@ class FlowMoCam: FlowMoController {
         toggleCameraButton.backgroundColor = UIColor.redColor()
         toggleCameraButton.addTarget(self, action: "toggleCamera:", forControlEvents: .TouchUpInside)
         self.view.addSubview(toggleCameraButton)
+    }
+    
+    func toggleTorchButton() {
+        let toggleTorchButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
+        toggleTorchButton.frame = CGRectMake((self.view.frame.width/2)-175, (self.view.frame.height)-105, 70, 70)
+        toggleTorchButton.backgroundColor = UIColor.blueColor()
+        toggleTorchButton.addTarget(self, action: "toggleTorch:", forControlEvents: .TouchUpInside)
+    }
+    
+    func setTorchMode() {
+        if (currentDevice!.hasTorch) {
+        if (torchMode == 0) {
+            torchMode++
+        } else {
+            torchMode = 0
+        }
+    }
     }
     
     func toggleCamera (sender: AnyObject) {
