@@ -20,7 +20,8 @@ class FlowMoCam: FlowMoController {
         super.viewDidLoad()
         
         //Code to load Camera
-        loadCamera()
+        realtimeCam()
+        //loadCamera()
         var cameraPreviewLayer:AVCaptureVideoPreviewLayer?
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         view.layer.addSublayer(cameraPreviewLayer!)
@@ -48,7 +49,7 @@ class FlowMoCam: FlowMoController {
         let captureButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
         captureButton.frame = CGRectMake((self.view.frame.width/2)-35, (self.view.frame.height)-105, 70, 70)
         captureButton.backgroundColor = UIColor.whiteColor()
-        let longPressCaptureRecognizer = UILongPressGestureRecognizer(target: self, action: "capture:")
+        let longPressCaptureRecognizer = UILongPressGestureRecognizer(target: self, action: "retainImageFromBuffer:")
         longPressCaptureRecognizer.minimumPressDuration = 0.3
         captureButton.addGestureRecognizer(longPressCaptureRecognizer)
         self.view.addSubview(captureButton)

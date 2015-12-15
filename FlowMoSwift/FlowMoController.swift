@@ -11,10 +11,11 @@ import UIKit
 import AVFoundation
 import AVKit
 import CoreMedia
+import CoreImage
 import Photos
 
-class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
-    
+class FlowMoController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+    // MARK: GLOBAL VARS
     // define capture session
     let captureSession = AVCaptureSession()
     // define video output
@@ -27,13 +28,118 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     var audioDevice : AVCaptureDevice?
     // define audio output
     var audioFileOutput : AVCaptureAudioDataOutput?
-    
     // var to denote recording status
     var isRecording = false
     
     var torchState = 0
     
+    let videoDataOutput = AVCaptureVideoDataOutput()
+    let stillCameraOutput = AVCaptureStillImageOutput()
+    var sessionQueue:dispatch_queue_t = dispatch_queue_create("com.example.session_access_queue", DISPATCH_QUEUE_SERIAL)
+    var flowMoImageArray: [UIImage] = []
+    
+    
     //MARK: CAMERA METHODS
+    func realtimeCam() {
+        captureSession.sessionPreset = AVCaptureSessionPresetHigh
+        
+        let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
+        
+        for device in devices {
+            if device.position == AVCaptureDevicePosition.Back {
+                backFacingCamera = device
+            } else if device.position == AVCaptureDevicePosition.Front {
+                frontFacingCamera = device
+            }
+        }
+        
+        currentDevice = backFacingCamera
+        
+        let captureDeviceInput:AVCaptureDeviceInput
+        do {
+            captureDeviceInput = try AVCaptureDeviceInput(device: currentDevice)
+        } catch {
+            print(error)
+            return
+        }
+        
+        captureSession.addInput(captureDeviceInput)
+        
+        videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey: Int(kCVPixelFormatType_32BGRA)]
+        videoDataOutput.alwaysDiscardsLateVideoFrames = true
+        videoDataOutput.setSampleBufferDelegate(self, queue: sessionQueue)
+        if captureSession.canAddOutput(videoDataOutput){
+            captureSession.addOutput(videoDataOutput)
+        }
+        
+        if self.captureSession.canAddOutput(self.stillCameraOutput) {
+            self.captureSession.addOutput(self.stillCameraOutput)
+        }
+        
+    }
+    
+    func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
+            let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+            let image = CIImage(CVPixelBuffer: pixelBuffer!)
+    }
+        
+    
+    // TODO: Wire this method up
+    func retainImageFromBuffer(sender: AnyObject) {
+        
+    dispatch_async(sessionQueue) { () -> Void in
+    
+    let connection = self.stillCameraOutput.connectionWithMediaType(AVMediaTypeVideo)
+    
+    // update the video orientation to the device one
+    connection.videoOrientation = AVCaptureVideoOrientation(rawValue: UIDevice.currentDevice().orientation.rawValue)!
+    
+    self.stillCameraOutput.captureStillImageAsynchronouslyFromConnection(connection) {
+    (imageDataSampleBuffer, error) -> Void in
+    
+    if error == nil {
+    
+    // if the session preset .Photo is used, or if explicitly set in the device's outputSettings
+    // we get the data already compressed as JPEG
+    
+    let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer)
+    
+    // the sample buffer also contains the metadata, in case we want to modify it
+    let metadata:NSDictionary = CMCopyDictionaryOfAttachments(nil, imageDataSampleBuffer, CMAttachmentMode(kCMAttachmentMode_ShouldPropagate))!
+    
+    if let image = UIImage(data: imageData) {
+        self.flowMoImageArray.append(image)
+        print("SUCCESS!")
+        }
+    } else {
+    NSLog("error while capturing still image: \(error)")
+            }
+        }
+    }
+}
+
+    //FIXME: put in permissions directives
+        func handleCameraPermissions(){ let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
+        switch authorizationStatus {
+        case .NotDetermined:
+            // permission dialog not yet presented, request authorization
+            AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo,
+                completionHandler: { (granted:Bool) -> Void in
+                    if granted {
+                        // go ahead
+                    }
+                    else {
+                        // user denied, nothing much to do
+                    }
+            })
+        case .Authorized:
+            break
+        case .Denied, .Restricted:
+            //Ask user to change permissions in settings
+            break
+        }
+            
+        }
     
     func loadCamera(){
     //set camera to highest resolution device will support
@@ -78,7 +184,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     audioFileOutput = AVCaptureAudioDataOutput()
         
     //Assign the input and output devices to the capture session
-    captureSession.addInput(captureDeviceInput)
+    //captureSession.addInput(captureDeviceInput)
     captureSession.addInput(audioInput)
     captureSession.addOutput(videoFileOutput)
     captureSession.addOutput(audioFileOutput)
@@ -118,7 +224,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     //if we are not currently recording
         if (sender.state == UIGestureRecognizerState.Ended){
             isRecording = false
-            videoFileOutput?.stopRecording()
+            //videoFileOutput?.stopRecording()
             fireTorch(sender)
             print ("stop recording")
             }
@@ -127,9 +233,9 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             captureAnimationBar()
             print ("start recording")
             fireTorch(sender)
-            let outputPath = NSTemporaryDirectory() + "output.mov"
-            let outputFileURL = NSURL(fileURLWithPath: outputPath)
-            videoFileOutput?.startRecordingToOutputFileURL(outputFileURL, recordingDelegate: self)
+            //let outputPath = NSTemporaryDirectory() + "output.mov"
+            //let outputFileURL = NSURL(fileURLWithPath: outputPath)
+            //videoFileOutput?.startRecordingToOutputFileURL(outputFileURL, recordingDelegate: self)
             }}
     
     func captureAnimationBar() {
@@ -185,23 +291,23 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
 
     
     //MARK: FILE PROCESSING METHODS
-    func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
-        if error != nil {
-            print(error)
-            return
-        }
-        let urlString = outputFileURL.absoluteString
-        saveVideoToCameraRoll(outputFileURL)
-        generateImageSequence(outputFileURL)
-    }
-    
-    func saveVideoToCameraRoll(outputFileURL: NSURL!) {
-        PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-            let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputFileURL)
-            }, completionHandler: { success, error in
-                if !success { NSLog("Failed to create video: %@", error!) }
-        })
-    }
+//    func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
+//        if error != nil {
+//            print(error)
+//            return
+//        }
+//        let urlString = outputFileURL.absoluteString
+//        saveVideoToCameraRoll(outputFileURL)
+//        generateImageSequence(outputFileURL)
+//    }
+//    
+//    func saveVideoToCameraRoll(outputFileURL: NSURL!) {
+//        PHPhotoLibrary.sharedPhotoLibrary().performChanges({
+//            let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputFileURL)
+//            }, completionHandler: { success, error in
+//                if !success { NSLog("Failed to create video: %@", error!) }
+//        })
+//    }
     
     
     func generateImageSequence(outputFileURL: NSURL) {
