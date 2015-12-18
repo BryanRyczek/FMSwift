@@ -18,9 +18,19 @@ class FlowMoAudioPlayer: UIViewController {
     }
     
     func playAudio() {
-        let path = NSBundle.mainBundle().pathForResource("sliceBombFuse.caf", ofType:nil)!
+        let path = NSBundle.mainBundle().pathForResource("recording.m4a", ofType:nil)!
         let url = NSURL(fileURLWithPath: path)
         
+        do {
+            let sound = try AVAudioPlayer(contentsOfURL: url)
+            audioPlayer = sound
+            sound.play()
+        } catch {
+            print("contents")
+        }
+    }
+    
+    func playAudio(url: NSURL) {
         do {
             let sound = try AVAudioPlayer(contentsOfURL: url)
             audioPlayer = sound

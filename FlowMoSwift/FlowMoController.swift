@@ -33,10 +33,68 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     var torchState = 0
     // define video output
     var videoFileOutput : AVCaptureMovieFileOutput?
+    //define audio recorder
+    let audioRecorder = FlowMoAudioRecorder()
+    //define audio player
+    let audioPlayer = FlowMoAudioPlayer()
+    //define device screen brightness
+    var screenBrightness : CGFloat?
+    let flashLayer = CALayer()
     
     
     //MARK: METHODS
     //MARK: CAMERA METHODS
+    
+    func loadCamera(){
+        //set camera to highest resolution device will support
+        captureSession.sessionPreset = AVCaptureSessionPresetHigh
+        // create array of available devices (front camera, back camera, microphone)
+        let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
+        
+        for device in devices {
+            if device.position == AVCaptureDevicePosition.Back {
+                backFacingCamera = device
+            } else if device.position == AVCaptureDevicePosition.Front {
+                frontFacingCamera = device
+            }
+        }
+        
+        currentDevice = backFacingCamera
+        
+        let captureDeviceInput:AVCaptureDeviceInput
+        do {
+            captureDeviceInput = try AVCaptureDeviceInput(device: currentDevice)
+        } catch {
+            print(error)
+            return
+        }
+        
+        //create instance used to save data for movie file
+        videoFileOutput = AVCaptureMovieFileOutput()
+        videoFileOutput?.maxRecordedDuration
+        
+        //create instance used to save audio data
+        
+        let audioDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
+        
+        let audioInput:AVCaptureDeviceInput
+        do {
+            audioInput = try AVCaptureDeviceInput(device:audioDevice)
+        } catch {
+            print(error)
+            return
+        }
+        
+        audioFileOutput = AVCaptureAudioDataOutput()
+        
+        //Assign the input and output devices to the capture session
+        captureSession.addInput(captureDeviceInput)
+        captureSession.addInput(audioInput)
+        captureSession.addOutput(videoFileOutput)
+        captureSession.addOutput(audioFileOutput)
+        
+    }
+    
     //FIXME: put in permissions directives
         func handleCameraPermissions(){ let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
         switch authorizationStatus {
@@ -58,25 +116,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             break
         }
         }
-    
-    func capture (sender: UILongPressGestureRecognizer) {
-        //cont
-        //if we are not currently recording
-        if (sender.state == UIGestureRecognizerState.Ended){
-            isRecording = false
-            fireTorch(sender)
-            print ("stop recording")
-            videoFileOutput?.stopRecording()
-        }
-        else if (sender.state == UIGestureRecognizerState.Began){
-            isRecording = true
-            captureAnimationBar()
-            print ("start recording")
-            fireTorch(sender)
-            let outputPath = NSTemporaryDirectory() + "output.mov"
-            let outputFileURL = NSURL(fileURLWithPath: outputPath)
-            videoFileOutput?.startRecordingToOutputFileURL(outputFileURL, recordingDelegate: self)
-        }}
     
     func toggleCamera (sender: AnyObject) {
         captureSession.beginConfiguration()
@@ -149,6 +188,33 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         })
     }
     
+    func capture (sender: UILongPressGestureRecognizer) {
+        //cont
+        //if we are not currently recording
+        if (sender.state == UIGestureRecognizerState.Ended){
+            isRecording = false
+            audioRecorder.recordToggle()
+            fireTorch(sender)
+            if (torchState == 1 && currentDevice?.position == AVCaptureDevicePosition.Front) {
+                flashLayer.removeFromSuperlayer()
+                UIScreen.mainScreen().brightness = screenBrightness!
+            }
+            print ("stop recording")
+            videoFileOutput?.stopRecording()
+        }
+        else if (sender.state == UIGestureRecognizerState.Began){
+            isRecording = true
+            audioRecorder.recordToggle()
+            captureAnimationBar()
+            frontFlash()
+            print ("start recording")
+            fireTorch(sender)
+            let outputPath = NSTemporaryDirectory() + "output.mov"
+            let outputFileURL = NSURL(fileURLWithPath: outputPath)
+            videoFileOutput?.startRecordingToOutputFileURL(outputFileURL, recordingDelegate: self)
+        }
+    }
+    
 // MARK: FLASH METHODS
     
     func fireTorch(sender: AnyObject) {
@@ -184,59 +250,18 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             torchState = 0
         }
     }
-
- 
-    func loadCamera(){
-    //set camera to highest resolution device will support
-    captureSession.sessionPreset = AVCaptureSessionPresetHigh
-    // create array of available devices (front camera, back camera, microphone)
-    let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
-        
-    for device in devices {
-        if device.position == AVCaptureDevicePosition.Back {
-            backFacingCamera = device
-        } else if device.position == AVCaptureDevicePosition.Front {
-            frontFacingCamera = device
+    
+    func frontFlash(){
+        if (torchState == 1 && currentDevice?.position == AVCaptureDevicePosition.Front) {
+            
+            screenBrightness = UIScreen.mainScreen().brightness
+            UIScreen.mainScreen().brightness = CGFloat(1.0)
+            flashLayer.backgroundColor = UIColor.whiteColor().CGColor
+            flashLayer.opacity = 0.85
+            flashLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
+            self.view.layer.addSublayer(flashLayer)
         }
     }
-        
-    currentDevice = backFacingCamera
-    
-    let captureDeviceInput:AVCaptureDeviceInput
-        do {
-            captureDeviceInput = try AVCaptureDeviceInput(device: currentDevice)
-        } catch {
-            print(error)
-            return
-    }
-    
-    //create instance used to save data for movie file
-    videoFileOutput = AVCaptureMovieFileOutput()
-    videoFileOutput?.maxRecordedDuration
-        
-    //create instance used to save audio data
-        
-    let audioDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
-        
-    let audioInput:AVCaptureDeviceInput
-        do {
-            audioInput = try AVCaptureDeviceInput(device:audioDevice)
-        } catch {
-            print(error)
-            return
-    }
-    
-    audioFileOutput = AVCaptureAudioDataOutput()
-        
-    //Assign the input and output devices to the capture session
-    captureSession.addInput(captureDeviceInput)
-    captureSession.addInput(audioInput)
-    captureSession.addOutput(videoFileOutput)
-    captureSession.addOutput(audioFileOutput)
-        
-    }
-    
-    
     
    // MARK: FILE PROCESSING METHODS
     func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {

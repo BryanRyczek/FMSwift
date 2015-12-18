@@ -20,7 +20,6 @@ class FlowMoCam: FlowMoController {
         super.viewDidLoad()
         
         //Code to load Camera
-        //realtimeCam()
         loadCamera()
         var cameraPreviewLayer:AVCaptureVideoPreviewLayer?
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -28,7 +27,8 @@ class FlowMoCam: FlowMoController {
         cameraPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         cameraPreviewLayer?.frame = view.layer.frame
         captureSession.startRunning()
-        
+        //Audio Recorder Setup
+        audioRecorder.recorderSetup()
         //Button Setup
         toggleTorchButton()
         captureButton()

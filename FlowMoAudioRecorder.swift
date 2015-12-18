@@ -11,17 +11,12 @@ import UIKit
 import AVFoundation
 import Foundation
 
-class FlowMoAudioRecorder: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
+class FlowMoAudioRecorder: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
     //MARK: GLOBAL VARS
     var recordButton: UIButton!
     var audioRecorder: AVAudioRecorder!
     var recordingSession: AVAudioSession!
-    
-    // MARK: SETUP METHODS
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        recorderSetup()
-    }
+    //var recordedAudioURL: NSURL?
     
     func recorderSetup() {
         recordingSession = AVAudioSession.sharedInstance()
@@ -49,10 +44,9 @@ class FlowMoAudioRecorder: UIViewController, AVAudioRecorderDelegate, AVAudioPla
         recordButton.setTitle("Tap to Record", forState: .Normal)
         recordButton.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
         recordButton.addTarget(self, action: "recordTapped", forControlEvents: .TouchUpInside)
-        view.addSubview(recordButton)
     }
     // MARK: RECORDING METHODS
-    func recordTapped() {
+    func recordToggle() {
         if audioRecorder == nil {
             startRecording()
         } else {
@@ -60,10 +54,10 @@ class FlowMoAudioRecorder: UIViewController, AVAudioRecorderDelegate, AVAudioPla
         }
     }    
 
-    
     func startRecording() {
+        print("audio recording")
         let audioFilename = try! NSFileManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true).URLByAppendingPathComponent("recording.m4a").path!
-        //let audioFilename = getDocumentsDirectory().URLByAppendingPathComponent("recording.m4a")
+        print(audioFilename)
         let audioURL = NSURL(fileURLWithPath: audioFilename)
         
         let settings = [
@@ -86,7 +80,7 @@ class FlowMoAudioRecorder: UIViewController, AVAudioRecorderDelegate, AVAudioPla
         audioRecorder.stop()
         audioRecorder = nil
         if success {
-            print("Recording Successful")
+           print("Recording Succeeded")
         } else {
             print("Recording Failed")
         }
