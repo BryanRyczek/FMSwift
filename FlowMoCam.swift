@@ -63,7 +63,12 @@ class FlowMoCam: FlowMoController {
         toggleCameraButton.addTarget(self, action: "toggleCamera:", forControlEvents: .TouchUpInside)
         self.view.addSubview(toggleCameraButton)
     }
-        
+    
+    //MARK: HELPER METHODS
+    //hide iphone status bar
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
         /*
     // MARK: - Navigation
 

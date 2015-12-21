@@ -58,7 +58,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
                 frontFacingCamera = device
             }
         }
-        
         currentDevice = backFacingCamera
         
         let captureDeviceInput:AVCaptureDeviceInput
@@ -115,7 +114,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             //Ask user to change permissions in settings
             break
         }
-        }
+    }
     
     func toggleCamera (sender: AnyObject) {
         captureSession.beginConfiguration()
@@ -286,27 +285,40 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     func generateImageSequence(outputFileURL: NSURL) {
         let avURLAsset = AVURLAsset(URL: outputFileURL, options:nil)
         
-        
         let imageGenerator = AVAssetImageGenerator.init(asset: avURLAsset)
         imageGenerator.requestedTimeToleranceAfter=kCMTimeZero
         imageGenerator.requestedTimeToleranceBefore=kCMTimeZero
         
         var imageHashRate: [NSValue] = []
-        //NEED TO PLUG THESE VALUES INTO THE BELOW LOOP TO GENERATE imageHashRateArray ONCE FURTHER WORK DONE
-        var loopDuration = avURLAsset.duration.value
-        let timeValue = Float(CMTimeGetSeconds(avURLAsset.duration))
+        //NEED TO PLUG THESE VALUES INTO THE BELOW LOOP TO GENERATE imageHashRateArray
+        //Define length of flomo to be processed
+        let flowmoDurationFloat : Float = 1800 // Based on a timescale of 600 where (600 = 1 second)
+        let loopDuration = avURLAsset.duration
+        let flowmoDuration = CMTimeMake(Int64(flowmoDurationFloat), avURLAsset.duration.timescale)
+        let flowmoStartTime = loopDuration - flowmoDuration
+        //These floats are calculated to be fed into the below for loop, which generates image hashing times
+        let flowmoStartTimeSeconds = Float(CMTimeGetSeconds(flowmoStartTime))
+        let flowmoStartTimeFloat = flowmoStartTimeSeconds * 600
         
-        for var t = 0; t < 1800; t += 20 {
+        for var t = flowmoStartTimeFloat; t < flowmoStartTimeFloat + flowmoDurationFloat; t += 20 {
             let cmTime = CMTimeMake(Int64(t), avURLAsset.duration.timescale)
             let timeValue = NSValue(CMTime: cmTime)
             imageHashRate.append(timeValue)
             }
         var flowMoImageArray: [UIImage] = []
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) {
+        //Background threads notes:
+        //NEVER DO INTERFACE WORK ON BACKGROUND THREADS!!!
+        //dispatch_get_global_queue inputs:
+        //QOS_CLASS_USER_INTERACTIVE - highest priority background thread
+        //QOS_CLASS_USER_INITIATED - tasks user is actively waiting for to
+        //QOS_CLASS_UTILITY - balance between power efficiency and performance
+        //QOS_CLASS_BACKGROUND - long running tasks, lowest priority
+        //dispatch_async(dispatch_get_main_queue() {  <--get back to main queue
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) { 
             imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
                 if (result == .Succeeded) {
                     flowMoImageArray.append(UIImage(CGImage: image!))
-                    print("SUCCESS!")
+                    NSLog("SUCCESS!")
                 }
                 if (result == .Failed) {
                     
