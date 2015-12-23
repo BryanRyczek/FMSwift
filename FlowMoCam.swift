@@ -10,16 +10,63 @@ import UIKit
 import AVFoundation
 import AVKit
 import CoreMedia
+import PermissionScope
 
 class FlowMoCam: FlowMoController {
     
-    // MARK: SETUP METHODS
+    let permissions = PermissionScope()
     
+    // MARK: SETUP METHODS
     override func viewDidLoad() {
 
         super.viewDidLoad()
         
         //Code to load Camera
+        let status = permissions.statusCamera()
+        print(status)
+        // Permissions
+        permissions.headerLabel.text = "So glad you made it!"
+        permissions.bodyLabel.text = "Lorem Ipsum"
+        permissions.addPermission(CameraPermission(),
+        message: "We steal your memories")
+        permissions.addPermission(MicrophonePermission(),
+        message: "We steal your voice")
+        permissions.addPermission(PhotosPermission(),
+        message: "We save your photos")
+        
+        permissions.show({ finished, results in
+            print("got results \(results)")
+            }, cancelled: { (results) -> Void in
+                print("thing was cancelled")
+        })
+        print(status)
+        
+        
+        switch permissions.statusCamera() {
+        case .Unknown:
+            print("Dunno")
+        case .Unauthorized, .Disabled:
+            return
+        case .Authorized:
+            cameraViewLoad()
+            buttonsView()
+            return
+        }
+        
+        switch permissions.statusMicrophone() {
+        case .Unknown:
+            print("Dunno")
+        case .Unauthorized, .Disabled:
+            return
+        case .Authorized:
+            audioLoad()
+            return
+        }
+        
+    }
+    
+    // MARK: BUTTON METHODS
+    func cameraViewLoad() {
         loadCamera()
         var cameraPreviewLayer:AVCaptureVideoPreviewLayer?
         cameraPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -27,15 +74,19 @@ class FlowMoCam: FlowMoController {
         cameraPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         cameraPreviewLayer?.frame = view.layer.frame
         captureSession.startRunning()
+    }
+    
+    func audioLoad() {
         //Audio Recorder Setup
         audioRecorder.recorderSetup()
+    }
+    
+    func buttonsView() {
         //Button Setup
         toggleTorchButton()
         captureButton()
         toggleCameraButton()
     }
-    
-    // MARK: BUTTON METHODS
     
     func toggleTorchButton() {
         let toggleTorchButton = UIButton(type: UIButtonType.RoundedRect) as UIButton

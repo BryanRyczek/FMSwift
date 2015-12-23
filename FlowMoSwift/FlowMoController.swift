@@ -14,6 +14,7 @@ import CoreMedia
 import CoreImage
 import Photos
 
+
 class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
     // MARK: GLOBAL VARS
@@ -297,8 +298,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         let flowmoDuration = CMTimeMake(Int64(flowmoDurationFloat), avURLAsset.duration.timescale)
         let flowmoStartTime = loopDuration - flowmoDuration
         //These floats are calculated to be fed into the below for loop, which generates image hashing times
-        let flowmoStartTimeSeconds = Float(CMTimeGetSeconds(flowmoStartTime))
-        let flowmoStartTimeFloat = flowmoStartTimeSeconds * 600
+        let flowmoStartTimeFloat = Float(flowmoStartTime.value)
         
         for var t = flowmoStartTimeFloat; t < flowmoStartTimeFloat + flowmoDurationFloat; t += 20 {
             let cmTime = CMTimeMake(Int64(t), avURLAsset.duration.timescale)
