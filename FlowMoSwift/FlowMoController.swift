@@ -290,7 +290,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         imageGenerator.requestedTimeToleranceAfter=kCMTimeZero
         imageGenerator.requestedTimeToleranceBefore=kCMTimeZero
         
-        var imageHashRate: [NSValue] = []
+        var imageHashRate = [NSValue]()
         let videoDuration = avURLAsset.duration
         //These floats are calculated to be fed into the below for loop, which generates image hashing times
         let videoDurationFloat = Float(videoDuration.value)
@@ -307,6 +307,30 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             let timeValue = NSValue(CMTime: cmTime)
             imageHashRate.append(timeValue)
             }
+        print(imageHashRate.count)
+        let dispatchArrayCount = Int(ceil(CGFloat(imageHashRate.count) / 10.00))
+        
+        let testArray = imageHashRate[0..<9]
+        let testArray2 = imageHashRate[10..<19]
+        let testArray3 = imageHashRate[20..<29]
+        let testArray4 = imageHashRate[30..<39]
+        let testArray5 = imageHashRate[40..<49]
+        let testArray6 = imageHashRate[50..<59]
+        let testArray7 = imageHashRate[60..<69]
+        let testArray8 = imageHashRate[70..<79]
+        let testArray9 = imageHashRate[80..<89]
+        let conglomorateArray = [testArray, testArray2, testArray3, testArray4, testArray5, testArray6, testArray7, testArray8, testArray9]
+        for var n = 0; n <= conglomorateArray.count; n++ {
+        }
+//        print(testArray)
+//        var splitHashArray = Array<NSValue>(count: dispatchArrayCount, repeatedValue: 0)
+        
+//        for var n = 0; n <= dispatchArrayCount; n++ {
+//            if let splitHashArray[n]: NSValue = imageHashRate?[0..<9] {
+//                
+//            }
+//        }
+        
         var flowMoImageArray: [UIImage] = []
         //Background threads notes:
         //NEVER DO INTERFACE WORK ON BACKGROUND THREADS!!!
@@ -316,7 +340,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         //QOS_CLASS_UTILITY - balance between power efficiency and performance
         //QOS_CLASS_BACKGROUND - long running tasks, lowest priority
         //dispatch_async(dispatch_get_main_queue() {  <--get back to main queue
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) { 
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
             imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
                 if (result == .Succeeded) {
                     flowMoImageArray.append(UIImage(CGImage: image!))
