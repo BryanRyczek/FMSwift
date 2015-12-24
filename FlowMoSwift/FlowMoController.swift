@@ -298,7 +298,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         var flowmoStartTimeFloat = videoDurationFloat - flowmoDurationFloat
         // In case of short video, generate proper values to feed into loop
         if (flowmoStartTimeFloat <= 0) {
-            print("short")
             flowmoDurationFloat = flowmoDurationFloat + flowmoStartTimeFloat
             flowmoStartTimeFloat = 0
         }
