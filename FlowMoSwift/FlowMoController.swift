@@ -291,15 +291,18 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         imageGenerator.requestedTimeToleranceBefore=kCMTimeZero
         
         var imageHashRate: [NSValue] = []
-        //NEED TO PLUG THESE VALUES INTO THE BELOW LOOP TO GENERATE imageHashRateArray
-        //Define length of flomo to be processed
-        let flowmoDurationFloat : Float = 1800 // Based on a timescale of 600 where (600 = 1 second)
-        let loopDuration = avURLAsset.duration
-        let flowmoDuration = CMTimeMake(Int64(flowmoDurationFloat), avURLAsset.duration.timescale)
-        let flowmoStartTime = loopDuration - flowmoDuration
+        let videoDuration = avURLAsset.duration
         //These floats are calculated to be fed into the below for loop, which generates image hashing times
-        let flowmoStartTimeFloat = Float(flowmoStartTime.value)
-        
+        let videoDurationFloat = Float(videoDuration.value)
+        var flowmoDurationFloat : Float = 1800 // Define length of flomo to be processed based on a timescale of 600 where (600 = 1 second)
+        var flowmoStartTimeFloat = videoDurationFloat - flowmoDurationFloat
+        // In case of short video, generate proper values to feed into loop
+        if (flowmoStartTimeFloat <= 0) {
+            print("short")
+            flowmoDurationFloat = flowmoDurationFloat + flowmoStartTimeFloat
+            flowmoStartTimeFloat = 0
+        }
+       
         for var t = flowmoStartTimeFloat; t < flowmoStartTimeFloat + flowmoDurationFloat; t += 20 {
             let cmTime = CMTimeMake(Int64(t), avURLAsset.duration.timescale)
             let timeValue = NSValue(CMTime: cmTime)
