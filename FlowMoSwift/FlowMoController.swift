@@ -41,7 +41,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     //define device screen brightness
     var screenBrightness : CGFloat?
     let flashLayer = CALayer()
-    
+    var flowMoImageArray: [UIImage] = []
     
     //MARK: METHODS
     //MARK: CAMERA METHODS
@@ -93,28 +93,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         captureSession.addOutput(videoFileOutput)
         captureSession.addOutput(audioFileOutput)
         
-    }
-    
-    //FIXME: put in permissions directives
-        func handleCameraPermissions(){ let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
-        switch authorizationStatus {
-        case .NotDetermined:
-            // permission dialog not yet presented, request authorization
-            AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo,
-                completionHandler: { (granted:Bool) -> Void in
-                    if granted {
-                        // go ahead
-                    }
-                    else {
-                        // user denied, nothing much to do
-                    }
-            })
-        case .Authorized:
-            break
-        case .Denied, .Restricted:
-            //Ask user to change permissions in settings
-            break
-        }
     }
     
     func toggleCamera (sender: AnyObject) {
@@ -307,21 +285,22 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             let timeValue = NSValue(CMTime: cmTime)
             imageHashRate.append(timeValue)
             }
+        print("hi")
         print(imageHashRate.count)
-        let dispatchArrayCount = Int(ceil(CGFloat(imageHashRate.count) / 10.00))
+       // let dispatchArrayCount = Int(ceil(CGFloat(imageHashRate.count) / 10.00))
         
-        let testArray = imageHashRate[0..<9]
-        let testArray2 = imageHashRate[10..<19]
-        let testArray3 = imageHashRate[20..<29]
-        let testArray4 = imageHashRate[30..<39]
-        let testArray5 = imageHashRate[40..<49]
-        let testArray6 = imageHashRate[50..<59]
-        let testArray7 = imageHashRate[60..<69]
-        let testArray8 = imageHashRate[70..<79]
-        let testArray9 = imageHashRate[80..<89]
-        let conglomorateArray = [testArray, testArray2, testArray3, testArray4, testArray5, testArray6, testArray7, testArray8, testArray9]
-        for var n = 0; n <= conglomorateArray.count; n++ {
-        }
+//        let testArray = imageHashRate[0..<9]
+//        let testArray2 = imageHashRate[10..<19]
+//        let testArray3 = imageHashRate[20..<29]
+//        let testArray4 = imageHashRate[30..<39]
+//        let testArray5 = imageHashRate[40..<49]
+//        let testArray6 = imageHashRate[50..<59]
+//        let testArray7 = imageHashRate[60..<69]
+//        let testArray8 = imageHashRate[70..<79]
+//        let testArray9 = imageHashRate[80..<89]
+//        let conglomorateArray = [testArray, testArray2, testArray3, testArray4, testArray5, testArray6, testArray7, testArray8, testArray9]
+//        for var n = 0; n <= conglomorateArray.count; n++ {
+//        }
 //        print(testArray)
 //        var splitHashArray = Array<NSValue>(count: dispatchArrayCount, repeatedValue: 0)
         
@@ -331,7 +310,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
 //            }
 //        }
         
-        var flowMoImageArray: [UIImage] = []
+        
         //Background threads notes:
         //NEVER DO INTERFACE WORK ON BACKGROUND THREADS!!!
         //dispatch_get_global_queue inputs:
@@ -344,7 +323,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
             imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
                 if (result == .Succeeded) {
-                    flowMoImageArray.append(UIImage(CGImage: image!))
+                    self.flowMoImageArray.append(UIImage(CGImage: image!))
                     NSLog("SUCCESS!")
                 }
                 if (result == .Failed) {
@@ -353,8 +332,17 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
                 if (result == .Cancelled) {
                     
                 }
+                if (imageHashRate.count == self.flowMoImageArray.count) {
+                    print("fire inside")
+                    self.presentFlowMoDisplayController(self.flowMoImageArray)
+                }
             }
         }
-        //load image array into controller
+    }
+    
+    func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
+        let flowMoDisplayController = FlowMoDisplayController()
+        flowMoDisplayController.flowMoImageArray = flowMoImageArray
+        self.presentViewController(flowMoDisplayController, animated: false, completion: nil)
     }
 }
