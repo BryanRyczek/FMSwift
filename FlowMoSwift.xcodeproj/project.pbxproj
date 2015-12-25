@@ -138,11 +138,11 @@
 		93F4D3581C10C0E100A8014F = {
 			isa = PBXGroup;
 			children = (
-				93B5B14C1C2A542B00F5B517 /* PermissionScope.framework */,
 				93F4D3631C10C0E100A8014F /* FlowMoSwift */,
 				93F4D37B1C10C0E100A8014F /* FlowMoSwiftTests */,
 				93F4D3861C10C0E100A8014F /* FlowMoSwiftUITests */,
 				93F4D3621C10C0E100A8014F /* Products */,
+				93B5B14C1C2A542B00F5B517 /* PermissionScope.framework */,
 			);
 			sourceTree = "<group>";
 		};

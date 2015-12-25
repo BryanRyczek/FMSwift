@@ -323,7 +323,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
             imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
                 if (result == .Succeeded) {
-                    self.flowMoImageArray.append(UIImage(CGImage: image!))
+                    self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
                     NSLog("SUCCESS!")
                 }
                 if (result == .Failed) {
