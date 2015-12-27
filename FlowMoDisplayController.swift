@@ -17,8 +17,10 @@ import Photos
 class FlowMoDisplayController: UIViewController {
     var flowMoImageArray : [UIImage] = []
     var flowMoDisplaySlider:FlowMoSlider?
-    //let flowMoAudio : NSURL
+    var flowMoAudioFile : NSURL?
     let flowMoView = UIImageView()
+    //define audio player
+    let audioPlayer = FlowMoAudioPlayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()

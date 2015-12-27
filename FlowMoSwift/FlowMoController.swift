@@ -36,8 +36,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     var videoFileOutput : AVCaptureMovieFileOutput?
     //define audio recorder
     let audioRecorder = FlowMoAudioRecorder()
-    //define audio player
     let audioPlayer = FlowMoAudioPlayer()
+    
     //define device screen brightness
     var screenBrightness : CGFloat?
     let flashLayer = CALayer()
@@ -75,23 +75,23 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         
         //create instance used to save audio data
         
-        let audioDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
-        
-        let audioInput:AVCaptureDeviceInput
-        do {
-            audioInput = try AVCaptureDeviceInput(device:audioDevice)
-        } catch {
-            print(error)
-            return
-        }
-        
-        audioFileOutput = AVCaptureAudioDataOutput()
+//        let audioDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
+//        
+//        let audioInput:AVCaptureDeviceInput
+//        do {
+//            audioInput = try AVCaptureDeviceInput(device:audioDevice)
+//        } catch {
+//            print(error)
+//            return
+//        }
+//        
+//        audioFileOutput = AVCaptureAudioDataOutput()
         
         //Assign the input and output devices to the capture session
         captureSession.addInput(captureDeviceInput)
-        captureSession.addInput(audioInput)
+        //captureSession.addInput(audioInput)
         captureSession.addOutput(videoFileOutput)
-        captureSession.addOutput(audioFileOutput)
+        //captureSession.addOutput(audioFileOutput)
         
     }
     
@@ -177,6 +177,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
                 flashLayer.removeFromSuperlayer()
                 UIScreen.mainScreen().brightness = screenBrightness!
             }
+            audioPlayer.playAudio(audioRecorder.recordedAudioURL!)
             print ("stop recording")
             videoFileOutput?.stopRecording()
         }
@@ -248,7 +249,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             return
         }
         let urlString = outputFileURL.absoluteString
-        saveVideoToCameraRoll(outputFileURL)
+        //saveVideoToCameraRoll(outputFileURL)
         generateImageSequence(outputFileURL)
     }
     
@@ -287,8 +288,12 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             }
         print("hi")
         print(imageHashRate.count)
-       // let dispatchArrayCount = Int(ceil(CGFloat(imageHashRate.count) / 10.00))
+        //FIXME: We need a better method which will take [imageHashRate] and allocate its contents to a series of arrays, which will then be sent to individual dispatch threads to process. This is a process to test for speeding up of the image processing. I picked arrays with a count of 10 because in testing the image processing seems to become much less stable after the 10th image processed.
         
+//          //define number of arrays needed
+//        let dispatchArrayCount = Int(ceil(CGFloat(imageHashRate.count) / 10.00))
+//        
+//            //slice arrays. notice that slicing produces type: ArraySlice<NSValue>
 //        let testArray = imageHashRate[0..<9]
 //        let testArray2 = imageHashRate[10..<19]
 //        let testArray3 = imageHashRate[20..<29]
@@ -298,16 +303,19 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
 //        let testArray7 = imageHashRate[60..<69]
 //        let testArray8 = imageHashRate[70..<79]
 //        let testArray9 = imageHashRate[80..<89]
+//            //add arrays into array
 //        let conglomorateArray = [testArray, testArray2, testArray3, testArray4, testArray5, testArray6, testArray7, testArray8, testArray9]
 //        for var n = 0; n <= conglomorateArray.count; n++ {
 //        }
 //        print(testArray)
 //        var splitHashArray = Array<NSValue>(count: dispatchArrayCount, repeatedValue: 0)
-        
+//        
+//        //Array objects are of type ArraySlice<NSValue> but must be converted to NSValue in order to be fed into the generateCGImagesAsynchronouslyForTime code block
 //        for var n = 0; n <= dispatchArrayCount; n++ {
-//            if let splitHashArray[n]: NSValue = imageHashRate?[0..<9] {
-//                
-//            }
+//            //need this line of code figured out
+//        //    if let splitHashArray[n]: NSValue = imageHashRate?[0..<9] {
+//                //Send to dispatch
+//         //   }
 //        }
         
         
@@ -343,6 +351,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
         let flowMoDisplayController = FlowMoDisplayController()
         flowMoDisplayController.flowMoImageArray = flowMoImageArray
+        flowMoDisplayController.flowMoAudioFile = audioRecorder.recordedAudioURL
         self.presentViewController(flowMoDisplayController, animated: false, completion: nil)
     }
 }

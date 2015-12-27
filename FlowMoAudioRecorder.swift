@@ -16,7 +16,7 @@ class FlowMoAudioRecorder: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDeleg
     var recordButton: UIButton!
     var audioRecorder: AVAudioRecorder!
     var recordingSession: AVAudioSession!
-    //var recordedAudioURL: NSURL?
+    var recordedAudioURL: NSURL?
     
     func recorderSetup() {
         recordingSession = AVAudioSession.sharedInstance()
