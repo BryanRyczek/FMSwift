@@ -294,7 +294,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             let timeValue = NSValue(CMTime: cmTime)
             switch (imageHashRate9.count  != 10)
             {
-            case imageHashRate1.count < 10:
+            case imageHashRate1.count <= 10:
                 imageHashRate1.append(timeValue)
             case imageHashRate1.count == 10 && imageHashRate2.count <= 10:
                 imageHashRate2.append(timeValue)
@@ -318,8 +318,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             
             }
         print("hi")
-        //print(imageHashRate.count)
-       // let dispatchArrayCount = Int(ceil(CGFloat(imageHashRate.count) / 10.00))
+        print(imageHashRate9.count)
+        //FIXME: We need a better method which will take [imageHashRate] and allocate its contents to a series of arrays, which will then be sent to individual dispatch threads to process. This is a process to test for speeding up of the image processing. I picked arrays with a count of 10 because in testing the image processing seems to become much less stable after the 10th image processed.
         
 //          //define number of arrays needed
 //        let dispatchArrayCount = Int(ceil(CGFloat(imageHashRate.count) / 10.00))
@@ -370,7 +370,128 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         //dispatch_async(dispatch_get_main_queue() {  <--get back to main queue
         
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
-            imageGenerator.generateCGImagesAsynchronouslyForTimes(conglomorateArray) {(requestedTime, image, actualTime, result, error) -> Void in
+            imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate1) {(requestedTime, image, actualTime, result, error) -> Void in
+                if (result == .Succeeded) {
+                    self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
+                    NSLog("SUCCESS!")
+                }
+                if (result == .Failed) {
+                    
+                }
+                if (result == .Cancelled) {
+                    
+                }
+            }
+        }
+        
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+            imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate2) {(requestedTime, image, actualTime, result, error) -> Void in
+                if (result == .Succeeded) {
+                    self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
+                    NSLog("SUCCESS!")
+                }
+                if (result == .Failed) {
+                    
+                }
+                if (result == .Cancelled) {
+                    
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+            imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate3) {(requestedTime, image, actualTime, result, error) -> Void in
+                if (result == .Succeeded) {
+                    self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
+                    NSLog("SUCCESS!")
+                }
+                if (result == .Failed) {
+                    
+                }
+                if (result == .Cancelled) {
+                    
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+            imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate4) {(requestedTime, image, actualTime, result, error) -> Void in
+                if (result == .Succeeded) {
+                    self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
+                    NSLog("SUCCESS!")
+                }
+                if (result == .Failed) {
+                    
+                }
+                if (result == .Cancelled) {
+                    
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+            imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate5) {(requestedTime, image, actualTime, result, error) -> Void in
+                if (result == .Succeeded) {
+                    self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
+                    NSLog("SUCCESS!")
+                }
+                if (result == .Failed) {
+                    
+                }
+                if (result == .Cancelled) {
+                    
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+            imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate6) {(requestedTime, image, actualTime, result, error) -> Void in
+                if (result == .Succeeded) {
+                    self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
+                    NSLog("SUCCESS!")
+                }
+                if (result == .Failed) {
+                    
+                }
+                if (result == .Cancelled) {
+                    
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+            imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate7) {(requestedTime, image, actualTime, result, error) -> Void in
+                if (result == .Succeeded) {
+                    self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
+                    NSLog("SUCCESS!")
+                }
+                if (result == .Failed) {
+                    
+                }
+                if (result == .Cancelled) {
+                    
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+            imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate8) {(requestedTime, image, actualTime, result, error) -> Void in
+                if (result == .Succeeded) {
+                    self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
+                    NSLog("SUCCESS!")
+                }
+                if (result == .Failed) {
+                    
+                }
+                if (result == .Cancelled) {
+                    
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
+            imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate9) {(requestedTime, image, actualTime, result, error) -> Void in
                 if (result == .Succeeded) {
                     self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
                     NSLog("SUCCESS!")
@@ -387,6 +508,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
                 }
             }
         }
+        
     }
     
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
