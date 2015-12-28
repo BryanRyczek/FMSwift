@@ -10,11 +10,11 @@ import UIKit
 import AVFoundation
 import AVKit
 import CoreMedia
-import PermissionScope
+//import PermissionScope
 
 class FlowMoCam: FlowMoController {
     
-    let permissions = PermissionScope()
+//    let permissions = PermissionScope()
     
     // MARK: SETUP METHODS
     override func viewDidLoad() {
@@ -22,48 +22,48 @@ class FlowMoCam: FlowMoController {
         super.viewDidLoad()
         
         //Code to load Camera
-        let status = permissions.statusCamera()
-        print(status)
-        // Permissions
-        permissions.headerLabel.text = "So glad you made it!"
-        permissions.bodyLabel.text = "Lorem Ipsum"
-        permissions.addPermission(CameraPermission(),
-        message: "We steal your memories")
-        permissions.addPermission(MicrophonePermission(),
-        message: "We steal your voice")
-        permissions.addPermission(PhotosPermission(),
-        message: "We save your photos")
-        
-        permissions.show({ finished, results in
-            print("got results \(results)")
-            }, cancelled: { (results) -> Void in
-                print("thing was cancelled")
-        })
-        print(status)
-        
-        
-        switch permissions.statusCamera() {
-        case .Unknown:
-            print("Dunno")
-        case .Unauthorized, .Disabled:
-            return
-        case .Authorized:
-            cameraViewLoad()
-            buttonsView()
-            return
-        }
-        
-        switch permissions.statusMicrophone() {
-        case .Unknown:
-            print("Dunno")
-        case .Unauthorized, .Disabled:
-            return
-        case .Authorized:
-            audioLoad()
-            return
-        }
-        
-    }
+//        let status = permissions.statusCamera()
+//        print(status)
+//        // Permissions
+//        permissions.headerLabel.text = "So glad you made it!"
+//        permissions.bodyLabel.text = "Lorem Ipsum"
+//        permissions.addPermission(CameraPermission(),
+//        message: "We steal your memories")
+//        permissions.addPermission(MicrophonePermission(),
+//        message: "We steal your voice")
+//        permissions.addPermission(PhotosPermission(),
+//        message: "We save your photos")
+//        
+//        permissions.show({ finished, results in
+//            print("got results \(results)")
+//            }, cancelled: { (results) -> Void in
+//                print("thing was cancelled")
+//        })
+//        print(status)
+//        
+//        
+//        switch permissions.statusCamera() {
+//        case .Unknown:
+//            print("Dunno")
+//        case .Unauthorized, .Disabled:
+//            return
+//        case .Authorized:
+//            cameraViewLoad()
+//            buttonsView()
+//            return
+//        }
+//        
+//        switch permissions.statusMicrophone() {
+//        case .Unknown:
+//            print("Dunno")
+//        case .Unauthorized, .Disabled:
+//            return
+//        case .Authorized:
+//            audioLoad()
+//            return
+//        }
+//        
+//    }
     
     // MARK: BUTTON METHODS
     func cameraViewLoad() {
@@ -117,9 +117,9 @@ class FlowMoCam: FlowMoController {
     
     //MARK: HELPER METHODS
     //hide iphone status bar
-    override func prefersStatusBarHidden() -> Bool {
-        return true
-    }
+//    override func prefersStatusBarHidden() -> Bool {
+//        return true
+//    }
         /*
     // MARK: - Navigation
 
@@ -130,4 +130,5 @@ class FlowMoCam: FlowMoController {
     }
     */
 
+}
 }

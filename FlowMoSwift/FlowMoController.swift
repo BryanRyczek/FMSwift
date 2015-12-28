@@ -268,7 +268,15 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         imageGenerator.requestedTimeToleranceAfter=kCMTimeZero
         imageGenerator.requestedTimeToleranceBefore=kCMTimeZero
         
-        var imageHashRate = [NSValue]()
+        var imageHashRate1 = [NSValue]()
+        var imageHashRate2 = [NSValue]()
+        var imageHashRate3 = [NSValue]()
+        var imageHashRate4 = [NSValue]()
+        var imageHashRate5 = [NSValue]()
+        var imageHashRate6 = [NSValue]()
+        var imageHashRate7 = [NSValue]()
+        var imageHashRate8 = [NSValue]()
+        var imageHashRate9 = [NSValue]()
         let videoDuration = avURLAsset.duration
         //These floats are calculated to be fed into the below for loop, which generates image hashing times
         let videoDurationFloat = Float(videoDuration.value)
@@ -283,10 +291,33 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         for var t = flowmoStartTimeFloat; t < flowmoStartTimeFloat + flowmoDurationFloat; t += 20 {
             let cmTime = CMTimeMake(Int64(t), avURLAsset.duration.timescale)
             let timeValue = NSValue(CMTime: cmTime)
-            imageHashRate.append(timeValue)
+            switch (imageHashRate9.count  != 10)
+            {
+            case imageHashRate1.count < 10:
+                imageHashRate1.append(timeValue)
+            case imageHashRate1.count == 10 && imageHashRate2.count <= 10:
+                imageHashRate2.append(timeValue)
+            case imageHashRate2.count == 10 && imageHashRate3.count <= 10:
+                imageHashRate3.append(timeValue)
+            case imageHashRate3.count == 10 && imageHashRate4.count <= 10:
+                imageHashRate4.append(timeValue)
+            case imageHashRate4.count == 10 && imageHashRate5.count <= 10:
+                imageHashRate5.append(timeValue)
+            case imageHashRate5.count == 10 && imageHashRate6.count <= 10:
+                imageHashRate6.append(timeValue)
+            case imageHashRate6.count == 10 && imageHashRate7.count <= 10:
+                imageHashRate7.append(timeValue)
+            case imageHashRate7.count == 10 && imageHashRate8.count <= 10:
+                imageHashRate8.append(timeValue)
+            case imageHashRate8.count == 10 && imageHashRate9.count <= 10:
+                imageHashRate9.append(timeValue)
+            default:
+                return
+            }
+            
             }
         print("hi")
-        print(imageHashRate.count)
+        //print(imageHashRate.count)
        // let dispatchArrayCount = Int(ceil(CGFloat(imageHashRate.count) / 10.00))
         
 //        let testArray = imageHashRate[0..<9]
@@ -298,7 +329,18 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
 //        let testArray7 = imageHashRate[60..<69]
 //        let testArray8 = imageHashRate[70..<79]
 //        let testArray9 = imageHashRate[80..<89]
-//        let conglomorateArray = [testArray, testArray2, testArray3, testArray4, testArray5, testArray6, testArray7, testArray8, testArray9]
+        var conglomorateArray = [NSValue]()
+        conglomorateArray.appendContentsOf(imageHashRate1)
+        conglomorateArray.appendContentsOf(imageHashRate2)
+        conglomorateArray.appendContentsOf(imageHashRate3)
+        conglomorateArray.appendContentsOf(imageHashRate4)
+        conglomorateArray.appendContentsOf(imageHashRate5)
+        conglomorateArray.appendContentsOf(imageHashRate6)
+        conglomorateArray.appendContentsOf(imageHashRate7)
+        conglomorateArray.appendContentsOf(imageHashRate8)
+        conglomorateArray.appendContentsOf(imageHashRate9)
+        
+        print (conglomorateArray)
 //        for var n = 0; n <= conglomorateArray.count; n++ {
 //        }
 //        print(testArray)
@@ -321,7 +363,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         //dispatch_async(dispatch_get_main_queue() {  <--get back to main queue
         
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)) {
-            imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
+            imageGenerator.generateCGImagesAsynchronouslyForTimes(conglomorateArray) {(requestedTime, image, actualTime, result, error) -> Void in
                 if (result == .Succeeded) {
                     self.flowMoImageArray.append(UIImage(CGImage: image!))
                     NSLog("SUCCESS!")
@@ -332,7 +374,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
                 if (result == .Cancelled) {
                     
                 }
-                if (imageHashRate.count == self.flowMoImageArray.count) {
+                if (conglomorateArray.count == self.flowMoImageArray.count) {
                     print("fire inside")
                     self.presentFlowMoDisplayController(self.flowMoImageArray)
                 }
