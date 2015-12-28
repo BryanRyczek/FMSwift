@@ -17,22 +17,15 @@ import Photos
 class FlowMoDisplayController: UIViewController {
     var flowMoImageArray : [UIImage] = []
     var flowMoDisplaySlider:FlowMoSlider?
-    //let flowMoAudio : NSURL
+    var flowMoAudioFile : NSURL?
     let flowMoView = UIImageView()
-    
-    func delay(delay:Double, closure:()->()) {
-        dispatch_after(
-            dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(delay * Double(NSEC_PER_SEC))
-            ),
-            dispatch_get_main_queue(), closure)
-    }
+    //define audio player
+    let audioPlayer = FlowMoAudioPlayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        delay(0.1) {
+        delay(0.0029) {
         self.addFlowMoSlider()
         self.addFlowMoView()
         print(self.flowMoImageArray.count)
@@ -62,5 +55,15 @@ class FlowMoDisplayController: UIViewController {
         let localImage = flowMoImageArray[currentImageIndex]
         print(currentImageIndex)
         flowMoView.image = localImage
+    }
+    
+    //MARK: HELPER METHODS
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
     }
 }
