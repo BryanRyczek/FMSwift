@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		932A3BEA1C19C15900D194E4 /* AnimationTestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A3BE91C19C15900D194E4 /* AnimationTestingViewController.swift */; };
+		9341D86E1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9341D86D1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift */; };
 		9382707E1C15E1F60092E0D9 /* FlowMoCam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */; };
 		938546AC1C21C7ED009D0180 /* FlowMoAudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938546AB1C21C7ED009D0180 /* FlowMoAudioRecorder.swift */; };
 		9388B7CE1C2C3D6700D3F365 /* FlowMoDisplayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9388B7CD1C2C3D6700D3F365 /* FlowMoDisplayController.swift */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		932A3BE91C19C15900D194E4 /* AnimationTestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationTestingViewController.swift; sourceTree = "<group>"; };
+		9341D86D1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoAudioRecorderPlayer.swift; sourceTree = "<group>"; };
 		9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoCam.swift; path = ../FlowMoCam.swift; sourceTree = "<group>"; };
 		938546AB1C21C7ED009D0180 /* FlowMoAudioRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoAudioRecorder.swift; path = ../FlowMoAudioRecorder.swift; sourceTree = "<group>"; };
 		9388B7CD1C2C3D6700D3F365 /* FlowMoDisplayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoDisplayController.swift; path = ../FlowMoDisplayController.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				93E2E85D1C1776A70092F589 /* FlowMoSlider.swift */,
+				9341D86D1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift */,
 				938546AB1C21C7ED009D0180 /* FlowMoAudioRecorder.swift */,
 				93D99F941C244D0C00DEA183 /* FlowMoAudioPlayer.swift */,
 			);
@@ -345,6 +348,7 @@
 				93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */,
 				938546AC1C21C7ED009D0180 /* FlowMoAudioRecorder.swift in Sources */,
 				93E2E85E1C1776A70092F589 /* FlowMoSlider.swift in Sources */,
+				9341D86E1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift in Sources */,
 				93E2E8511C17340A0092F589 /* FlowMoController.swift in Sources */,
 				9388B7CE1C2C3D6700D3F365 /* FlowMoDisplayController.swift in Sources */,
 				932A3BEA1C19C15900D194E4 /* AnimationTestingViewController.swift in Sources */,

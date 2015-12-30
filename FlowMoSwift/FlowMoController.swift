@@ -35,15 +35,18 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     // define video output
     var videoFileOutput : AVCaptureMovieFileOutput?
     //define audio recorder
-    let audioRecorder = FlowMoAudioRecorder()
-    let audioPlayer = FlowMoAudioPlayer()
-    
+    let audioRecorder = FlowMoAudioRecorderPlayer()
     //define device screen brightness
     var screenBrightness : CGFloat?
     let flashLayer = CALayer()
     var flowMoImageArray: [UIImage] = []
     
     //MARK: METHODS
+    //MARK: AUDIO METHODS
+    func loadAudio() {
+        audioRecorder.audioSetup()
+    }
+    
     //MARK: CAMERA METHODS
     
     func loadCamera(){
@@ -171,19 +174,17 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         //if we are not currently recording
         if (sender.state == UIGestureRecognizerState.Ended){
             isRecording = false
-            audioRecorder.recordToggle()
             fireTorch(sender)
             if (torchState == 1 && currentDevice?.position == AVCaptureDevicePosition.Front) {
                 flashLayer.removeFromSuperlayer()
                 UIScreen.mainScreen().brightness = screenBrightness!
             }
-            audioPlayer.playAudio(audioRecorder.recordedAudioURL!)
+            audioRecorder.stopRecording()
             print ("stop recording")
             videoFileOutput?.stopRecording()
         }
         else if (sender.state == UIGestureRecognizerState.Began){
             isRecording = true
-            audioRecorder.recordToggle()
             captureAnimationBar()
             frontFlash()
             print ("start recording")
@@ -191,6 +192,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             let outputPath = NSTemporaryDirectory() + "output.mov"
             let outputFileURL = NSURL(fileURLWithPath: outputPath)
             videoFileOutput?.startRecordingToOutputFileURL(outputFileURL, recordingDelegate: self)
+            audioRecorder.recordAudio()
         }
     }
     
@@ -252,6 +254,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         //saveVideoToCameraRoll(outputFileURL)
         generateImageSequence(outputFileURL)
     }
+    
+    
     
     func saveVideoToCameraRoll(outputFileURL: NSURL!) {
         PHPhotoLibrary.sharedPhotoLibrary().performChanges({
@@ -350,20 +354,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         conglomorateArray.appendContentsOf(imageHashRate10)
         
         print (conglomorateArray)
-//        for var n = 0; n <= conglomorateArray.count; n++ {
-//        }
-//        print(testArray)
-//        var splitHashArray = Array<NSValue>(count: dispatchArrayCount, repeatedValue: 0)
-//        
-//        //Array objects are of type ArraySlice<NSValue> but must be converted to NSValue in order to be fed into the generateCGImagesAsynchronouslyForTime code block
-//        for var n = 0; n <= dispatchArrayCount; n++ {
-//            //need this line of code figured out
-//        //    if let splitHashArray[n]: NSValue = imageHashRate?[0..<9] {
-//                //Send to dispatch
-//         //   }
-//        }
-        
-        
+
         //Background threads notes:
         //NEVER DO INTERFACE WORK ON BACKGROUND THREADS!!!
         //dispatch_get_global_queue inputs:
@@ -537,7 +528,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
         let flowMoDisplayController = FlowMoDisplayController()
         flowMoDisplayController.flowMoImageArray = flowMoImageArray
-        flowMoDisplayController.flowMoAudioFile = audioRecorder.recordedAudioURL
+        flowMoDisplayController.flowMoAudioFile = audioRecorder.audioRecorder.url
         self.presentViewController(flowMoDisplayController, animated: false, completion: nil)
     }
 }

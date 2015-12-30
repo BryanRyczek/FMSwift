@@ -21,6 +21,10 @@ class FlowMoCam: FlowMoController {
 
         super.viewDidLoad()
         
+        cameraViewLoad()
+        buttonsView()
+        audioLoad()
+        
         //Code to load Camera
 //        let status = permissions.statusCamera()
 //        print(status)
@@ -63,7 +67,7 @@ class FlowMoCam: FlowMoController {
 //            return
 //        }
 //        
-//    }
+  }
     
     // MARK: BUTTON METHODS
     func cameraViewLoad() {
@@ -78,7 +82,7 @@ class FlowMoCam: FlowMoController {
     
     func audioLoad() {
         //Audio Recorder Setup
-        audioRecorder.recorderSetup()
+        loadAudio()
     }
     
     func buttonsView() {
@@ -117,9 +121,9 @@ class FlowMoCam: FlowMoController {
     
     //MARK: HELPER METHODS
     //hide iphone status bar
-//    override func prefersStatusBarHidden() -> Bool {
-//        return true
-//    }
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
         /*
     // MARK: - Navigation
 
@@ -130,5 +134,5 @@ class FlowMoCam: FlowMoController {
     }
     */
 
-}
+
 }
