@@ -24,6 +24,7 @@ class FlowMoCam: FlowMoController {
         cameraViewLoad()
         buttonsView()
         audioLoad()
+        setupDoubleTapGesture()
         
         //Code to load Camera
 //        let status = permissions.statusCamera()
@@ -90,8 +91,20 @@ class FlowMoCam: FlowMoController {
         toggleTorchButton()
         captureButton()
         toggleCameraButton()
+        
     }
     
+    func setupDoubleTapGesture() {
+    let tap = UITapGestureRecognizer(target: self, action: "doubleTapped")
+    tap.numberOfTapsRequired = 2
+    view.addGestureRecognizer(tap)
+    }
+    
+    func doubleTapped() {
+        print("Dub tap")
+        toggleCamera(self)
+    }
+        
     func toggleTorchButton() {
         let toggleTorchButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
         toggleTorchButton.frame = CGRectMake((self.view.frame.width/2)-175, (self.view.frame.height)-105, 70, 70)
