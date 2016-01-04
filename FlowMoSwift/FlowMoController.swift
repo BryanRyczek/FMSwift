@@ -205,7 +205,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         }
         else if (sender.state == UIGestureRecognizerState.Began){
             isRecording = true
-            captureAnimationBar()
             recordingElements()
             frontFlash()
             fireTorch(sender)
@@ -220,19 +219,46 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
     func recordingElements() {
         
-        let diameter = 20
-        let bounds = CGRect(x: 100, y: 100, width: diameter, height: diameter)
-        let center = view.center
+        let innerDiameter = 20.0
+        let outerDiameter = 24.0
+        let xyOffset = (innerDiameter - outerDiameter) / 2
+        let innerBounds = CGRect(x: 0, y: 0, width: innerDiameter, height: innerDiameter)
+        let outerBounds = CGRect(x: xyOffset, y:xyOffset, width: outerDiameter, height: outerDiameter)
         
-        recordingCircle.bounds = bounds
-        recordingCircle.position = CGPoint(x: center.x + ((self.view.frame.size.width/2)-CGFloat(diameter)), y: center.y - ((self.view.frame.size.height/2)-CGFloat(diameter)))
+        // Create CAShapeLayerS
+        //let recordingCircle = CAShapeLayer()
+        recordingCircle.bounds = innerBounds
+        recordingCircle.position = CGPoint(x:self.view.frame.size.width - CGFloat(innerDiameter), y: CGFloat(innerDiameter))
+        print(recordingCircle.position)
+        view.layer.addSublayer(recordingCircle)
+        
+        // fill with yellow
         recordingCircle.fillColor = UIColor.redColor().CGColor
-        recordingCircle.path = UIBezierPath(ovalInRect: bounds).CGPath
+        // 1
+        // begin with a circle with a 50 points radius
+        let startShape = UIBezierPath(ovalInRect: innerBounds).CGPath
+        // animation end with a large circle with 500 points radius
+        let endShape = UIBezierPath(ovalInRect: outerBounds).CGPath
+        // set initial shape
+        recordingCircle.path = startShape
+        // 2
+        // animate the `path`
+        let animation = CABasicAnimation(keyPath: "path")
+        animation.toValue = endShape
+        animation.duration = 1 // duration is 1 sec
+        animation.autoreverses = true
+        animation.repeatCount = HUGE
+        // 3
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut) // animation curve is Ease Out
+        animation.fillMode = kCAFillModeBoth // keep to value after finishing
+        animation.removedOnCompletion = false // don't remove after finishing
+        // 4
+        recordingCircle.addAnimation(animation, forKey: animation.keyPath)
 
     if (isRecording == true) {
         view.layer.addSublayer(recordingCircle)
     } else if (isRecording == false) {
-        recordingCircle.removeFromSuperlayer()
+        //nothing
     }
     
     }
@@ -333,19 +359,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             imageHashRate.append(timeValue)
         }
 
-        //Background threads notes:
-        //NEVER DO INTERFACE WORK ON BACKGROUND THREADS!!!
-        //dispatch_get_global_queue inputs:
-        //QOS_CLASS_USER_INTERACTIVE - highest priority background thread
-        //QOS_CLASS_USER_INITIATED - tasks user is actively waiting for to
-        //QOS_CLASS_UTILITY - balance between power efficiency and performance
-        //QOS_CLASS_BACKGROUND - long running tasks, lowest priority
-        //dispatch_async(dispatch_get_main_queue() {  <--get back to main queue
- 
-//        var storedError: NSError!
-//        var processingGroup = dispatch_group_create()
-    
-      //  dispatch_group_enter(processingGroup)
         let count = imageHashRate.count
         imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
             if (result == .Succeeded) {
@@ -364,11 +377,10 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
   
     }
     
-   
-    
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
         dispatch_async(GlobalMainQueue){
             let flowMoDisplayController = FlowMoDisplayController()
+            self.recordingCircle.removeFromSuperlayer()
             flowMoDisplayController.flowMoImageArray = flowMoImageArray
        //     flowMoDisplayController.flowMoAudioFile = audioRecorder.audioRecorder.url
             self.presentViewController(flowMoDisplayController, animated: false, completion: nil)
