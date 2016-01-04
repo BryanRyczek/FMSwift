@@ -14,7 +14,6 @@ import CoreMedia
 import CoreImage
 import Photos
 
-
 class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
     // MARK: GLOBAL VARS
@@ -42,6 +41,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     var flowMoImageArray: [UIImage] = []
     // error handling for GCD group
     typealias BatchImageGenerationCompletionClosure = (error: NSError?) -> Void
+    //recordingUI
+    let recordingCircle = CAShapeLayer()
     //MARK: GCD Helper Variables
     var GlobalMainQueue: dispatch_queue_t {
         return dispatch_get_main_queue()
@@ -192,6 +193,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         //if we are not currently recording
         if (sender.state == UIGestureRecognizerState.Ended){
             isRecording = false
+            recordingElements()
             fireTorch(sender)
             if (torchState == 1 && currentDevice?.position == AVCaptureDevicePosition.Front) {
                 flashLayer.removeFromSuperlayer()
@@ -204,8 +206,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         else if (sender.state == UIGestureRecognizerState.Began){
             isRecording = true
             captureAnimationBar()
+            recordingElements()
             frontFlash()
-            print ("start recording")
             fireTorch(sender)
             let outputPath = NSTemporaryDirectory() + "output.mov"
             let outputFileURL = NSURL(fileURLWithPath: outputPath)
@@ -213,6 +215,125 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             audioRecorder.recordAudio()
         }
     }
+    
+// MARK: INTERFACE ELEMENTS AND ANIMATIONS
+    
+    func recordingElements() {
+        
+        let diameter = 20
+        let bounds = CGRect(x: 100, y: 100, width: diameter, height: diameter)
+        let center = view.center
+        
+        recordingCircle.bounds = bounds
+        recordingCircle.position = CGPoint(x: center.x + ((self.view.frame.size.width/2)-CGFloat(diameter)), y: center.y - ((self.view.frame.size.height/2)-CGFloat(diameter)))
+        recordingCircle.fillColor = UIColor.redColor().CGColor
+        recordingCircle.path = UIBezierPath(ovalInRect: bounds).CGPath
+
+    if (isRecording == true) {
+        view.layer.addSublayer(recordingCircle)
+    } else if (isRecording == false) {
+        recordingCircle.removeFromSuperlayer()
+    }
+    
+//    //// General Declarations
+//    let context = UIGraphicsGetCurrentContext()
+//    CGContextSaveGState(context)
+//    CGContextScaleCTM(context, 1.8, 1.8)
+//    let color = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000)
+//    let recordingText = CAShapeLayer()
+////        recordingText.bounds =  bounds
+//        recordingText.position = CGPoint(x: center.x + ((self.view.frame.size.width/2)-CGFloat(55+diameter)), y: center.y - ((self.view.frame.size.height/2)-CGFloat(14)))
+//        var recordingTextPath = UIBezierPath()
+//        recordingTextPath.moveToPoint(CGPointMake(0, 14.62))
+//        recordingTextPath.addLineToPoint(CGPointMake(5.6, 14.62))
+//        recordingTextPath.addLineToPoint(CGPointMake(5.6, 13.03))
+//        recordingTextPath.addLineToPoint(CGPointMake(3.83, 13.03))
+//        recordingTextPath.addLineToPoint(CGPointMake(3.83, 8.81))
+//        recordingTextPath.addLineToPoint(CGPointMake(5.54, 8.81))
+//        recordingTextPath.addCurveToPoint(CGPointMake(7.04, 9.61), controlPoint1: CGPointMake(6.41, 8.81), controlPoint2: CGPointMake(6.68, 9))
+//        recordingTextPath.addLineToPoint(CGPointMake(9.26, 13.54))
+//        recordingTextPath.addCurveToPoint(CGPointMake(11.26, 14.62), controlPoint1: CGPointMake(9.75, 14.39), controlPoint2: CGPointMake(10.04, 14.62))
+//        recordingTextPath.addLineToPoint(CGPointMake(12.48, 14.62))
+//        recordingTextPath.addLineToPoint(CGPointMake(12.48, 13.03))
+//        recordingTextPath.addLineToPoint(CGPointMake(12.05, 13.03))
+//        recordingTextPath.addCurveToPoint(CGPointMake(11.05, 12.56), controlPoint1: CGPointMake(11.54, 13.03), controlPoint2: CGPointMake(11.28, 12.95))
+//        recordingTextPath.addLineToPoint(CGPointMake(9.02, 9.02))
+//        recordingTextPath.addCurveToPoint(CGPointMake(8.41, 8.35), controlPoint1: CGPointMake(8.77, 8.55), controlPoint2: CGPointMake(8.41, 8.35))
+//        recordingTextPath.addLineToPoint(CGPointMake(8.41, 8.31))
+//        recordingTextPath.addCurveToPoint(CGPointMake(11.38, 4.27), controlPoint1: CGPointMake(10.24, 7.84), controlPoint2: CGPointMake(11.38, 6.35))
+//        recordingTextPath.addCurveToPoint(CGPointMake(8.88, 0.55), controlPoint1: CGPointMake(11.38, 2.32), controlPoint2: CGPointMake(10.38, 1.06))
+//        recordingTextPath.addCurveToPoint(CGPointMake(6.23, 0.24), controlPoint1: CGPointMake(8.08, 0.28), controlPoint2: CGPointMake(7.25, 0.24))
+//        recordingTextPath.addLineToPoint(CGPointMake(0, 0.24))
+//        recordingTextPath.addLineToPoint(CGPointMake(0, 1.81))
+//        recordingTextPath.addLineToPoint(CGPointMake(1.79, 1.81))
+//        recordingTextPath.addLineToPoint(CGPointMake(1.79, 13.03))
+//        recordingTextPath.addLineToPoint(CGPointMake(0, 13.03))
+//        recordingTextPath.addLineToPoint(CGPointMake(0, 14.62))
+//        recordingTextPath.closePath()
+//        recordingTextPath.moveToPoint(CGPointMake(3.83, 7.15))
+//        recordingTextPath.addLineToPoint(CGPointMake(3.83, 1.91))
+//        recordingTextPath.addLineToPoint(CGPointMake(6.21, 1.91))
+//        recordingTextPath.addCurveToPoint(CGPointMake(7.98, 2.18), controlPoint1: CGPointMake(6.9, 1.91), controlPoint2: CGPointMake(7.51, 1.99))
+//        recordingTextPath.addCurveToPoint(CGPointMake(9.32, 4.44), controlPoint1: CGPointMake(8.88, 2.54), controlPoint2: CGPointMake(9.32, 3.32))
+//        recordingTextPath.addCurveToPoint(CGPointMake(6.72, 7.15), controlPoint1: CGPointMake(9.32, 6.13), controlPoint2: CGPointMake(8.28, 7.15))
+//        recordingTextPath.addLineToPoint(CGPointMake(3.83, 7.15))
+//        recordingTextPath.closePath()
+//        recordingTextPath.moveToPoint(CGPointMake(14.19, 14.62))
+//        recordingTextPath.addLineToPoint(CGPointMake(24.94, 14.62))
+//        recordingTextPath.addLineToPoint(CGPointMake(24.94, 11.22))
+//        recordingTextPath.addLineToPoint(CGPointMake(23.17, 11.22))
+//        recordingTextPath.addLineToPoint(CGPointMake(23.17, 12.95))
+//        recordingTextPath.addLineToPoint(CGPointMake(18.02, 12.95))
+//        recordingTextPath.addLineToPoint(CGPointMake(18.02, 8.2))
+//        recordingTextPath.addLineToPoint(CGPointMake(23.1, 8.2))
+//        recordingTextPath.addLineToPoint(CGPointMake(23.1, 6.53))
+//        recordingTextPath.addLineToPoint(CGPointMake(18.02, 6.53))
+//        recordingTextPath.addLineToPoint(CGPointMake(18.02, 1.91))
+//        recordingTextPath.addLineToPoint(CGPointMake(22.82, 1.91))
+//        recordingTextPath.addLineToPoint(CGPointMake(22.82, 3.58))
+//        recordingTextPath.addLineToPoint(CGPointMake(24.59, 3.58))
+//        recordingTextPath.addLineToPoint(CGPointMake(24.59, 0.24))
+//        recordingTextPath.addLineToPoint(CGPointMake(14.19, 0.24))
+//        recordingTextPath.addLineToPoint(CGPointMake(14.19, 1.81))
+//        recordingTextPath.addLineToPoint(CGPointMake(15.98, 1.81))
+//        recordingTextPath.addLineToPoint(CGPointMake(15.98, 13.03))
+//        recordingTextPath.addLineToPoint(CGPointMake(14.19, 13.03))
+//        recordingTextPath.addLineToPoint(CGPointMake(14.19, 14.62))
+//        recordingTextPath.closePath()
+//        recordingTextPath.moveToPoint(CGPointMake(26.97, 7.35))
+//        recordingTextPath.addCurveToPoint(CGPointMake(34.4, 14.86), controlPoint1: CGPointMake(26.97, 11.54), controlPoint2: CGPointMake(30.09, 14.86))
+//        recordingTextPath.addCurveToPoint(CGPointMake(40, 12.03), controlPoint1: CGPointMake(36.4, 14.86), controlPoint2: CGPointMake(40, 14.15))
+//        recordingTextPath.addLineToPoint(CGPointMake(40, 10.28))
+//        recordingTextPath.addLineToPoint(CGPointMake(38.11, 10.28))
+//        recordingTextPath.addLineToPoint(CGPointMake(38.11, 11.4))
+//        recordingTextPath.addCurveToPoint(CGPointMake(34.52, 13.09), controlPoint1: CGPointMake(38.11, 12.72), controlPoint2: CGPointMake(35.54, 13.09))
+//        recordingTextPath.addCurveToPoint(CGPointMake(29.07, 7.27), controlPoint1: CGPointMake(31.39, 13.09), controlPoint2: CGPointMake(29.07, 10.67))
+//        recordingTextPath.addCurveToPoint(CGPointMake(34.4, 1.75), controlPoint1: CGPointMake(29.07, 4.01), controlPoint2: CGPointMake(31.33, 1.75))
+//        recordingTextPath.addCurveToPoint(CGPointMake(37.9, 3.48), controlPoint1: CGPointMake(35.73, 1.75), controlPoint2: CGPointMake(37.9, 2.22))
+//        recordingTextPath.addLineToPoint(CGPointMake(37.9, 4.6))
+//        recordingTextPath.addLineToPoint(CGPointMake(39.8, 4.6))
+//        recordingTextPath.addLineToPoint(CGPointMake(39.8, 2.85))
+//        recordingTextPath.addCurveToPoint(CGPointMake(34.32, 0), controlPoint1: CGPointMake(39.8, 0.63), controlPoint2: CGPointMake(36.05, 0))
+//        recordingTextPath.addCurveToPoint(CGPointMake(26.97, 7.35), controlPoint1: CGPointMake(30.17, 0), controlPoint2: CGPointMake(26.97, 3.13))
+//        recordingTextPath.closePath()
+//    recordingText.path = recordingTextPath.CGPath
+//        color.setFill()
+//        recordingTextPath.fill()
+//    view.layer.addSublayer(recordingText)
+//    
+//    CGContextRestoreGState(context)
+    
+//    let recordingTextRect = CGRectMake(11.67, 15.28, 36, 24)
+//    let recordingTextStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
+//    recordingTextStyle.alignment = NSTextAlignment.Left
+//        
+//    let recordingTextFontAttributes = [NSFontAttributeName: UIFont(name: "Courier", size: 12)!, NSForegroundColorAttributeName: UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000), NSParagraphStyleAttributeName: recordingTextStyle]
+//        
+//    "REC".drawInRect(recordingTextRect, withAttributes: recordingTextFontAttributes)
+    
+    }
+    
+    
     
 // MARK: FLASH METHODS
     
@@ -273,8 +394,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         generateImageSequence(outputFileURL)
     }
     
-    
-    
     func saveVideoToCameraRoll(outputFileURL: NSURL!) {
         PHPhotoLibrary.sharedPhotoLibrary().performChanges({
             let request = PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(outputFileURL)
@@ -310,7 +429,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             imageHashRate.append(timeValue)
         }
 
-     
         //Background threads notes:
         //NEVER DO INTERFACE WORK ON BACKGROUND THREADS!!!
         //dispatch_get_global_queue inputs:
@@ -319,21 +437,11 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         //QOS_CLASS_UTILITY - balance between power efficiency and performance
         //QOS_CLASS_BACKGROUND - long running tasks, lowest priority
         //dispatch_async(dispatch_get_main_queue() {  <--get back to main queue
-//        var i : Int = 0
-//        
-//        dispatch_async(GlobalUserInteractiveQueue) {
-//            var storedError: NSError!
-//            var processingGroup = dispatch_group_create()
-//            
-//            for array in conglomerateArray {
-//                dispatch_group_enter(processingGroup)
-//                                dispatch_group_leave(processingGroup)
-//            }
-//            dispatch_group_wait(processingGroup, DISPATCH_TIME_FOREVER)
-//            dispatch_async(self.GlobalMainQueue) {
-//                //Completion Handler
-//            }
-//        }
+ 
+//        var storedError: NSError!
+//        var processingGroup = dispatch_group_create()
+    
+      //  dispatch_group_enter(processingGroup)
         
         imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
             if (result == .Succeeded) {
@@ -350,10 +458,16 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
                 print("fire inside")
                 self.presentFlowMoDisplayController(self.flowMoImageArray)
             }
+           // dispatch_group_leave(processingGroup)
         }
-    
+  
+   // dispatch_group_notify(processingGroup, GlobalMainQueue) {
+     //       self.presentFlowMoDisplayController(self.flowMoImageArray)
+     //   }
     }
-
+    
+   
+    
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
         let flowMoDisplayController = FlowMoDisplayController()
         flowMoDisplayController.flowMoImageArray = flowMoImageArray

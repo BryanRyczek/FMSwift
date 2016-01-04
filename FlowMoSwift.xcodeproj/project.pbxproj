@@ -58,6 +58,7 @@
 		93E2E8501C17340A0092F589 /* FlowMoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoController.swift; sourceTree = "<group>"; };
 		93E2E85D1C1776A70092F589 /* FlowMoSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoSlider.swift; sourceTree = "<group>"; };
 		93E2E85F1C1777780092F589 /* TextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
+		93F2BCB61C3880DC00193733 /* Museo_Slab_500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Museo_Slab_500.otf; path = FlowMoSwiftUITests/Museo_Slab_500.otf; sourceTree = "<group>"; };
 		93F4D3611C10C0E100A8014F /* FlowMoSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlowMoSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93F4D3641C10C0E100A8014F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93F4D3691C10C0E100A8014F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -145,6 +146,7 @@
 				93F4D37B1C10C0E100A8014F /* FlowMoSwiftTests */,
 				93F4D3861C10C0E100A8014F /* FlowMoSwiftUITests */,
 				93F4D3621C10C0E100A8014F /* Products */,
+				93F2BCB61C3880DC00193733 /* Museo_Slab_500.otf */,
 				93B5B14C1C2A542B00F5B517 /* PermissionScope.framework */,
 			);
 			sourceTree = "<group>";

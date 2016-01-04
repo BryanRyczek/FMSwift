@@ -91,7 +91,6 @@ class FlowMoCam: FlowMoController {
         toggleTorchButton()
         captureButton()
         toggleCameraButton()
-        
     }
     
     func setupDoubleTapGesture() {
@@ -107,7 +106,7 @@ class FlowMoCam: FlowMoController {
         
     func toggleTorchButton() {
         let toggleTorchButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
-        toggleTorchButton.frame = CGRectMake((self.view.frame.width/2)-175, (self.view.frame.height)-105, 70, 70)
+        toggleTorchButton.frame = CGRectMake((self.view.frame.width/2)-175, (self.view.frame.height/2)+100, 70, 70)
         toggleTorchButton.backgroundColor = UIColor.blueColor()
         toggleTorchButton.addTarget(self, action: "setTorchMode:", forControlEvents: .TouchUpInside)
         self.view.addSubview(toggleTorchButton)
@@ -126,7 +125,7 @@ class FlowMoCam: FlowMoController {
     
     func toggleCameraButton() {
         let toggleCameraButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
-        toggleCameraButton.frame = CGRectMake((self.view.frame.width)-85, 85, 70, 70)
+        toggleCameraButton.frame = CGRectMake((self.view.frame.width/2)+175, (self.view.frame.height/2)+100, 70, 70)
         toggleCameraButton.backgroundColor = UIColor.redColor()
         toggleCameraButton.addTarget(self, action: "toggleCamera:", forControlEvents: .TouchUpInside)
         self.view.addSubview(toggleCameraButton)
