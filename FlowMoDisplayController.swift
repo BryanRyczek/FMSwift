@@ -25,11 +25,10 @@ class FlowMoDisplayController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        delay(0.25) {
         self.addFlowMoSlider()
         self.addFlowMoView()
         print(self.flowMoImageArray.count)
-        }
+       
         
     }
     
