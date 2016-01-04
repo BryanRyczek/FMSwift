@@ -258,7 +258,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     if (isRecording == true) {
         view.layer.addSublayer(recordingCircle)
     } else if (isRecording == false) {
-        //nothing
+        self.recordingCircle.removeFromSuperlayer()
     }
     
     }
@@ -380,8 +380,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
         dispatch_async(GlobalMainQueue){
             let flowMoDisplayController = FlowMoDisplayController()
-            self.recordingCircle.removeFromSuperlayer()
-            flowMoDisplayController.flowMoImageArray = flowMoImageArray
+                flowMoDisplayController.flowMoImageArray = flowMoImageArray
        //     flowMoDisplayController.flowMoAudioFile = audioRecorder.audioRecorder.url
             self.presentViewController(flowMoDisplayController, animated: false, completion: nil)
         }
