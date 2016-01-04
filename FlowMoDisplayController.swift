@@ -21,14 +21,16 @@ class FlowMoDisplayController: UIViewController {
     let flowMoView = UIImageView()
     //define audio player
     let audioPlayer = FlowMoAudioPlayer()
+    //
+    var playbackTimer = NSTimer ()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.addFlowMoSlider()
-        self.addFlowMoView()
+        addFlowMoSlider()
+        addFlowMoView()
         print(self.flowMoImageArray.count)
-       
+        flowMoPlaybackTimer()
         
     }
     
@@ -55,6 +57,16 @@ class FlowMoDisplayController: UIViewController {
         let localImage = flowMoImageArray[currentImageIndex]
         print(currentImageIndex)
         flowMoView.image = localImage
+    }
+    
+    func flowMoPlaybackTimer() {
+        
+        playbackTimer = NSTimer.scheduledTimerWithTimeInterval(0.033333, target:self, selector: "playFlowMoImageSequence", userInfo: nil, repeats: true)
+    }
+    
+    func playFlowMoImageSequence() {
+        flowMoDisplaySlider!.value = flowMoDisplaySlider!.value + 1
+        sliderValueDidChange(flowMoDisplaySlider!)
     }
     
     //MARK: HELPER METHODS
