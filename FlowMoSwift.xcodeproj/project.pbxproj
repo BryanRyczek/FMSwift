@@ -13,6 +13,7 @@
 		938546AC1C21C7ED009D0180 /* FlowMoAudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938546AB1C21C7ED009D0180 /* FlowMoAudioRecorder.swift */; };
 		9388B7CE1C2C3D6700D3F365 /* FlowMoDisplayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9388B7CD1C2C3D6700D3F365 /* FlowMoDisplayController.swift */; };
 		93B5B14D1C2A542B00F5B517 /* PermissionScope.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B5B14C1C2A542B00F5B517 /* PermissionScope.framework */; };
+		93BAA05E1C3C21C700818F15 /* BezierObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BAA05D1C3C21C700818F15 /* BezierObjects.swift */; };
 		93D99F8F1C2357AC00DEA183 /* ScreenBufferTestCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D99F8E1C2357AC00DEA183 /* ScreenBufferTestCode.swift */; };
 		93D99F951C244D0C00DEA183 /* FlowMoAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D99F941C244D0C00DEA183 /* FlowMoAudioPlayer.swift */; };
 		93E2E84F1C1734040092F589 /* FlowMo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2E84E1C1734040092F589 /* FlowMo.swift */; };
@@ -52,6 +53,7 @@
 		938546AB1C21C7ED009D0180 /* FlowMoAudioRecorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoAudioRecorder.swift; path = ../FlowMoAudioRecorder.swift; sourceTree = "<group>"; };
 		9388B7CD1C2C3D6700D3F365 /* FlowMoDisplayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoDisplayController.swift; path = ../FlowMoDisplayController.swift; sourceTree = "<group>"; };
 		93B5B14C1C2A542B00F5B517 /* PermissionScope.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PermissionScope.framework; path = Carthage/Build/iOS/PermissionScope.framework; sourceTree = "<group>"; };
+		93BAA05D1C3C21C700818F15 /* BezierObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierObjects.swift; sourceTree = "<group>"; };
 		93D99F8E1C2357AC00DEA183 /* ScreenBufferTestCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenBufferTestCode.swift; sourceTree = "<group>"; };
 		93D99F941C244D0C00DEA183 /* FlowMoAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoAudioPlayer.swift; sourceTree = "<group>"; };
 		93E2E84E1C1734040092F589 /* FlowMo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMo.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				9341D86D1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift */,
 				938546AB1C21C7ED009D0180 /* FlowMoAudioRecorder.swift */,
 				93D99F941C244D0C00DEA183 /* FlowMoAudioPlayer.swift */,
+				93BAA05D1C3C21C700818F15 /* BezierObjects.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				93D99F8F1C2357AC00DEA183 /* ScreenBufferTestCode.swift in Sources */,
 				93F4D36D1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld in Sources */,
 				93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */,
+				93BAA05E1C3C21C700818F15 /* BezierObjects.swift in Sources */,
 				938546AC1C21C7ED009D0180 /* FlowMoAudioRecorder.swift in Sources */,
 				93E2E85E1C1776A70092F589 /* FlowMoSlider.swift in Sources */,
 				9341D86E1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift in Sources */,

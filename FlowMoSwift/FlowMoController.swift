@@ -43,6 +43,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     typealias BatchImageGenerationCompletionClosure = (error: NSError?) -> Void
     //recordingUI
     let recordingCircle = CAShapeLayer()
+    let flashContainer = CAShapeLayer()
+    let bezierObject = BezierObjects()
     //MARK: GCD Helper Variables
     var GlobalMainQueue: dispatch_queue_t {
         return dispatch_get_main_queue()
@@ -217,6 +219,34 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
 // MARK: INTERFACE ELEMENTS AND ANIMATIONS
     
+    func flashElements() {
+        flashContainer.bounds = CGRect(x:0,y:0,width:70,height:70)
+        flashContainer.position = CGPoint(x: 50, y: 45)
+        view.layer.addSublayer(flashContainer)
+        flashContainer.fillColor = UIColor.blueColor().CGColor
+        
+        //// Color Declarations
+        let yellowGreen = UIColor(red: 0.626, green: 0.795, blue: 0.164, alpha: 1.000)
+        
+        //// flashOnFill Drawing
+        var flashOnFillPath = UIBezierPath()
+        flashOnFillPath.moveToPoint(CGPointMake(18.46, 1.55))
+        flashOnFillPath.addLineToPoint(CGPointMake(18.93, 19.21))
+        flashOnFillPath.addLineToPoint(CGPointMake(37.11, 19.21))
+        flashOnFillPath.addLineToPoint(CGPointMake(18.07, 48.19))
+        flashOnFillPath.addLineToPoint(CGPointMake(17.99, 30.61))
+        flashOnFillPath.addLineToPoint(CGPointMake(1.38, 30.69))
+        flashOnFillPath.addLineToPoint(CGPointMake(18.46, 1.55))
+        flashOnFillPath.closePath()
+        flashOnFillPath.miterLimit = 4;
+        
+        flashOnFillPath.usesEvenOddFillRule = true;
+        
+        yellowGreen.setFill()
+        flashOnFillPath.fill()
+        flashContainer.path = flashOnFillPath.CGPath
+    }
+    
     func recordingElements() {
         
         let innerDiameter = 20.0
@@ -229,10 +259,9 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         //let recordingCircle = CAShapeLayer()
         recordingCircle.bounds = innerBounds
         recordingCircle.position = CGPoint(x:self.view.frame.size.width - CGFloat(innerDiameter), y: CGFloat(innerDiameter))
-        print(recordingCircle.position)
         view.layer.addSublayer(recordingCircle)
         
-        // fill with yellow
+        // fill
         recordingCircle.fillColor = UIColor.redColor().CGColor
         // 1
         // begin with a circle with a 50 points radius
@@ -365,7 +394,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
                 self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
                 NSLog("SUCCESS!")
                 if (count == self.flowMoImageArray.count) {
-                    print("fire inside")
                     self.presentFlowMoDisplayController(self.flowMoImageArray)
                 }
             } else if (result == .Failed) {
@@ -386,103 +414,5 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         }
     }
     
-    
-    
 }
 
-
-//    //// General Declarations
-//    let context = UIGraphicsGetCurrentContext()
-//    CGContextSaveGState(context)
-//    CGContextScaleCTM(context, 1.8, 1.8)
-//    let color = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000)
-//    let recordingText = CAShapeLayer()
-////        recordingText.bounds =  bounds
-//        recordingText.position = CGPoint(x: center.x + ((self.view.frame.size.width/2)-CGFloat(55+diameter)), y: center.y - ((self.view.frame.size.height/2)-CGFloat(14)))
-//        var recordingTextPath = UIBezierPath()
-//        recordingTextPath.moveToPoint(CGPointMake(0, 14.62))
-//        recordingTextPath.addLineToPoint(CGPointMake(5.6, 14.62))
-//        recordingTextPath.addLineToPoint(CGPointMake(5.6, 13.03))
-//        recordingTextPath.addLineToPoint(CGPointMake(3.83, 13.03))
-//        recordingTextPath.addLineToPoint(CGPointMake(3.83, 8.81))
-//        recordingTextPath.addLineToPoint(CGPointMake(5.54, 8.81))
-//        recordingTextPath.addCurveToPoint(CGPointMake(7.04, 9.61), controlPoint1: CGPointMake(6.41, 8.81), controlPoint2: CGPointMake(6.68, 9))
-//        recordingTextPath.addLineToPoint(CGPointMake(9.26, 13.54))
-//        recordingTextPath.addCurveToPoint(CGPointMake(11.26, 14.62), controlPoint1: CGPointMake(9.75, 14.39), controlPoint2: CGPointMake(10.04, 14.62))
-//        recordingTextPath.addLineToPoint(CGPointMake(12.48, 14.62))
-//        recordingTextPath.addLineToPoint(CGPointMake(12.48, 13.03))
-//        recordingTextPath.addLineToPoint(CGPointMake(12.05, 13.03))
-//        recordingTextPath.addCurveToPoint(CGPointMake(11.05, 12.56), controlPoint1: CGPointMake(11.54, 13.03), controlPoint2: CGPointMake(11.28, 12.95))
-//        recordingTextPath.addLineToPoint(CGPointMake(9.02, 9.02))
-//        recordingTextPath.addCurveToPoint(CGPointMake(8.41, 8.35), controlPoint1: CGPointMake(8.77, 8.55), controlPoint2: CGPointMake(8.41, 8.35))
-//        recordingTextPath.addLineToPoint(CGPointMake(8.41, 8.31))
-//        recordingTextPath.addCurveToPoint(CGPointMake(11.38, 4.27), controlPoint1: CGPointMake(10.24, 7.84), controlPoint2: CGPointMake(11.38, 6.35))
-//        recordingTextPath.addCurveToPoint(CGPointMake(8.88, 0.55), controlPoint1: CGPointMake(11.38, 2.32), controlPoint2: CGPointMake(10.38, 1.06))
-//        recordingTextPath.addCurveToPoint(CGPointMake(6.23, 0.24), controlPoint1: CGPointMake(8.08, 0.28), controlPoint2: CGPointMake(7.25, 0.24))
-//        recordingTextPath.addLineToPoint(CGPointMake(0, 0.24))
-//        recordingTextPath.addLineToPoint(CGPointMake(0, 1.81))
-//        recordingTextPath.addLineToPoint(CGPointMake(1.79, 1.81))
-//        recordingTextPath.addLineToPoint(CGPointMake(1.79, 13.03))
-//        recordingTextPath.addLineToPoint(CGPointMake(0, 13.03))
-//        recordingTextPath.addLineToPoint(CGPointMake(0, 14.62))
-//        recordingTextPath.closePath()
-//        recordingTextPath.moveToPoint(CGPointMake(3.83, 7.15))
-//        recordingTextPath.addLineToPoint(CGPointMake(3.83, 1.91))
-//        recordingTextPath.addLineToPoint(CGPointMake(6.21, 1.91))
-//        recordingTextPath.addCurveToPoint(CGPointMake(7.98, 2.18), controlPoint1: CGPointMake(6.9, 1.91), controlPoint2: CGPointMake(7.51, 1.99))
-//        recordingTextPath.addCurveToPoint(CGPointMake(9.32, 4.44), controlPoint1: CGPointMake(8.88, 2.54), controlPoint2: CGPointMake(9.32, 3.32))
-//        recordingTextPath.addCurveToPoint(CGPointMake(6.72, 7.15), controlPoint1: CGPointMake(9.32, 6.13), controlPoint2: CGPointMake(8.28, 7.15))
-//        recordingTextPath.addLineToPoint(CGPointMake(3.83, 7.15))
-//        recordingTextPath.closePath()
-//        recordingTextPath.moveToPoint(CGPointMake(14.19, 14.62))
-//        recordingTextPath.addLineToPoint(CGPointMake(24.94, 14.62))
-//        recordingTextPath.addLineToPoint(CGPointMake(24.94, 11.22))
-//        recordingTextPath.addLineToPoint(CGPointMake(23.17, 11.22))
-//        recordingTextPath.addLineToPoint(CGPointMake(23.17, 12.95))
-//        recordingTextPath.addLineToPoint(CGPointMake(18.02, 12.95))
-//        recordingTextPath.addLineToPoint(CGPointMake(18.02, 8.2))
-//        recordingTextPath.addLineToPoint(CGPointMake(23.1, 8.2))
-//        recordingTextPath.addLineToPoint(CGPointMake(23.1, 6.53))
-//        recordingTextPath.addLineToPoint(CGPointMake(18.02, 6.53))
-//        recordingTextPath.addLineToPoint(CGPointMake(18.02, 1.91))
-//        recordingTextPath.addLineToPoint(CGPointMake(22.82, 1.91))
-//        recordingTextPath.addLineToPoint(CGPointMake(22.82, 3.58))
-//        recordingTextPath.addLineToPoint(CGPointMake(24.59, 3.58))
-//        recordingTextPath.addLineToPoint(CGPointMake(24.59, 0.24))
-//        recordingTextPath.addLineToPoint(CGPointMake(14.19, 0.24))
-//        recordingTextPath.addLineToPoint(CGPointMake(14.19, 1.81))
-//        recordingTextPath.addLineToPoint(CGPointMake(15.98, 1.81))
-//        recordingTextPath.addLineToPoint(CGPointMake(15.98, 13.03))
-//        recordingTextPath.addLineToPoint(CGPointMake(14.19, 13.03))
-//        recordingTextPath.addLineToPoint(CGPointMake(14.19, 14.62))
-//        recordingTextPath.closePath()
-//        recordingTextPath.moveToPoint(CGPointMake(26.97, 7.35))
-//        recordingTextPath.addCurveToPoint(CGPointMake(34.4, 14.86), controlPoint1: CGPointMake(26.97, 11.54), controlPoint2: CGPointMake(30.09, 14.86))
-//        recordingTextPath.addCurveToPoint(CGPointMake(40, 12.03), controlPoint1: CGPointMake(36.4, 14.86), controlPoint2: CGPointMake(40, 14.15))
-//        recordingTextPath.addLineToPoint(CGPointMake(40, 10.28))
-//        recordingTextPath.addLineToPoint(CGPointMake(38.11, 10.28))
-//        recordingTextPath.addLineToPoint(CGPointMake(38.11, 11.4))
-//        recordingTextPath.addCurveToPoint(CGPointMake(34.52, 13.09), controlPoint1: CGPointMake(38.11, 12.72), controlPoint2: CGPointMake(35.54, 13.09))
-//        recordingTextPath.addCurveToPoint(CGPointMake(29.07, 7.27), controlPoint1: CGPointMake(31.39, 13.09), controlPoint2: CGPointMake(29.07, 10.67))
-//        recordingTextPath.addCurveToPoint(CGPointMake(34.4, 1.75), controlPoint1: CGPointMake(29.07, 4.01), controlPoint2: CGPointMake(31.33, 1.75))
-//        recordingTextPath.addCurveToPoint(CGPointMake(37.9, 3.48), controlPoint1: CGPointMake(35.73, 1.75), controlPoint2: CGPointMake(37.9, 2.22))
-//        recordingTextPath.addLineToPoint(CGPointMake(37.9, 4.6))
-//        recordingTextPath.addLineToPoint(CGPointMake(39.8, 4.6))
-//        recordingTextPath.addLineToPoint(CGPointMake(39.8, 2.85))
-//        recordingTextPath.addCurveToPoint(CGPointMake(34.32, 0), controlPoint1: CGPointMake(39.8, 0.63), controlPoint2: CGPointMake(36.05, 0))
-//        recordingTextPath.addCurveToPoint(CGPointMake(26.97, 7.35), controlPoint1: CGPointMake(30.17, 0), controlPoint2: CGPointMake(26.97, 3.13))
-//        recordingTextPath.closePath()
-//    recordingText.path = recordingTextPath.CGPath
-//        color.setFill()
-//        recordingTextPath.fill()
-//    view.layer.addSublayer(recordingText)
-//
-//    CGContextRestoreGState(context)
-
-//    let recordingTextRect = CGRectMake(11.67, 15.28, 36, 24)
-//    let recordingTextStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
-//    recordingTextStyle.alignment = NSTextAlignment.Left
-//
-//    let recordingTextFontAttributes = [NSFontAttributeName: UIFont(name: "Courier", size: 12)!, NSForegroundColorAttributeName: UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000), NSParagraphStyleAttributeName: recordingTextStyle]
-//
-//    "REC".drawInRect(recordingTextRect, withAttributes: recordingTextFontAttributes)

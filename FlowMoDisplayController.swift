@@ -22,15 +22,15 @@ class FlowMoDisplayController: UIViewController {
     //define audio player
     let audioPlayer = FlowMoAudioPlayer()
     //
-    var playbackTimer = NSTimer ()
+    weak var playbackTimer : NSTimer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         addFlowMoSlider()
         addFlowMoView()
-        print(self.flowMoImageArray.count)
         flowMoPlaybackTimer()
+        setupDoubleTapGesture() 
         
     }
     
@@ -67,6 +67,40 @@ class FlowMoDisplayController: UIViewController {
     func playFlowMoImageSequence() {
         flowMoDisplaySlider!.value = flowMoDisplaySlider!.value + 1
         sliderValueDidChange(flowMoDisplaySlider!)
+        if (Int(flowMoDisplaySlider!.value) == flowMoImageArray.count-1) {
+            flowMoDisplaySlider!.value = 0
+            sliderValueDidChange(flowMoDisplaySlider!)
+        }
+    }
+    func togglePausePlay() {
+        if (playbackTimer == nil) {
+            flowMoPlaybackTimer()
+        } else {
+            playbackTimer?.invalidate()
+        }
+    }
+    
+    
+    //MARK: GESTURE METHODS
+    
+    func setupUpSwipeGesture() {
+        let upSwipe = UISwipeGestureRecognizer(target: self, action: "dismissFlowMoDisplayController:")
+        upSwipe.direction = .Up
+        upSwipe.delaysTouchesBegan = true
+        view.addGestureRecognizer(upSwipe)
+    }
+    
+//    func setupTapGesture() {
+//        let tap = UITapGestureRecognizer(target: self, action: "
+//    
+//    }
+    
+    func setupDoubleTapGesture() {
+        print("dub tap")
+        let tap = UITapGestureRecognizer(target: self, action: "togglePausePlay")
+        tap.numberOfTapsRequired = 2
+        tap.delaysTouchesBegan = true
+        view.addGestureRecognizer(tap)
     }
     
     //MARK: HELPER METHODS
