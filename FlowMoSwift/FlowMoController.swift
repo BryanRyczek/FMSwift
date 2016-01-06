@@ -35,6 +35,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     var videoFileOutput : AVCaptureMovieFileOutput?
     //define audio recorder
     let audioRecorder = FlowMoAudioRecorderPlayer()
+    var flowmoAudioDuration : NSTimeInterval?
+    var flowmoAudioStartTime : NSTimeInterval?
     //define device screen brightness
     var screenBrightness : CGFloat?
     let flashLayer = CALayer()
@@ -381,7 +383,9 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             flowmoDurationFloat = flowmoDurationFloat + flowmoStartTimeFloat
             flowmoStartTimeFloat = 0
         }
-       
+       flowmoAudioDuration = Double(flowmoDurationFloat / Float(600))
+       flowmoAudioStartTime = Double(flowmoStartTimeFloat / Float(600))
+
         for var t = flowmoStartTimeFloat; t < flowmoStartTimeFloat + flowmoDurationFloat; t += 20 {
             let cmTime = CMTimeMake(Int64(t), avURLAsset.duration.timescale)
             let timeValue = NSValue(CMTime: cmTime)
@@ -408,8 +412,10 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
         dispatch_async(GlobalMainQueue){
             let flowMoDisplayController = FlowMoDisplayController()
-                flowMoDisplayController.flowMoImageArray = flowMoImageArray
-       //     flowMoDisplayController.flowMoAudioFile = audioRecorder.audioRecorder.url
+            flowMoDisplayController.flowMoImageArray = flowMoImageArray
+            flowMoDisplayController.flowmoAudioStartTime = self.flowmoAudioStartTime
+            flowMoDisplayController.flowmoAudioDuration = self.flowmoAudioDuration
+            flowMoDisplayController.flowMoAudioFile = self.audioRecorder.audioRecorder.url
             self.presentViewController(flowMoDisplayController, animated: false, completion: nil)
         }
     }

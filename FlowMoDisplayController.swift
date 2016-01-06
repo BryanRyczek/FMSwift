@@ -18,19 +18,28 @@ class FlowMoDisplayController: UIViewController {
     var flowMoImageArray : [UIImage] = []
     var flowMoDisplaySlider:FlowMoSlider?
     var flowMoAudioFile : NSURL?
+    var flowmoAudioStartTime: NSTimeInterval?
+    var flowmoAudioCurrentTime: NSTimeInterval?
+    var flowmoAudioDuration: NSTimeInterval?
     let flowMoView = UIImageView()
+    var currentPlaybackState = playbackState.Paused
     //define audio player
-    let audioPlayer = FlowMoAudioPlayer()
+    let audioPlayer = FlowMoAudioRecorderPlayer()
     //
     weak var playbackTimer : NSTimer?
     
+    enum playbackState {
+        case Playing
+        case Paused
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        flowmoAudioCurrentTime = flowmoAudioStartTime
         addFlowMoSlider()
         addFlowMoView()
-        flowMoPlaybackTimer()
-        setupDoubleTapGesture() 
+        togglePausePlay()
+        setupDoubleTapGesture()
         
     }
     
@@ -49,37 +58,66 @@ class FlowMoDisplayController: UIViewController {
         flowMoDisplaySlider?.value = 0.0
         flowMoDisplaySlider?.continuous = true
         flowMoDisplaySlider!.addTarget(self, action: "sliderValueDidChange:", forControlEvents: .ValueChanged)
+        flowMoDisplaySlider!.addTarget(self, action: "sliderTouchReleased:", forControlEvents: .TouchUpInside)
+        flowMoDisplaySlider!.addTarget(self, action: "sliderTouchDown:", forControlEvents: .TouchDown)
         self.view.addSubview(flowMoDisplaySlider!)
     }
     
-    func sliderValueDidChange (sender: UISlider) {
-        let currentImageIndex = Int((flowMoDisplaySlider?.value)!)
-        let localImage = flowMoImageArray[currentImageIndex]
-        print(currentImageIndex)
-        flowMoView.image = localImage
-    }
-    
-    func flowMoPlaybackTimer() {
-        
-        playbackTimer = NSTimer.scheduledTimerWithTimeInterval(0.033333, target:self, selector: "playFlowMoImageSequence", userInfo: nil, repeats: true)
-    }
-    
-    func playFlowMoImageSequence() {
-        flowMoDisplaySlider!.value = flowMoDisplaySlider!.value + 1
-        sliderValueDidChange(flowMoDisplaySlider!)
-        if (Int(flowMoDisplaySlider!.value) == flowMoImageArray.count-1) {
-            flowMoDisplaySlider!.value = 0
-            sliderValueDidChange(flowMoDisplaySlider!)
-        }
-    }
-    func togglePausePlay() {
-        if (playbackTimer == nil) {
-            flowMoPlaybackTimer()
-        } else {
+    func sliderTouchDown (sender: UISlider) {
+        if (currentPlaybackState == .Playing) {
+            audioPlayer.audioPlayer.pause()
             playbackTimer?.invalidate()
         }
     }
     
+    func sliderTouchReleased (sender: UISlider) {
+        if (currentPlaybackState == .Playing) {
+            audioPlayback(flowmoAudioCurrentTime!)
+            flowMoPlaybackTimer()
+        }
+    }
+    
+    func sliderValueDidChange (sender: UISlider) {
+        
+        let currentImageIndex = Int((flowMoDisplaySlider?.value)!)
+        let localImage = flowMoImageArray[currentImageIndex]
+        flowMoView.image = localImage
+        flowmoAudioCurrentTime = (Double(currentImageIndex) / 30.00000000000) + Double(flowmoAudioStartTime!)
+    }
+    
+    func flowMoPlaybackTimer() {
+        
+        playbackTimer = NSTimer.scheduledTimerWithTimeInterval(0.0333333333333333, target:self, selector: "playFlowMoImageSequence", userInfo: nil, repeats: true)
+    }
+    
+    func audioPlayback(time: NSTimeInterval) {
+        audioPlayer.playAudio(flowMoAudioFile!, startTime: time)
+    }
+    
+    func playFlowMoImageSequence() {
+        if (Int(flowMoDisplaySlider!.value) == flowMoImageArray.count-1) {
+            flowMoDisplaySlider!.value = 0
+            audioPlayer.audioPlayer.pause()
+            audioPlayback(flowmoAudioStartTime!)
+            sliderValueDidChange(flowMoDisplaySlider!)
+        } else {
+            flowMoDisplaySlider!.value = flowMoDisplaySlider!.value + 1
+            sliderValueDidChange(flowMoDisplaySlider!)
+        }
+    }
+    
+    func togglePausePlay() {
+        if (currentPlaybackState == .Paused) {
+            flowMoPlaybackTimer()
+            audioPlayback(flowmoAudioCurrentTime!)
+            currentPlaybackState = .Playing
+        } else if (currentPlaybackState == .Playing) {
+            playbackTimer?.invalidate()
+            audioPlayer.audioPlayer.pause()
+            flowmoAudioCurrentTime = audioPlayer.audioPlayer.currentTime
+            currentPlaybackState  = .Paused
+        }
+    }
     
     //MARK: GESTURE METHODS
     
@@ -90,13 +128,7 @@ class FlowMoDisplayController: UIViewController {
         view.addGestureRecognizer(upSwipe)
     }
     
-//    func setupTapGesture() {
-//        let tap = UITapGestureRecognizer(target: self, action: "
-//    
-//    }
-    
     func setupDoubleTapGesture() {
-        print("dub tap")
         let tap = UITapGestureRecognizer(target: self, action: "togglePausePlay")
         tap.numberOfTapsRequired = 2
         tap.delaysTouchesBegan = true

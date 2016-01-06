@@ -50,15 +50,16 @@ class FlowMoAudioRecorderPlayer: NSObject {
         }
     }
     
-    func playAudio() {
-        if (!audioRecorder.recording){
+    func playAudio(url: NSURL, startTime: NSTimeInterval) {
             do {
-                print("playback")
-                try audioPlayer = AVAudioPlayer(contentsOfURL: audioRecorder.url)
+                print(startTime)
+                try audioPlayer = AVAudioPlayer(contentsOfURL: url)
+                //audioPlayer.prepareToPlay()
+                audioPlayer.currentTime = startTime
                 audioPlayer.play()
             } catch {
         }
-    }
+    
     }
     
         func stopRecording() {
