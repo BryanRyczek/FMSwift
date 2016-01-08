@@ -120,8 +120,8 @@ class FlowMoCam: FlowMoController {
     
     func captureButton() {
         let captureButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
-        captureButton.frame = CGRectMake((self.view.frame.width/2)-35, (self.view.frame.height)-105, 70, 70)
-        captureButton.backgroundColor = UIColor.whiteColor()
+        captureButton.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
+        captureButton.backgroundColor = UIColor.clearColor()
         let longPressCaptureRecognizer = UILongPressGestureRecognizer(target: self, action: "capture:")
         longPressCaptureRecognizer.minimumPressDuration = 0.3
         captureButton.addGestureRecognizer(longPressCaptureRecognizer)

@@ -44,7 +44,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     // error handling for GCD group
     typealias BatchImageGenerationCompletionClosure = (error: NSError?) -> Void
     //recordingUI
-    let recordingCircle = CAShapeLayer()
+    let innerCircle = CAShapeLayer()
+    let outerCircle = CAShapeLayer()
     let flashContainer = CAShapeLayer()
     let bezierObject = BezierObjects()
     //MARK: GCD Helper Variables
@@ -75,7 +76,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
     func loadCamera(){
         //set camera to highest resolution device will support
-        captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
+       // captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
+        captureSession.sessionPreset = AVCaptureSessionPresetHigh
         // create array of available devices (front camera, back camera, microphone)
         let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
         
@@ -193,16 +195,16 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     }
     
     func capture (sender: UILongPressGestureRecognizer) {
-        //cont
-        //if we are not currently recording
+        
         if (sender.state == UIGestureRecognizerState.Ended){
             isRecording = false
-            recordingElements()
             fireTorch(sender)
             if (torchState == 1 && currentDevice?.position == AVCaptureDevicePosition.Front) {
                 flashLayer.removeFromSuperlayer()
                 UIScreen.mainScreen().brightness = screenBrightness!
             }
+            self.endRecordingElements()
+            innerCircle.removeFromSuperlayer()
             audioRecorder.stopRecording()
             print ("stop recording")
             videoFileOutput?.stopRecording()
@@ -251,27 +253,38 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
     func recordingElements() {
         
-        let innerDiameter = 20.0
+        let innerOffset = 20.0
+        let innerDiameter = 10.0
         let outerDiameter = 24.0
         let xyOffset = (innerDiameter - outerDiameter) / 2
         let innerBounds = CGRect(x: 0, y: 0, width: innerDiameter, height: innerDiameter)
         let outerBounds = CGRect(x: xyOffset, y:xyOffset, width: outerDiameter, height: outerDiameter)
+        let outerCircleBounds = CGRect(x: xyOffset - 2.0, y: xyOffset - 2.0, width: outerDiameter + 4.0, height: outerDiameter + 4.0)
         
         // Create CAShapeLayerS
-        //let recordingCircle = CAShapeLayer()
-        recordingCircle.bounds = innerBounds
-        recordingCircle.position = CGPoint(x:self.view.frame.size.width - CGFloat(innerDiameter), y: CGFloat(innerDiameter))
-        view.layer.addSublayer(recordingCircle)
+        //let innerCircle = CAShapeLayer()
+        innerCircle.bounds = innerBounds
+        innerCircle.position = CGPoint(x:self.view.frame.size.width - CGFloat(innerOffset), y: CGFloat(innerOffset))
+        view.layer.addSublayer(innerCircle)
+        
+        outerCircle.bounds = outerCircleBounds
+        outerCircle.position = CGPoint(x:self.view.frame.size.width - CGFloat(innerOffset), y: CGFloat(innerOffset))
+        view.layer.addSublayer(outerCircle)
+        
+        outerCircle.strokeColor = UIColor.redColor().CGColor
+        outerCircle.lineWidth = 2.0
+        outerCircle.fillColor = UIColor.clearColor().CGColor
         
         // fill
-        recordingCircle.fillColor = UIColor.redColor().CGColor
+        innerCircle.fillColor = UIColor.redColor().CGColor
         // 1
         // begin with a circle with a 50 points radius
         let startShape = UIBezierPath(ovalInRect: innerBounds).CGPath
         // animation end with a large circle with 500 points radius
         let endShape = UIBezierPath(ovalInRect: outerBounds).CGPath
         // set initial shape
-        recordingCircle.path = startShape
+        innerCircle.path = startShape
+        outerCircle.path = UIBezierPath(ovalInRect: outerCircleBounds).CGPath
         // 2
         // animate the `path`
         let animation = CABasicAnimation(keyPath: "path")
@@ -284,16 +297,27 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         animation.fillMode = kCAFillModeBoth // keep to value after finishing
         animation.removedOnCompletion = false // don't remove after finishing
         // 4
-        recordingCircle.addAnimation(animation, forKey: animation.keyPath)
-
+        innerCircle.addAnimation(animation, forKey: animation.keyPath)
+        
+        
     if (isRecording == true) {
-        view.layer.addSublayer(recordingCircle)
-    } else if (isRecording == false) {
-        self.recordingCircle.removeFromSuperlayer()
+        view.layer.addSublayer(innerCircle)
     }
     
     }
     
+    func endRecordingElements() {
+        
+        outerCircle.strokeStart = 0.7
+        outerCircle.strokeEnd = 1.0
+        let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
+        rotateAnimation.fromValue = 0.0
+        rotateAnimation.toValue = CGFloat(M_PI * 2.0)
+        rotateAnimation.duration = 1.5
+        rotateAnimation.repeatCount = HUGE
+        outerCircle.addAnimation(rotateAnimation, forKey: nil)
+        
+    }
     
     
 // MARK: FLASH METHODS

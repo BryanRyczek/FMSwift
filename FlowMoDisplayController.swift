@@ -40,7 +40,7 @@ class FlowMoDisplayController: UIViewController {
         addFlowMoView()
         togglePausePlay()
         setupDoubleTapGesture()
-        
+        setupUpSwipeGesture()
     }
     
     func addFlowMoView() {
@@ -118,6 +118,11 @@ class FlowMoDisplayController: UIViewController {
             currentPlaybackState  = .Paused
         }
     }
+    
+//    func dismissFlowMoDisplayController (sender: AnyObject) {
+//        audioPlayer.audioPlayer.stop()
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//    }
     
     //MARK: GESTURE METHODS
     
