@@ -106,6 +106,7 @@
 				93E2E85D1C1776A70092F589 /* FlowMoSlider.swift */,
 				93BAA05F1C401F8000818F15 /* FlowMoTextField.swift */,
 				9341D86D1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift */,
+				93E2E84E1C1734040092F589 /* FlowMo.swift */,
 				93BAA05D1C3C21C700818F15 /* BezierObjects.swift */,
 			);
 			name = Model;
@@ -125,7 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */,
-				93E2E84E1C1734040092F589 /* FlowMo.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";

@@ -1,9 +1,9 @@
 //
 //  FlowMo.swift
-//  FlowMoSwift
+//  FlowMoRefactored
 //
-//  Created by Conor Carey on 12/8/15.
-//  Copyright © 2015 Bryan Ryczek. All rights reserved.
+//  Created by Conor Carey on 12/15/15.
+//  Copyright © 2015 Conor Carey. All rights reserved.
 //
 
 import Foundation
@@ -12,17 +12,43 @@ import AVFoundation
 import AVKit
 import CoreMedia
 
-//class FlowMo: NSObject {
-//    
-//    let flowMoArray: [UIImage]!
-////    let flowMoAudio: //audio format
-//    
-//    func generateFlowMo (flowMoArray, audioObject: flowMoAudio) -> UIView {
-//        
-//        let flowMoFrame = CGRect(
-//        
-//        //return FlowMoView with frame
-//        return flowMoView
+class FlowMo: FlowMoController {
+    //Audio file to be integrated with the FlowMo
+    var flowMoAudio: NSURL = NSURL.init()
+    //FlowMo image array, the meat of the project
+    var flowMo: [UIImage] = []
+    
+//    func generateFlowMo (flowMoArray: [UIImage], audioObject: NSURL) -> [UIImage]
+//    {
+//        flowMo = flowMoArray
+//        flowMoAudio = audioObject
 //    }
-//    
-//}
+    
+    func getAudio() -> NSURL
+    {
+        return flowMoAudio
+    }
+    
+    func getFlowMo() -> [UIImage]
+    {
+        return flowMo
+    }
+    
+    func setNewAudio(newAudio: NSURL)
+    {
+        flowMoAudio = newAudio
+    }
+    
+    func setNewFlowMo(newFlowMo: [UIImage])
+    {
+        flowMo = newFlowMo
+    }
+    
+    func createRealFlowMo(flowMoArray: [UIImage], audio: NSURL)
+    {
+        
+    }
+    
+    
+    
+}
