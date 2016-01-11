@@ -14,7 +14,7 @@ import CoreMedia
 import CoreImage
 import Photos
 
-class FlowMoDisplayController: UIViewController {
+class FlowMoDisplayController: FlowMo {
     var flowMoImageArray : [UIImage] = []
     var flowMoDisplaySlider:FlowMoSlider?
     var flowMoAudioFile : NSURL?
@@ -36,6 +36,8 @@ class FlowMoDisplayController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        flowMoAudioFile = getAudio()
+        flowMoImageArray = getFlowMo()
         flowmoAudioCurrentTime = flowmoAudioStartTime
         addFlowMoSlider()
         addFlowMoView()

@@ -14,7 +14,7 @@ import CoreMedia
 import CoreImage
 import Photos
 
-class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
+class FlowMoController: FlowMo, AVCaptureFileOutputRecordingDelegate {
     
     // MARK: GLOBAL VARS
     // define capture session
@@ -431,11 +431,14 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
         dispatch_async(GlobalMainQueue){
+            
+            self.setNewAudio(self.audioRecorder.audioRecorder.url)
+            self.setNewFlowMo(self.flowMoImageArray)
+//            flowMoDisplayController.flowMoImageArray = flowMoImageArray
+//            flowMoDisplayController.flowmoAudioStartTime = self.flowmoAudioStartTime
+//            flowMoDisplayController.flowmoAudioDuration = self.flowmoAudioDuration
+//            flowMoDisplayController.flowMoAudioFile = self.audioRecorder.audioRecorder.url
             let flowMoDisplayController = FlowMoDisplayController()
-            flowMoDisplayController.flowMoImageArray = flowMoImageArray
-            flowMoDisplayController.flowmoAudioStartTime = self.flowmoAudioStartTime
-            flowMoDisplayController.flowmoAudioDuration = self.flowmoAudioDuration
-            flowMoDisplayController.flowMoAudioFile = self.audioRecorder.audioRecorder.url
             self.presentViewController(flowMoDisplayController, animated: false, completion: nil)
         }
     }
