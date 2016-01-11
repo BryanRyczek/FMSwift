@@ -76,8 +76,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
     func loadCamera(){
         //set camera to highest resolution device will support
-       // captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
-        captureSession.sessionPreset = AVCaptureSessionPresetHigh
+        captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
+       // captureSession.sessionPreset = AVCaptureSessionPresetHigh
         // create array of available devices (front camera, back camera, microphone)
         let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo) as! [AVCaptureDevice]
         
@@ -227,28 +227,29 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         flashContainer.bounds = CGRect(x:0,y:0,width:70,height:70)
         flashContainer.position = CGPoint(x: 50, y: 45)
         view.layer.addSublayer(flashContainer)
-        flashContainer.fillColor = UIColor.blueColor().CGColor
+        flashContainer.fillColor = UIColor.clearColor().CGColor
+        flashContainer.strokeColor = UIColor.grayColor().CGColor
         
         //// Color Declarations
         let yellowGreen = UIColor(red: 0.626, green: 0.795, blue: 0.164, alpha: 1.000)
         
         //// flashOnFill Drawing
-        var flashOnFillPath = UIBezierPath()
-        flashOnFillPath.moveToPoint(CGPointMake(18.46, 1.55))
-        flashOnFillPath.addLineToPoint(CGPointMake(18.93, 19.21))
-        flashOnFillPath.addLineToPoint(CGPointMake(37.11, 19.21))
-        flashOnFillPath.addLineToPoint(CGPointMake(18.07, 48.19))
-        flashOnFillPath.addLineToPoint(CGPointMake(17.99, 30.61))
-        flashOnFillPath.addLineToPoint(CGPointMake(1.38, 30.69))
-        flashOnFillPath.addLineToPoint(CGPointMake(18.46, 1.55))
-        flashOnFillPath.closePath()
-        flashOnFillPath.miterLimit = 4;
+        var flashFillPath = UIBezierPath()
+        flashFillPath.moveToPoint(CGPointMake(18.46, 1.55))
+        flashFillPath.addLineToPoint(CGPointMake(18.93, 19.21))
+        flashFillPath.addLineToPoint(CGPointMake(37.11, 19.21))
+        flashFillPath.addLineToPoint(CGPointMake(18.07, 48.19))
+        flashFillPath.addLineToPoint(CGPointMake(17.99, 30.61))
+        flashFillPath.addLineToPoint(CGPointMake(1.38, 30.69))
+        flashFillPath.addLineToPoint(CGPointMake(18.46, 1.55))
+        flashFillPath.closePath()
+        flashFillPath.miterLimit = 4;
         
-        flashOnFillPath.usesEvenOddFillRule = true;
+        flashFillPath.usesEvenOddFillRule = true;
         
-        yellowGreen.setFill()
-        flashOnFillPath.fill()
-        flashContainer.path = flashOnFillPath.CGPath
+        //yellowGreen.setFill()
+        flashFillPath.fill()
+        flashContainer.path = flashFillPath.CGPath
     }
     
     func recordingElements() {
@@ -420,14 +421,9 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
             if (result == .Succeeded) {
                 self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
-                NSLog("SUCCESS!")
                 if (count == self.flowMoImageArray.count) {
                     self.presentFlowMoDisplayController(self.flowMoImageArray)
                 }
-            } else if (result == .Failed) {
-                
-            } else if (result == .Cancelled) {
-                
             }
         }
   

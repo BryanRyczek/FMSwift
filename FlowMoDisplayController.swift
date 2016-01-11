@@ -25,6 +25,7 @@ class FlowMoDisplayController: UIViewController {
     var currentPlaybackState = playbackState.Paused
     //define audio player
     let audioPlayer = FlowMoAudioRecorderPlayer()
+    var textfield = FlowMoTextField()
     //
     weak var playbackTimer : NSTimer?
     
@@ -41,6 +42,12 @@ class FlowMoDisplayController: UIViewController {
         togglePausePlay()
         setupDoubleTapGesture()
         setupUpSwipeGesture()
+        textfield = FlowMoTextField.init(frame: CGRectMake(0, self.view.frame.size.width/2, self.view.frame.size.width, 50))
+        textfield.backgroundColor = UIColor.whiteColor()
+        textfield.alpha = 0.15
+        let textFieldPan = UIPanGestureRecognizer(target: self, action: "handlePan:")
+        textfield.addGestureRecognizer(textFieldPan)
+        self.view.addSubview(textfield)
     }
     
     func addFlowMoView() {
@@ -125,6 +132,15 @@ class FlowMoDisplayController: UIViewController {
 //    }
     
     //MARK: GESTURE METHODS
+    
+    func handlePan (recognizer:UIPanGestureRecognizer) {
+        let translation = recognizer.translationInView(self.view)
+        if let view = recognizer.view {
+            view.center = CGPoint(x:view.center.x,
+                y:view.center.y + translation.y)
+        }
+        recognizer.setTranslation(CGPointZero, inView: self.view)
+    }
     
     func setupUpSwipeGesture() {
         let upSwipe = UISwipeGestureRecognizer(target: self, action: "dismissFlowMoDisplayController:")
