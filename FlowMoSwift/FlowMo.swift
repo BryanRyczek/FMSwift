@@ -24,27 +24,17 @@ class FlowMo: UIViewController {
 //        flowMoAudio = audioObject
 //    }
     
-    func setNewAudio(newAudio: NSURL)
-    {
-        flowMoAudio = newAudio
-    }
-    
-    func setNewFlowMo(newFlowMo: [UIImage])
-    {
-        flowMo = newFlowMo
-    }
-    
     func getAudio() -> NSURL
     {
         return flowMoAudio
     }
     
-    func getFlowMo() -> [UIImage]?
+    func getFlowMo() -> [UIImage]
     {
         if flowMo.isEmpty
         {
             print ("Is Empty")
-            return nil
+            return flowMo
         }
         
         return flowMo
