@@ -432,8 +432,8 @@ class FlowMoController: FlowMo, AVCaptureFileOutputRecordingDelegate {
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
         dispatch_async(GlobalMainQueue){
             
-            self.setNewAudio(self.audioRecorder.audioRecorder.url)
-            self.setNewFlowMo(self.flowMoImageArray)
+            super.setNewAudio(self.audioRecorder.audioRecorder.url)
+            super.setNewFlowMo(self.flowMoImageArray)
 //            flowMoDisplayController.flowMoImageArray = flowMoImageArray
 //            flowMoDisplayController.flowmoAudioStartTime = self.flowmoAudioStartTime
 //            flowMoDisplayController.flowmoAudioDuration = self.flowmoAudioDuration

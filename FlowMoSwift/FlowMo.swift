@@ -39,17 +39,21 @@ class FlowMo: UIViewController {
         return flowMoAudio
     }
     
-    func getFlowMo() -> [UIImage]
+    func getFlowMo() -> [UIImage]?
     {
+        if flowMo.isEmpty
+        {
+            print ("Is Empty")
+            return nil
+        }
+        
         return flowMo
     }
-    
     
     func createRealFlowMo(flowMoArray: [UIImage], audio: NSURL)
     {
         
     }
-    
     
     
 }

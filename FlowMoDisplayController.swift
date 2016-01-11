@@ -36,8 +36,8 @@ class FlowMoDisplayController: FlowMo {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        flowMoAudioFile = getAudio()
-        flowMoImageArray = getFlowMo()
+        flowMoAudioFile = super.getAudio()
+        flowMoImageArray = super.getFlowMo()
         flowmoAudioCurrentTime = flowmoAudioStartTime
         addFlowMoSlider()
         addFlowMoView()
