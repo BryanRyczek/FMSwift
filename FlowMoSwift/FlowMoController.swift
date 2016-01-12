@@ -16,6 +16,8 @@ import Photos
 
 class FlowMoController: FlowMo, AVCaptureFileOutputRecordingDelegate {
     
+    var model = FlowMo()
+    
     // MARK: GLOBAL VARS
     // define capture session
     let captureSession = AVCaptureSession()
@@ -432,8 +434,8 @@ class FlowMoController: FlowMo, AVCaptureFileOutputRecordingDelegate {
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
         dispatch_async(GlobalMainQueue){
             
-            super.flowMoAudio = self.flowMoAudio
-            super.flowMo = self.flowMoImageArray
+            self.model.setNewAudio(self.audioRecorder.audioRecorder.url)
+            self.model.setNewFlowMo(self.flowMoImageArray)
 //            flowMoDisplayController.flowMoImageArray = flowMoImageArray
 //            flowMoDisplayController.flowmoAudioStartTime = self.flowmoAudioStartTime
 //            flowMoDisplayController.flowmoAudioDuration = self.flowmoAudioDuration
