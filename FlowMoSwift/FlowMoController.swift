@@ -436,10 +436,10 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             
             self.model.setNewAudio(self.audioRecorder.audioRecorder.url)
             self.model.setNewFlowMo(self.flowMoImageArray)
-//            flowMoDisplayController.flowMoImageArray = flowMoImageArray
+            self.model.setFlowMoAudioStartTime(self.flowmoAudioStartTime!)
+            self.model.setFlowMoAudioDuration(self.flowmoAudioDuration!)
 //            flowMoDisplayController.flowmoAudioStartTime = self.flowmoAudioStartTime
 //            flowMoDisplayController.flowmoAudioDuration = self.flowmoAudioDuration
-//            flowMoDisplayController.flowMoAudioFile = self.audioRecorder.audioRecorder.url
             let flowMoDisplayController = FlowMoDisplayController()
             self.presentViewController(flowMoDisplayController, animated: false, completion: nil)
         }

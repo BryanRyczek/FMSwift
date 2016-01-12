@@ -16,11 +16,15 @@ class FlowMo {
     
     var flowMoAudio: NSURL
     var flowMo: [UIImage]
+    var flowMoAudioStartTime: NSTimeInterval
+    var flowMoAudioDuration: NSTimeInterval
     
     init()
     {
         flowMoAudio = NSURL.init()
         flowMo = []
+        flowMoAudioStartTime = 0
+        flowMoAudioDuration  = 0
     }
     
 //    func generateFlowMo (flowMoArray: [UIImage], audioObject: NSURL) -> [UIImage]
@@ -39,6 +43,14 @@ class FlowMo {
         flowMo = newFlowMo
     }
     
+    func setFlowMoAudioStartTime(startTime: NSTimeInterval) {
+        flowMoAudioStartTime = startTime
+    }
+    
+    func setFlowMoAudioDuration(duration: NSTimeInterval) {
+        flowMoAudioDuration = duration
+    }
+    
     func getAudio() -> NSURL
     {
         return flowMoAudio
@@ -55,9 +67,12 @@ class FlowMo {
         return flowMo
     }
     
-    func createRealFlowMo(flowMoArray: [UIImage], audio: NSURL)
-    {
-        
+    func getFlowMoAudioStartTime() -> NSTimeInterval {
+        return flowMoAudioStartTime
+    }
+
+    func getFlowMoAudioDuration() -> NSTimeInterval {
+        return flowMoAudioDuration
     }
     
     class var SingletonModel: FlowMo {

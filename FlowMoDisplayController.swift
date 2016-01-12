@@ -38,6 +38,8 @@ class FlowMoDisplayController: UIViewController {
         super.viewDidLoad()
         flowMoAudioFile = FlowMoController().model.getAudio()
         flowMoImageArray = FlowMoController().model.getFlowMo()
+        flowmoAudioStartTime = FlowMoController().model.getFlowMoAudioStartTime()
+        
         flowmoAudioCurrentTime = flowmoAudioStartTime
         addFlowMoSlider()
         addFlowMoView()
