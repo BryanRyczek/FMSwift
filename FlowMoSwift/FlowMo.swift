@@ -12,11 +12,16 @@ import AVFoundation
 import AVKit
 import CoreMedia
 
-class FlowMo: UIViewController {
-    //Audio file to be integrated with the FlowMo
-    var flowMoAudio: NSURL = NSURL.init()
-    //FlowMo image array, the meat of the project
-    var flowMo: [UIImage] = []
+class FlowMo {
+    
+    var flowMoAudio: NSURL
+    var flowMo: [UIImage]
+    
+    init()
+    {
+        flowMoAudio = NSURL.init()
+        flowMo = []
+    }
     
 //    func generateFlowMo (flowMoArray: [UIImage], audioObject: NSURL) -> [UIImage]
 //    {
@@ -55,5 +60,13 @@ class FlowMo: UIViewController {
         
     }
     
-    
+    class var SingletonModel: FlowMo {
+        
+        struct Singleton
+        {
+            static let model = FlowMo()
+        }
+        
+        return Singleton.model
+    }
 }

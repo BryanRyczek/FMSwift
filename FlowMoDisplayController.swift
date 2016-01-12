@@ -14,7 +14,7 @@ import CoreMedia
 import CoreImage
 import Photos
 
-class FlowMoDisplayController: FlowMo {
+class FlowMoDisplayController: UIViewController {
     var flowMoImageArray : [UIImage] = []
     var flowMoDisplaySlider:FlowMoSlider?
     var flowMoAudioFile : NSURL?

@@ -14,9 +14,9 @@ import CoreMedia
 import CoreImage
 import Photos
 
-class FlowMoController: FlowMo, AVCaptureFileOutputRecordingDelegate {
+class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
-    var model = FlowMo()
+    var model = FlowMo.SingletonModel
     
     // MARK: GLOBAL VARS
     // define capture session
