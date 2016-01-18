@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		932A3BEA1C19C15900D194E4 /* AnimationTestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A3BE91C19C15900D194E4 /* AnimationTestingViewController.swift */; };
 		9341D86E1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9341D86D1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift */; };
+		935D254A1C4C66F500386F23 /* Chameleon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 935D25491C4C66F500386F23 /* Chameleon.framework */; };
 		9382707E1C15E1F60092E0D9 /* FlowMoCam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */; };
 		9388B7CE1C2C3D6700D3F365 /* FlowMoDisplayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9388B7CD1C2C3D6700D3F365 /* FlowMoDisplayController.swift */; };
 		93B5B14D1C2A542B00F5B517 /* PermissionScope.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B5B14C1C2A542B00F5B517 /* PermissionScope.framework */; };
@@ -48,6 +49,7 @@
 /* Begin PBXFileReference section */
 		932A3BE91C19C15900D194E4 /* AnimationTestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationTestingViewController.swift; sourceTree = "<group>"; };
 		9341D86D1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoAudioRecorderPlayer.swift; sourceTree = "<group>"; };
+		935D25491C4C66F500386F23 /* Chameleon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Chameleon.framework; path = Carthage/Build/iOS/Chameleon.framework; sourceTree = "<group>"; };
 		9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoCam.swift; path = ../FlowMoCam.swift; sourceTree = "<group>"; };
 		9388B7CD1C2C3D6700D3F365 /* FlowMoDisplayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoDisplayController.swift; path = ../FlowMoDisplayController.swift; sourceTree = "<group>"; };
 		93B5B14C1C2A542B00F5B517 /* PermissionScope.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PermissionScope.framework; path = Carthage/Build/iOS/PermissionScope.framework; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93B5B14D1C2A542B00F5B517 /* PermissionScope.framework in Frameworks */,
+				935D254A1C4C66F500386F23 /* Chameleon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +150,7 @@
 				93F4D3861C10C0E100A8014F /* FlowMoSwiftUITests */,
 				93F4D3621C10C0E100A8014F /* Products */,
 				93F2BCB61C3880DC00193733 /* Museo_Slab_500.otf */,
+				935D25491C4C66F500386F23 /* Chameleon.framework */,
 				93B5B14C1C2A542B00F5B517 /* PermissionScope.framework */,
 			);
 			sourceTree = "<group>";
@@ -331,6 +335,7 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/PermissionScope.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Chameleon.framework",
 			);
 			outputPaths = (
 			);

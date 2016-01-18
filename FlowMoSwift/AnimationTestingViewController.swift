@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Chameleon
 //import PermissionScope
 
 
@@ -77,23 +78,23 @@ class AnimationTestingViewController: UIViewController {
     
     func drawLetter() {
     
-    let word = "Flomo"
-    let path = UIBezierPath()
-    let spacing: CGFloat = 50
-    var i: CGFloat = 0
-    for letter in word.characters {
-    let newPath = getPathForLetter(letter)
-    let actualPathRect = CGPathGetBoundingBox(path.CGPath)
-    let transform = CGAffineTransformMakeTranslation((CGRectGetWidth(actualPathRect) + min(i, 1)*spacing), 0)
-    newPath.applyTransform(transform)
-    path.appendPath(newPath)
-    i++
+//        
+//    let path = UIBezierPath()
+//    let spacing: CGFloat = 50
+//    var i: CGFloat = 0
+//    for letter in word.characters {
+//    let newPath = getPathForLetter(letter)
+//    let actualPathRect = CGPathGetBoundingBox(path.CGPath)
+//    let transform = CGAffineTransformMakeTranslation((CGRectGetWidth(actualPathRect) + min(i, 1)*spacing), 0)
+//    newPath.applyTransform(transform)
+//    path.appendPath(newPath)
+//    i++
         
-        }
-    wordLayer.strokeColor = UIColor.greenColor().CGColor
-    wordLayer.fillColor = UIColor.clearColor().CGColor
-    wordLayer.path = path.CGPath
-    view.layer.addSublayer(wordLayer)
+ //       }
+//    wordLayer.strokeColor = UIColor.greenColor().CGColor
+//    wordLayer.fillColor = UIColor.clearColor().CGColor
+//    wordLayer.path = path.CGPath
+//    view.layer.addSublayer(wordLayer)
     }
   
     

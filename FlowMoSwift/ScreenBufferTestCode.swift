@@ -11,6 +11,8 @@ import UIKit
 class ScreenBufferTestCode: UIViewController {
 
     
+
+    
 //    let videoDataOutput = AVCaptureVideoDataOutput()
 //    let stillCameraOutput = AVCaptureStillImageOutput()
 //    var sessionQueue:dispatch_queue_t = dispatch_queue_create("com.example.session_access_queue", DISPATCH_QUEUE_SERIAL)
