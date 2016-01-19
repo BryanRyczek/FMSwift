@@ -49,7 +49,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     let innerCircle = CAShapeLayer()
     let outerCircle = CAShapeLayer()
     let flashContainer = CAShapeLayer()
-    let bezierObject = BezierObjects()
     //MARK: GCD Helper Variables
     var GlobalMainQueue: dispatch_queue_t {
         return dispatch_get_main_queue()
