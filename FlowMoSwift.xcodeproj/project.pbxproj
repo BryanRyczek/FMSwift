@@ -111,6 +111,7 @@
 				9341D86D1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift */,
 				93E2E84E1C1734040092F589 /* FlowMo.swift */,
 				93BAA05D1C3C21C700818F15 /* BezierObjects.swift */,
+				93E2E85F1C1777780092F589 /* TextViewController.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -119,7 +120,6 @@
 			isa = PBXGroup;
 			children = (
 				93D99F8E1C2357AC00DEA183 /* ScreenBufferTestCode.swift */,
-				93E2E85F1C1777780092F589 /* TextViewController.swift */,
 				932A3BE91C19C15900D194E4 /* AnimationTestingViewController.swift */,
 			);
 			name = TestingFIles;

@@ -14,7 +14,7 @@ import CoreMedia
 import CoreImage
 import Photos
 
-class FlowMoDisplayController: UIViewController {
+class FlowMoDisplayController: UIViewController, UITextFieldDelegate {
     var flowMoImageArray : [UIImage] = []
     var flowMoDisplaySlider:FlowMoSlider?
     var flowMoAudioFile : NSURL?
@@ -25,7 +25,8 @@ class FlowMoDisplayController: UIViewController {
     var currentPlaybackState = playbackState.Paused
     //define audio player
     let audioPlayer = FlowMoAudioRecorderPlayer()
-    var textfield = FlowMoTextField()
+    var textField = UITextField()
+    var textFieldString : String?
     //
     weak var playbackTimer : NSTimer?
     
@@ -51,12 +52,13 @@ class FlowMoDisplayController: UIViewController {
         togglePausePlay()
         setupDoubleTapGesture()
         setupUpSwipeGesture()
-        textfield = FlowMoTextField.init(frame: CGRectMake(0, self.view.frame.size.width/2, self.view.frame.size.width, 50))
-        textfield.backgroundColor = UIColor.whiteColor()
-        textfield.alpha = 0.15
+        textField = FlowMoTextField.init(frame: CGRectMake(0, self.view.frame.size.width/2, self.view.frame.size.width, 50))
+        textField.backgroundColor = UIColor.whiteColor()
+        textField.alpha = 0.15
         let textFieldPan = UIPanGestureRecognizer(target: self, action: "handlePan:")
-        textfield.addGestureRecognizer(textFieldPan)
-        self.view.addSubview(textfield)
+        textField.addGestureRecognizer(textFieldPan)
+        self.view.addSubview(textField)
+        textField.delegate = self
     }
     
     func addFlowMoView() {
@@ -165,6 +167,32 @@ class FlowMoDisplayController: UIViewController {
         tap.delaysTouchesBegan = true
         view.addGestureRecognizer(tap)
     }
+    //MARK: DRAW CURSIVE TEXT
+    
+    func drawCursive() {
+        let cursiveTextView = TextViewController()
+        cursiveTextView.cursivePathFromString(textFieldString!)
+    }
+    
+    
+    //MARK: Text view delegate methods
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        print("TextField did end editing method called")
+        textFieldString = textField.text
+        print(textFieldString)
+        textField.removeFromSuperview()
+        drawCursive()
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.endEditing(true)
+        return true
+    }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+            }
     
     //MARK: HELPER METHODS
     func delay(delay:Double, closure:()->()) {

@@ -6,14 +6,10 @@
 //  Copyright © 2015 Bryan Ryczek. All rights reserved.
 //
 
-//CREATED FOR THE EXPRESS PURPOSE OF TESTING NEW CODE. NOT TO BE INCLUDED IN FINAL PROJECT.
-
-//Conor, replace "UISlider?" with "FlowMoSlider?" on lines 17, 26 and 71
-
 import UIKit
 import Chameleon
 
-class TextViewController: UIViewController, UIGestureRecognizerDelegate {
+class TextViewController: UIViewController, UIGestureRecognizerDelegate{
     
     var hersheyArray: [UIBezierPath] = []
     
@@ -28,6 +24,8 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate {
     let animation = CAKeyframeAnimation()
     
     var flowmoSlider:FlowMoSlider?
+    
+    var word: String?
     // These number values represent each slider position
     
     override func viewDidLoad() {
@@ -39,31 +37,27 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate {
         flowmoSlider!.minimumValue = 0
         flowmoSlider!.continuous = true
         flowmoSlider!.addTarget(self, action: "sliderValueDidChange:", forControlEvents: .ValueChanged)
-        
-        flomoLetters()
+    
     }
     
-    func flomoLetters() {
-
+    
+    func cursivePathFromString(string: String) {
         
         hersheyOffset = ["a":12.0, "b":0.0, "c":12.0, "d":0.0, "e":12.0, "f":0.0, "g":12.0, "h":0.0, "i":7.0, "j":7.0, "k":0.0, "l":0.0, "m":12.0, "n":12.0, "o":12.0, "p":11.0, "q":12.0, "r":11.0, "s":11.0, "t":0.0, "u":12.0, "v":12.0, "w":12.0, "x":12.0, "y":12.0, "z":12.0
         ]
 
-        drawLetter()
-    }
-    
-    func drawLetter() {
         
-        let word = "california"
+        let word = string
+        print(word)
         let wordArray = Array(word.characters)
         let wordPath = UIBezierPath()
         var wordOffset : CGFloat = 0
         
-        switch wordArray[0]{
+        switch wordArray[0] {
         case "f":
             wordOffset += 5.0
         case "j":
-            wordOffset +=  8.0
+            wordOffset += 8.0
         case "p":
             wordOffset += 4.0
         default:
@@ -73,9 +67,7 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate {
         for letter in wordArray {
             
             let yOffset = hersheyOffset[String(letter)]
-//            let bezPath = BezierObjects(fromLetter: String(letter))
-//            print(BezierObjects.hersheyPath)
-            let letterPath = UIBezierPath()
+            let letterPath = BezierObjects().getPathForLetter(String(letter))
             
             switch letter {
             case "f":
@@ -87,7 +79,6 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate {
             default:
                 break
             }
-            
             
             //print(actualPathRect)
             let transform = CGAffineTransformMakeTranslation(xOffset,yOffset!)
@@ -112,23 +103,12 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate {
         let transformScale = CGAffineTransformMakeScale(3.0, 3.0)
         wordView.transform = transformScale
         
-        if (letter == " ")
-        {
-            wordLayer.strokeColor = UIColor.clearColor().CGColor
-            wordLayer.lineWidth = 2.0
-            wordLayer.fillColor = UIColor.clearColor().CGColor
-            wordLayer.path = wordPath.CGPath
-            wordView.layer.addSublayer(wordLayer)
-        }
-        else
-        {
-            wordLayer.strokeColor = UIColor.blackColor().CGColor
-            wordLayer.lineWidth = 2.0
-            wordLayer.fillColor = UIColor.clearColor().CGColor
-            wordLayer.path = wordPath.CGPath
-            wordView.layer.addSublayer(wordLayer)
-        }
-        
+        wordLayer.strokeColor = UIColor.blackColor().CGColor
+        wordLayer.lineWidth = 2.0
+        wordLayer.fillColor = UIColor.clearColor().CGColor
+        wordLayer.path = wordPath.CGPath
+        wordView.layer.addSublayer(wordLayer)
+
         
         //ANIMATION
         let animateWord = CABasicAnimation(keyPath: "strokeEnd")
@@ -244,6 +224,7 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
 
     /*
