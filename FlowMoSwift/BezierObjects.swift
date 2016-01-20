@@ -11,16 +11,17 @@ import Foundation
 
 class BezierObjects: NSObject {
     
-    var hersheyPath = UIBezierPath()
+   var hersheyPath = UIBezierPath()
     
     override init() {
         super.init()
+        self.hersheyPath = UIBezierPath()
     }
     
     init(fromLetter letter: String) {
         super.init()
         self.hersheyPath = self.getPathForLetter(letter)
-        
+        print(hersheyPath)
     }
     
 

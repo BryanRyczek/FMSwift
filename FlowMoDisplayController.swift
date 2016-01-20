@@ -34,6 +34,11 @@ class FlowMoDisplayController: UIViewController {
         case Paused
     }
     
+    enum scratchModeState {
+        case Stopped
+        case Recording
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         flowMoAudioFile = FlowMoController().model.getAudio()
@@ -130,10 +135,11 @@ class FlowMoDisplayController: UIViewController {
         }
     }
     
-//    func dismissFlowMoDisplayController (sender: AnyObject) {
-//        audioPlayer.audioPlayer.stop()
-//        self.dismissViewControllerAnimated(true, completion: nil)
-//    }
+    func dismissFlowMoDisplayController (sender: AnyObject) {
+        audioPlayer.audioPlayer.stop()
+        playbackTimer?.invalidate()
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     //MARK: GESTURE METHODS
     

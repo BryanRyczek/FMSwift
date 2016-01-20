@@ -73,8 +73,8 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate {
         for letter in wordArray {
             
             let yOffset = hersheyOffset[String(letter)]
-            let bezPath = BezierObjects()
-            print(bezPath)
+//            let bezPath = BezierObjects(fromLetter: String(letter))
+//            print(BezierObjects.hersheyPath)
             let letterPath = UIBezierPath()
             
             switch letter {

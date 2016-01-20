@@ -18,41 +18,59 @@ class AnimationTestingViewController: UIViewController {
     let wordLayer = CAShapeLayer()
     
     override func viewDidLoad() {
-        let coloredSquare = UIView()
-        coloredSquare.backgroundColor = UIColor.blueColor()
-        coloredSquare.frame = CGRect(x: 0, y: 0, width: 0, height: 20)
-        self.view.addSubview(coloredSquare)
-        
-        UIView.animateWithDuration(3.0, animations: {
-            coloredSquare.backgroundColor = UIColor.redColor()
-            coloredSquare.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 20)
-            } , completion: { finished in
-             print("finished")
-        })
+      
         
         //// Color Declarations
         let color3 = UIColor(red: 0.076, green: 0.615, blue: 0.920, alpha: 1.000)
         
-        let letterLayer = CAShapeLayer()
-        //// theLetterF Drawing
-        let theLetterFPath = UIBezierPath()
-        theLetterFPath.moveToPoint(CGPointMake(34.73, 53.2))
-        theLetterFPath.addLineToPoint(CGPointMake(67.5, 53.2))
-        theLetterFPath.addLineToPoint(CGPointMake(67.5, 69.53))
-        theLetterFPath.addLineToPoint(CGPointMake(34.68, 69.53))
-        theLetterFPath.addLineToPoint(CGPointMake(34.68, 111.38))
-        theLetterFPath.addLineToPoint(CGPointMake(17.88, 111.38))
-        theLetterFPath.addLineToPoint(CGPointMake(17.88, 11.38))
-        theLetterFPath.addLineToPoint(CGPointMake(75.04, 11.38))
-        theLetterFPath.addLineToPoint(CGPointMake(75.04, 28.34))
-        theLetterFPath.addLineToPoint(CGPointMake(35.2, 28.34))
-        theLetterFPath.usesEvenOddFillRule = true;
-        
+        let flashTopLayer = CAShapeLayer()
        
-        letterLayer.path = theLetterFPath.CGPath
-        letterLayer.fillColor = UIColor.clearColor().CGColor
-        letterLayer.strokeColor = color3.CGColor
-        letterLayer.lineWidth = 4
+        var flashTopPath = UIBezierPath()
+        flashTopPath.moveToPoint(CGPointMake(31.27, 50.66))
+        flashTopPath.addCurveToPoint(CGPointMake(16.76, 50.66), controlPoint1: CGPointMake(27.49, 50.66), controlPoint2: CGPointMake(20.4, 50.66))
+        flashTopPath.addCurveToPoint(CGPointMake(2.3, 50.67), controlPoint1: CGPointMake(11.94, 50.66), controlPoint2: CGPointMake(7.12, 50.65))
+        flashTopPath.addCurveToPoint(CGPointMake(0.21, 49.77), controlPoint1: CGPointMake(1.45, 50.68), controlPoint2: CGPointMake(0.67, 50.62))
+        flashTopPath.addCurveToPoint(CGPointMake(0.5, 47.59), controlPoint1: CGPointMake(-0.23, 48.97), controlPoint2: CGPointMake(0.09, 48.29))
+        flashTopPath.addCurveToPoint(CGPointMake(21.36, 12.19), controlPoint1: CGPointMake(7.46, 35.79), controlPoint2: CGPointMake(14.41, 23.99))
+        flashTopPath.addCurveToPoint(CGPointMake(27.95, 0.99), controlPoint1: CGPointMake(23.56, 8.46), controlPoint2: CGPointMake(25.76, 4.73))
+        flashTopPath.addCurveToPoint(CGPointMake(29.66, 0), controlPoint1: CGPointMake(28.34, 0.33), controlPoint2: CGPointMake(28.89, -0.05))
+        flashTopPath.addCurveToPoint(CGPointMake(31.14, 1.09), controlPoint1: CGPointMake(30.37, 0.05), controlPoint2: CGPointMake(30.89, 0.42))
+        flashTopPath.addCurveToPoint(CGPointMake(31.26, 2.03), controlPoint1: CGPointMake(31.24, 1.38), controlPoint2: CGPointMake(31.26, 1.71))
+        flashTopPath.addCurveToPoint(CGPointMake(31.27, 29.03), controlPoint1: CGPointMake(31.27, 11.03), controlPoint2: CGPointMake(31.27, 20.03))
+        flashTopPath.addCurveToPoint(CGPointMake(31.27, 29.97), controlPoint1: CGPointMake(31.27, 29.31), controlPoint2: CGPointMake(31.27, 29.6))
+        flashTopPath.addLineToPoint(CGPointMake(31.27, 50.66))
+        flashTopPath.closePath()
+        flashTopPath.usesEvenOddFillRule = true;
+        
+        
+        flashTopLayer.path = flashTopPath.CGPath
+        flashTopLayer.fillColor = UIColor.clearColor().CGColor
+        flashTopLayer.strokeColor = color3.CGColor
+        flashTopLayer.lineWidth = 4
+        
+        let flashBottomLayer = CAShapeLayer()
+        
+        var flashBottomPath = UIBezierPath()
+        flashBottomPath.moveToPoint(CGPointMake(31.43, -0.16))
+        flashBottomPath.addCurveToPoint(CGPointMake(45.93, -0.16), controlPoint1: CGPointMake(35.2, -0.16), controlPoint2: CGPointMake(42.3, -0.16))
+        flashBottomPath.addCurveToPoint(CGPointMake(60.4, -0.17), controlPoint1: CGPointMake(50.76, -0.16), controlPoint2: CGPointMake(55.58, -0.15))
+        flashBottomPath.addCurveToPoint(CGPointMake(62.48, 0.73), controlPoint1: CGPointMake(61.25, -0.17), controlPoint2: CGPointMake(62.02, -0.11))
+        flashBottomPath.addCurveToPoint(CGPointMake(62.19, 2.92), controlPoint1: CGPointMake(62.92, 1.53), controlPoint2: CGPointMake(62.61, 2.21))
+        flashBottomPath.addCurveToPoint(CGPointMake(41.34, 38.31), controlPoint1: CGPointMake(55.24, 14.71), controlPoint2: CGPointMake(48.29, 26.51))
+        flashBottomPath.addCurveToPoint(CGPointMake(34.74, 49.51), controlPoint1: CGPointMake(39.14, 42.04), controlPoint2: CGPointMake(36.94, 45.78))
+        flashBottomPath.addCurveToPoint(CGPointMake(33.03, 50.5), controlPoint1: CGPointMake(34.35, 50.17), controlPoint2: CGPointMake(33.81, 50.55))
+        flashBottomPath.addCurveToPoint(CGPointMake(31.56, 49.42), controlPoint1: CGPointMake(32.32, 50.45), controlPoint2: CGPointMake(31.8, 50.08))
+        flashBottomPath.addCurveToPoint(CGPointMake(31.43, 48.47), controlPoint1: CGPointMake(31.45, 49.13), controlPoint2: CGPointMake(31.43, 48.79))
+        flashBottomPath.addCurveToPoint(CGPointMake(31.43, 21.48), controlPoint1: CGPointMake(31.43, 39.47), controlPoint2: CGPointMake(31.43, 30.48))
+        flashBottomPath.addCurveToPoint(CGPointMake(31.43, 20.53), controlPoint1: CGPointMake(31.43, 21.19), controlPoint2: CGPointMake(31.43, 20.9))
+        flashBottomPath.addLineToPoint(CGPointMake(31.43, -0.16))
+        flashBottomPath.closePath()
+        flashBottomPath.usesEvenOddFillRule = true;
+        
+        flashBottomLayer.path = flashBottomPath.CGPath
+        flashBottomLayer.fillColor = UIColor.clearColor().CGColor
+        flashBottomLayer.strokeColor = color3.CGColor
+        flashBottomLayer.lineWidth = 4
         
         let animateStrokeEnd = CABasicAnimation(keyPath: "strokeEnd")
         animateStrokeEnd.duration = 2.0
@@ -60,11 +78,12 @@ class AnimationTestingViewController: UIViewController {
         animateStrokeEnd.toValue = 1.0
         
         // add the animation
-        letterLayer.addAnimation(animateStrokeEnd, forKey: "animate stroke end animation")
+        flashTopLayer.addAnimation(animateStrokeEnd, forKey: "animate stroke end animation")
+        flashBottomLayer.addAnimation(animateStrokeEnd, forKey: "animate stroke end animation")
         
-        view.layer.addSublayer(letterLayer)
-        
-       drawLetter()
+        view.layer.addSublayer(flashTopLayer)
+        view.layer.addSublayer(flashBottomLayer)
+     
         
         let animateWord = CABasicAnimation(keyPath: "strokeEnd")
         animateWord.duration = 5.0
@@ -75,44 +94,6 @@ class AnimationTestingViewController: UIViewController {
         wordLayer.addAnimation(animateWord, forKey: "animate")
         //NSProgressIndicator()
     }
-    
-    func drawLetter() {
-    
-//        
-//    let path = UIBezierPath()
-//    let spacing: CGFloat = 50
-//    var i: CGFloat = 0
-//    for letter in word.characters {
-//    let newPath = getPathForLetter(letter)
-//    let actualPathRect = CGPathGetBoundingBox(path.CGPath)
-//    let transform = CGAffineTransformMakeTranslation((CGRectGetWidth(actualPathRect) + min(i, 1)*spacing), 0)
-//    newPath.applyTransform(transform)
-//    path.appendPath(newPath)
-//    i++
-        
- //       }
-//    wordLayer.strokeColor = UIColor.greenColor().CGColor
-//    wordLayer.fillColor = UIColor.clearColor().CGColor
-//    wordLayer.path = path.CGPath
-//    view.layer.addSublayer(wordLayer)
-    }
-  
-    
-    func getPathForLetter(letter: Character) -> UIBezierPath {
-        var path = UIBezierPath()
-        let font = CTFontCreateWithName("HelveticaNeue", 64, nil)
-        var unichars = [UniChar]("\(letter)".utf16)
-        var glyphs = [CGGlyph](count: unichars.count, repeatedValue: 0)
-        
-        let gotGlyphs = CTFontGetGlyphsForCharacters(font, &unichars, &glyphs, unichars.count)
-        if gotGlyphs {
-            let cgpath = CTFontCreatePathForGlyph(font, glyphs[0], nil)
-            path = UIBezierPath(CGPath: cgpath!)
-        }
-        
-        return path
-    }
-    
     
 //    let permissions = PermissionScope()
     

@@ -422,6 +422,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
             if (result == .Succeeded) {
                 self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
+                print(count)
+                print(self.flowMoImageArray.count)
                 if (count == self.flowMoImageArray.count) {
                     self.presentFlowMoDisplayController(self.flowMoImageArray)
                 }
@@ -432,7 +434,10 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
     func presentFlowMoDisplayController (flowMoImageArray: [UIImage]) {
         dispatch_async(GlobalMainQueue){
-            
+            //reset outerCircle
+            self.outerCircle.removeFromSuperlayer()
+            self.outerCircle.strokeStart = 0.0
+            //set model
             self.model.setNewAudio(self.audioRecorder.audioRecorder.url)
             self.model.setNewFlowMo(self.flowMoImageArray)
             self.model.setFlowMoAudioStartTime(self.flowmoAudioStartTime!)
@@ -440,6 +445,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
 //            flowMoDisplayController.flowmoAudioStartTime = self.flowmoAudioStartTime
 //            flowMoDisplayController.flowmoAudioDuration = self.flowmoAudioDuration
             let flowMoDisplayController = FlowMoDisplayController()
+            self.flowMoImageArray.removeAll()
             self.presentViewController(flowMoDisplayController, animated: false, completion: nil)
         }
     }
