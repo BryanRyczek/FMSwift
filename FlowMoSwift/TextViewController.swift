@@ -112,11 +112,22 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate {
         let transformScale = CGAffineTransformMakeScale(3.0, 3.0)
         wordView.transform = transformScale
         
-        wordLayer.strokeColor = UIColor.blackColor().CGColor
-        wordLayer.lineWidth = 2.0
-        wordLayer.fillColor = UIColor.clearColor().CGColor
-        wordLayer.path = wordPath.CGPath
-        wordView.layer.addSublayer(wordLayer)
+        if (letter == " ")
+        {
+            wordLayer.strokeColor = UIColor.clearColor().CGColor
+            wordLayer.lineWidth = 2.0
+            wordLayer.fillColor = UIColor.clearColor().CGColor
+            wordLayer.path = wordPath.CGPath
+            wordView.layer.addSublayer(wordLayer)
+        }
+        else
+        {
+            wordLayer.strokeColor = UIColor.blackColor().CGColor
+            wordLayer.lineWidth = 2.0
+            wordLayer.fillColor = UIColor.clearColor().CGColor
+            wordLayer.path = wordPath.CGPath
+            wordView.layer.addSublayer(wordLayer)
+        }
         
         
         //ANIMATION
