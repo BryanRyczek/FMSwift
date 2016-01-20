@@ -28,6 +28,29 @@ class BezierObjects: NSObject {
     func getPathForLetter(letter: String) -> UIBezierPath {
         
         switch letter {
+        case " ":
+            hersheyPath.moveToPoint(CGPointMake(9, 3))
+            hersheyPath.addLineToPoint(CGPointMake(8, 1))
+            hersheyPath.addLineToPoint(CGPointMake(6, 0))
+            hersheyPath.addLineToPoint(CGPointMake(4, 0))
+            hersheyPath.addLineToPoint(CGPointMake(2, 1))
+            hersheyPath.addLineToPoint(CGPointMake(1, 2))
+            hersheyPath.addLineToPoint(CGPointMake(0, 4))
+            hersheyPath.addLineToPoint(CGPointMake(0, 6))
+            hersheyPath.addLineToPoint(CGPointMake(1, 8))
+            hersheyPath.addLineToPoint(CGPointMake(3, 9))
+            hersheyPath.addLineToPoint(CGPointMake(5, 9))
+            hersheyPath.addLineToPoint(CGPointMake(7, 8))
+            hersheyPath.addLineToPoint(CGPointMake(8, 6))
+            hersheyPath.addLineToPoint(CGPointMake(10, 0))
+            hersheyPath.addLineToPoint(CGPointMake(9, 5))
+            hersheyPath.addLineToPoint(CGPointMake(9, 8))
+            hersheyPath.addLineToPoint(CGPointMake(10, 9))
+            hersheyPath.addLineToPoint(CGPointMake(11, 9))
+            hersheyPath.addLineToPoint(CGPointMake(13, 8))
+            hersheyPath.addLineToPoint(CGPointMake(14, 7))
+            hersheyPath.addLineToPoint(CGPointMake(16, 4))
+        
         case "a":
             hersheyPath.moveToPoint(CGPointMake(9, 3))
             hersheyPath.addLineToPoint(CGPointMake(8, 1))
