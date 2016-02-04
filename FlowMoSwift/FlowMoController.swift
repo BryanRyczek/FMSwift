@@ -153,33 +153,65 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         captureSession.commitConfiguration()
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touchPoint = touches.first as UITouch!
-        let screenSize = self.view.bounds.size
-        let focusPoint = touchPoint.locationInView(self.view)
-        //var focusPoint = CGPoint(x: touchPoint.locationInView(self.view).y / screenSize.height, y: 1.0 - touchPoint.locationInView(self.view.x / screenSize.width)
-
-        if let device = currentDevice {
-            do {
-                try device.lockForConfiguration()
-            } catch {
-                print(error)
-                return
-            }
-            
-            if device.focusPointOfInterestSupported {
-                print("focus supported")
-                device.focusPointOfInterest = focusPoint
-                device.focusMode = AVCaptureFocusMode.AutoFocus
-            }
-            if device.exposurePointOfInterestSupported {
-                 print("exposure supported")
-                device.exposurePointOfInterest = focusPoint
-                device.exposureMode = AVCaptureExposureMode.AutoExpose
-                }
-            device.unlockForConfiguration()
-        }
+    func uploadVideo() {
+    print("upload video")
     }
+    
+//    
+//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        let touchCount = touches.count
+//        let touch = touches.first as UITouch!
+//        //        foco(touch)
+//        var screenSize = view.bounds.size
+//        
+//        
+//        if let device = currentDevice {
+//            do {
+//                try device.lockForConfiguration()
+//            } catch {
+//                print(error)
+//                return
+//            }
+//            
+//            if (device.focusPointOfInterestSupported) {
+//                device.focusPointOfInterest = touch.locationInView(self.view)
+//                device.focusMode = AVCaptureFocusMode.AutoFocus
+//                device.exposurePointOfInterest = touch.locationInView(self.view)
+//                device.exposureMode = AVCaptureExposureMode.AutoExpose
+//                device.unlockForConfiguration()
+//            }
+//        }
+//    }
+    
+
+    
+//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        let touchPoint = touches.first as UITouch!
+//        let screenSize = self.view.bounds.size
+//        //let focusPoint = touchPoint.locationInView(self.view)
+//        var focusPoint = CGPoint(x: touchPoint.locationInView(self.view).y / screenSize.height, y: 1.0 - touchPoint.locationInView(self.view).x / screenSize.width)
+//
+//        if let device = currentDevice {
+//            do {
+//                try device.lockForConfiguration()
+//            } catch {
+//                print(error)
+//                return
+//            }
+//            
+//            if device.focusPointOfInterestSupported {
+//                print("focus supported")
+//                device.focusPointOfInterest = focusPoint
+//                device.focusMode = AVCaptureFocusMode.AutoFocus
+//            }
+//            if device.exposurePointOfInterestSupported {
+//                 print("exposure supported")
+//                device.exposurePointOfInterest = focusPoint
+//                device.exposureMode = AVCaptureExposureMode.AutoExpose
+//                }
+//            device.unlockForConfiguration()
+//        }
+//    }
 
     func captureAnimationBar() {
         let coloredSquare = UIView()

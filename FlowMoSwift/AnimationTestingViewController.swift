@@ -71,6 +71,7 @@ class AnimationTestingViewController: UIViewController {
         flashBottomLayer.fillColor = UIColor.clearColor().CGColor
         flashBottomLayer.strokeColor = color3.CGColor
         flashBottomLayer.lineWidth = 4
+    
         
         let animateStrokeEnd = CABasicAnimation(keyPath: "strokeEnd")
         animateStrokeEnd.duration = 2.0
@@ -83,13 +84,23 @@ class AnimationTestingViewController: UIViewController {
         
         view.layer.addSublayer(flashTopLayer)
         view.layer.addSublayer(flashBottomLayer)
-     
+        
+        let animatePosition = CABasicAnimation(keyPath: "position")
+        var toPoint: CGPoint = CGPointMake(0.0, 30.0)
+        var fromPoint : CGPoint = CGPointZero
+        animatePosition.duration = 2.0
+        animatePosition.fromValue = NSValue(CGPoint: fromPoint)
+        animatePosition.toValue = NSValue(CGPoint: toPoint)
+        animatePosition.additive = true
+        animatePosition.fillMode = kCAFillModeBoth // keep to value after finishing
+        animatePosition.removedOnCompletion = false // don't remove after finishing
+        
+        flashBottomLayer.addAnimation(animatePosition, forKey: "position")
         
         let animateWord = CABasicAnimation(keyPath: "strokeEnd")
         animateWord.duration = 5.0
         animateWord.fromValue = 0.0
         animateWord.toValue = 1.0
-        
     
         wordLayer.addAnimation(animateWord, forKey: "animate")
         //NSProgressIndicator()

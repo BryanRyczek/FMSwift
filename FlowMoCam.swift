@@ -25,7 +25,7 @@ class FlowMoCam: FlowMoController {
         buttonsView()
         audioLoad()
         setupDoubleTapGesture()
-        setupUpSwipeGesture()
+        setupTripleTapGesture()
         flashElements()
         
         //Code to load Camera
@@ -70,6 +70,11 @@ class FlowMoCam: FlowMoController {
 //            return
 //        }
 //        
+        print(self.view?.multipleTouchEnabled)
+        self.view?.multipleTouchEnabled = true
+        print(self.view?.multipleTouchEnabled)
+        print(self.view?.userInteractionEnabled)
+        print(super.view.userInteractionEnabled)
   }
     
     // MARK: BUTTON METHODS
@@ -90,30 +95,50 @@ class FlowMoCam: FlowMoController {
     
     func buttonsView() {
         //Button Setup
+        bottomButtonView()
         toggleTorchButton()
         captureButton()
         toggleCameraButton()
+        importVideoButton()
+       
     }
     
-    func setupUpSwipeGesture() {
-        let upSwipe = UISwipeGestureRecognizer(target: self, action: "setTorchMode:")
-        upSwipe.direction = .Up
-        upSwipe.delaysTouchesBegan = true
-        view.addGestureRecognizer(upSwipe)
+    func setupTripleTapGesture() {
+        let tripTap = UISwipeGestureRecognizer(target: self, action: "setTorchMode:")
+        tripTap.numberOfTouchesRequired = 3
+        tripTap.delaysTouchesBegan = false
+        view.addGestureRecognizer(tripTap)
     }
     
     func setupDoubleTapGesture() {
     let tap = UITapGestureRecognizer(target: self, action: "toggleCamera:")
     tap.numberOfTapsRequired = 2
-    tap.delaysTouchesBegan = true
+    tap.delaysTouchesBegan = false
     view.addGestureRecognizer(tap)
     }
-    
+  
 
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        print("touches began")
+    }
+//    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        print("touches ended")
+//    }
+    
+    func bottomButtonView() {
+        let bottomButtonView = UIView()
+        bottomButtonView.frame = CGRect(x: ((self.view.frame.size.width - 210)/2),y: self.view.frame.size.height-70,width: 210,height: 70)
+        bottomButtonView.backgroundColor = UIColor.whiteColor()
+        self.view.addSubview(bottomButtonView)
+        
+    }
+
+    
     func toggleTorchButton() {
         let toggleTorchButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
-        toggleTorchButton.frame = CGRectMake(0, 0, 70, 70)
-        toggleTorchButton.backgroundColor = UIColor.clearColor()
+        toggleTorchButton.frame = CGRectMake(((self.view.frame.size.width)/2) + 35, self.view.frame.size.height-70, 70, 70)
+        toggleTorchButton.backgroundColor = UIColor.blueColor()
+        toggleTorchButton.alpha = 0.5
         toggleTorchButton.addTarget(self, action: "setTorchMode:", forControlEvents: .TouchUpInside)
         self.view.addSubview(toggleTorchButton)
     }
@@ -131,11 +156,22 @@ class FlowMoCam: FlowMoController {
     
     func toggleCameraButton() {
         let toggleCameraButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
-        toggleCameraButton.frame = CGRectMake(70, 0, 70, 70)
+        toggleCameraButton.frame = CGRectMake(((self.view.frame.size.width)/2) - 35, self.view.frame.size.height-70, 70, 70)
         toggleCameraButton.backgroundColor = UIColor.redColor()
+        toggleCameraButton.alpha = 0.5
         toggleCameraButton.addTarget(self, action: "toggleCamera:", forControlEvents: .TouchUpInside)
         self.view.addSubview(toggleCameraButton)
     }
+    
+    func importVideoButton() {
+        let importVideoButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
+        importVideoButton.frame = CGRectMake(((self.view.frame.size.width)/2) - 105, self.view.frame.size.height-70, 70, 70)
+        importVideoButton.backgroundColor = UIColor.greenColor()
+        importVideoButton.alpha = 0.5
+        importVideoButton.addTarget(self, action: "uploadVideo", forControlEvents: .TouchUpInside)
+        self.view.addSubview(importVideoButton)
+    }
+    
     
     //MARK: HELPER METHODS
     //hide iphone status bar

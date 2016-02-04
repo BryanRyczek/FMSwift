@@ -13,8 +13,9 @@ import AVKit
 import CoreMedia
 import CoreImage
 import Photos
+import Chameleon
 
-class FlowMoDisplayController: UIViewController, UITextFieldDelegate {
+class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     var flowMoImageArray : [UIImage] = []
     var flowMoDisplaySlider:FlowMoSlider?
     var flowMoAudioFile : NSURL?
@@ -27,7 +28,8 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate {
     let audioPlayer = FlowMoAudioRecorderPlayer()
     var textField = UITextField()
     var textFieldString : String?
-    //
+    var wordView : UIView?
+    var wordLayer = CAShapeLayer()
     weak var playbackTimer : NSTimer?
     
     enum playbackState {
@@ -55,7 +57,7 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate {
         textField = FlowMoTextField.init(frame: CGRectMake(0, self.view.frame.size.width/2, self.view.frame.size.width, 50))
         textField.backgroundColor = UIColor.whiteColor()
         textField.alpha = 0.15
-        let textFieldPan = UIPanGestureRecognizer(target: self, action: "handlePan:")
+        let textFieldPan = UIPanGestureRecognizer(target: self, action: "handleTextPan:")
         textField.addGestureRecognizer(textFieldPan)
         self.view.addSubview(textField)
         textField.delegate = self
@@ -95,12 +97,83 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func drawCursive(string: String?) -> UIBezierPath {
+        
+        print(string)
+        let wordArray = Array(string!.characters)
+        var wordOffset : CGFloat = 0
+        
+        switch wordArray[0] {
+        case "f":
+            wordOffset += 5.0
+        case "j":
+            wordOffset += 8.0
+        case "p":
+            wordOffset += 4.0
+        default:
+            break
+        }
+        
+        let wordPath = TextViewController().cursivePathFromString(string!)
+        
+        let wordTransform = CGAffineTransformMakeTranslation(wordOffset, 0.0)
+        wordPath.applyTransform(wordTransform)
+        
+        return wordPath
+            
+        }
+    
+    
+    func bezPathIntoLayer () -> CAShapeLayer {
+        
+        let wordLayer = CAShapeLayer()
+        wordLayer.strokeColor = UIColor.blackColor().CGColor
+        wordLayer.lineWidth = 2.0
+        wordLayer.fillColor = UIColor.clearColor().CGColor
+        return wordLayer
+        
+        }
+        
+    func layerIntoView (bezierPath : UIBezierPath, shapeLayer :CAShapeLayer) -> UIView {
+        
+        
+        //ANIMATION
+        let animateWord = CABasicAnimation(keyPath: "strokeEnd")
+        animateWord.duration = 1.0
+        animateWord.fromValue = 0.0
+        animateWord.toValue = 1.0
+    
+        wordLayer = shapeLayer
+        wordLayer.addAnimation(animateWord, forKey: "animate")
+        wordLayer.speed = 0.0
+        wordLayer.path = bezierPath.CGPath
+        let wordView = UIView()
+        wordView.frame = CGPathGetBoundingBox(bezierPath.CGPath)
+        wordView.center = CGPoint(x:view.center.x,
+            y:view.center.y)
+        wordView.backgroundColor = UIColor.cyanColor()
+        wordView.alpha = 0.5
+        let transformScale = CGAffineTransformMakeScale(3.0, 3.0)
+        wordView.transform = transformScale
+        wordView.layer.addSublayer(shapeLayer)
+        return wordView
+        
+        }
+        
+    
     func sliderValueDidChange (sender: UISlider) {
         
         let currentImageIndex = Int((flowMoDisplaySlider?.value)!)
         let localImage = flowMoImageArray[currentImageIndex]
         flowMoView.image = localImage
-        flowmoAudioCurrentTime = (Double(currentImageIndex) / 30.00000000000) + Double(flowmoAudioStartTime!)
+        flowmoAudioCurrentTime = (Double(currentImageIndex) / 30.00) + Double(flowmoAudioStartTime!)
+        
+        let sliderValue = (sender.value / flowMoDisplaySlider!.maximumValue)
+        print("sliderValue \(sliderValue)")
+        let timeInterval = CFTimeInterval(sliderValue)
+        print("timeInterval \(timeInterval)")
+        wordLayer.timeOffset = timeInterval
+        print("timeOffset \(wordLayer.timeOffset)")
     }
     
     func flowMoPlaybackTimer() {
@@ -145,7 +218,7 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate {
     
     //MARK: GESTURE METHODS
     
-    func handlePan (recognizer:UIPanGestureRecognizer) {
+    func handleTextPan (recognizer:UIPanGestureRecognizer) {
         let translation = recognizer.translationInView(self.view)
         if let view = recognizer.view {
             view.center = CGPoint(x:view.center.x,
@@ -169,20 +242,109 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate {
     }
     //MARK: DRAW CURSIVE TEXT
     
-    func drawCursive() {
-        let cursiveTextView = TextViewController()
-        cursiveTextView.cursivePathFromString(textFieldString!)
+    
+    func handleTap (sender: UITapGestureRecognizer) {
+        print("tap")
+       // wordView.backgroundColor = GradientColor(UIGradientStyle.LeftToRight, frame: wordView.frame, colors: [FlatPurple(), wordView.backgroundColor!, FlatYellow(), FlatRed(), FlatPlum()])
     }
     
+    func handlePan (sender: UIPanGestureRecognizer) {
+        let translation = sender.translationInView(self.view)
+        if let view = sender.view {
+            view.center = CGPoint(x:view.center.x + translation.x,
+                y:view.center.y + translation.y)
+        }
+        sender.setTranslation(CGPointZero, inView: self.view)
+        
+        if sender.state == UIGestureRecognizerState.Ended {
+            // 1
+            let velocity = sender.velocityInView(self.view)
+            let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
+            let slideMultiplier = magnitude / 200
+            print("magnitude: \(magnitude), slideMultiplier: \(slideMultiplier)")
+            
+            // 2
+            let slideFactor = 0.1 * slideMultiplier     //Increase for more of a slide
+            // 3
+            var finalPoint = CGPoint(x:sender.view!.center.x + (velocity.x * slideFactor),
+                y:sender.view!.center.y + (velocity.y * slideFactor))
+            // 4
+            finalPoint.x = min(max(finalPoint.x, 0), self.view.bounds.size.width)
+            finalPoint.y = min(max(finalPoint.y, 0), self.view.bounds.size.height)
+            
+            // 5
+            UIView.animateWithDuration(Double(slideFactor * 2),
+                delay: 0,
+            // 6
+            options: UIViewAnimationOptions.CurveEaseOut,
+            animations: {sender.view!.center = finalPoint },
+            completion: nil)
+        }
+    }
+    
+    func handlePinch(sender : UIPinchGestureRecognizer) {
+        if let view = sender.view {
+            view.transform = CGAffineTransformScale(view.transform,
+                sender.scale, sender.scale)
+            sender.scale = 1
+        }
+    }
+    
+    func handleRotation(sender: UIRotationGestureRecognizer) {
+        if let view = sender.view {
+            view.transform = CGAffineTransformRotate(view.transform, sender.rotation)
+            sender.rotation = 0
+        }
+    }
+    
+    func setupTap(view: UIView) {
+        let tap = UITapGestureRecognizer(target: self, action: "handleTap:")
+        tap.delegate = self
+        view.addGestureRecognizer(tap)
+    }
+    
+    func setupPan(view: UIView) {
+        let pan = UIPanGestureRecognizer(target: self, action: "handlePan:")
+        pan.delegate = self
+        view.addGestureRecognizer(pan)
+    }
+    
+    func setupPinch(view: UIView) {
+        let pinch = UIPinchGestureRecognizer(target: self, action: "handlePinch:")
+        pinch.delegate = self
+        view.addGestureRecognizer(pinch)
+    }
+    
+    func setupRotate(view: UIView) {
+        let rotate = UIRotationGestureRecognizer(target: self, action: "handleRotation:")
+        rotate.delegate = self
+        view.addGestureRecognizer(rotate)
+    }
+
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
+            return true
+    }
     
     //MARK: Text view delegate methods
     
     func textFieldDidEndEditing(textField: UITextField) {
-        print("TextField did end editing method called")
-        textFieldString = textField.text
+        
+        let textFieldString = textField.text
         print(textFieldString)
         textField.removeFromSuperview()
-        drawCursive()
+        wordView = layerIntoView(drawCursive(textFieldString!), shapeLayer: bezPathIntoLayer())
+        
+        if let wordyView = wordView {
+        view.addSubview(wordyView)
+        
+        setupPan(wordyView)
+        setupPinch(wordyView)
+        setupRotate(wordyView)
+        setupTap(wordyView)
+            
+        }
+        
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

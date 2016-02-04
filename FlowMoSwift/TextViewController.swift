@@ -9,7 +9,7 @@
 import UIKit
 import Chameleon
 
-class TextViewController: UIViewController, UIGestureRecognizerDelegate{
+class TextViewController: UIViewController{
     
     var hersheyArray: [UIBezierPath] = []
     
@@ -17,54 +17,36 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate{
     
     var hersheyOffset = [String: CGFloat]()
     
-    var wordLayer = CAShapeLayer()
-    
-    let wordView = UIView()
-    
     let animation = CAKeyframeAnimation()
-    
-    var flowmoSlider:FlowMoSlider?
     
     var word: String?
     // These number values represent each slider position
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        flowmoSlider = FlowMoSlider(frame: self.view.bounds)
-        self.view.addSubview(flowmoSlider!)
-        flowmoSlider!.maximumValue = 100
-        flowmoSlider!.minimumValue = 0
-        flowmoSlider!.continuous = true
-        flowmoSlider!.addTarget(self, action: "sliderValueDidChange:", forControlEvents: .ValueChanged)
+
     
     }
     
     
-    func cursivePathFromString(string: String) {
+    func cursivePathFromString(string: String) -> UIBezierPath {
         
-        hersheyOffset = ["a":12.0, "b":0.0, "c":12.0, "d":0.0, "e":12.0, "f":0.0, "g":12.0, "h":0.0, "i":7.0, "j":7.0, "k":0.0, "l":0.0, "m":12.0, "n":12.0, "o":12.0, "p":11.0, "q":12.0, "r":11.0, "s":11.0, "t":0.0, "u":12.0, "v":12.0, "w":12.0, "x":12.0, "y":12.0, "z":12.0
+        hersheyOffset = [" ": 0.0, //Special characters
+            "a":12.0, "b":0.0, "c":12.0, "d":0.0, "e":12.0, "f":0.0, "g":12.0, "h":0.0, "i":7.0, "j":7.0, "k":0.0, "l":0.0, "m":12.0, "n":12.0, "o":12.0, "p":11.0, "q":12.0, "r":11.0, "s":11.0, "t":0.0, "u":12.0, "v":12.0, "w":12.0, "x":12.0, "y":12.0, "z":12.0, //lowercase leters
+            "A": 0.0, "B": 0.0, "C": 0.0, "D": 0.0, "E": 0.0, "F": 0.0, "G": 0.0, "H": 0.0, "I": 0.0, "J": 0.0, "K": 0.0, "L": 0.0, "M": 0.0, "N": 0.0, "O": 0.0, "P": 0.0, "Q": 0.0, "R": 0.0, "S": 0.0, "T": 0.0, "U": 0.0, "V": 0.0, "W": 0.0, "X": 0.0, "Y": 0.0, "Z": 0.0, //UPPERCASE LETTERS
+            "0": 0.0, "1": 0.0, "2": 0.0, "3": 0.0, "4": 0.0, "5": 0.0, "6": 0.0, "7": 0.0, "8": 0.0,"9": 0.0, //numb3r5
+            "!": 0.0, "\"": 0.0, "#": 0.0, "$": 0.0, "%": 0.0, "&": 0.0, "(": 0.0, ")": 0.0, "*": 0.0, "+": 0.0, ",": 0.0, "-": 0.0, ".": 0.0, "/": 0.0, ":": 0.0, ";": 0.0, "<": 0.0, "=": 0.0, ">": 0.0, "?": 0.0, "@": 0.0, "[": 0.0, "\\": 0.0, "]": 0.0, "^": 0.0, "_": 0.0, "'": 0.0, "{": 0.0, "|": 0.0, "}": 0.0, "~": 0.0  //Symbols
+
         ]
 
-        
         let word = string
-        print(word)
         let wordArray = Array(word.characters)
         let wordPath = UIBezierPath()
-        var wordOffset : CGFloat = 0
-        
-        switch wordArray[0] {
-        case "f":
-            wordOffset += 5.0
-        case "j":
-            wordOffset += 8.0
-        case "p":
-            wordOffset += 4.0
-        default:
-            break
-        }
         
         for letter in wordArray {
+            if (letter == " ") {
+                
+            }
             
             let yOffset = hersheyOffset[String(letter)]
             let letterPath = BezierObjects().getPathForLetter(String(letter))
@@ -76,6 +58,27 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate{
                 xOffset -= 8.0
             case "p":
                 xOffset -= 4.0
+            case "0":
+                xOffset += 4.0
+            case "1":
+                xOffset += 4.0
+            case "2":
+                xOffset += 4.0
+            case "3":
+                xOffset += 4.0
+            case "4":
+                xOffset += 4.0
+            case "5":
+                xOffset += 4.0
+            case "6":
+                xOffset += 4.0
+            case "7":
+                xOffset += 4.0
+            case "8":
+                xOffset += 4.0
+            case "9":
+                xOffset += 4.0
+                
             default:
                 break
             }
@@ -90,135 +93,10 @@ class TextViewController: UIViewController, UIGestureRecognizerDelegate{
             let actualPathRect = CGPathGetBoundingBox(letterPath.CGPath)
             xOffset = xOffset + CGRectGetWidth(actualPathRect)
             
-            
         }
-        // need this transform to fit word in frame due to letter offsets
-        let wordTransform = CGAffineTransformMakeTranslation(wordOffset, 0.0)
-        wordPath.applyTransform(wordTransform)
-        wordView.frame = CGPathGetBoundingBox(wordPath.CGPath)
-        wordView.center = CGPoint(x:view.center.x,
-            y:view.center.y)
-        wordView.backgroundColor = UIColor.cyanColor()
-        view.addSubview(wordView)
-        let transformScale = CGAffineTransformMakeScale(3.0, 3.0)
-        wordView.transform = transformScale
+        return wordPath
         
-        wordLayer.strokeColor = UIColor.blackColor().CGColor
-        wordLayer.lineWidth = 2.0
-        wordLayer.fillColor = UIColor.clearColor().CGColor
-        wordLayer.path = wordPath.CGPath
-        wordView.layer.addSublayer(wordLayer)
-
-        
-        //ANIMATION
-        let animateWord = CABasicAnimation(keyPath: "strokeEnd")
-        animateWord.duration = 1.0
-        animateWord.fromValue = 0.0
-        animateWord.toValue = 1.0
-        
-        wordLayer.addAnimation(animateWord, forKey: "animate")
-        wordLayer.speed = 0.0
-        
-        setupPan()
-        setupPinch()
-        setupRotate()
-        setupTap()
-    }
-    
-    func sliderValueDidChange(sender:FlowMoSlider!)
-    {
-        let sliderValue = (sender.value / 100)
-        let timeInterval = CFTimeInterval(sliderValue)
-        wordLayer.timeOffset = timeInterval
-    }
-    
-    func setupTap() {
-        let tap = UITapGestureRecognizer(target: self, action: "handleTap:")
-        tap.delegate = self
-        wordView.addGestureRecognizer(tap)
-    }
-    
-    func setupPan() {
-        let pan = UIPanGestureRecognizer(target: self, action: "handlePan:")
-        pan.delegate = self
-        wordView.addGestureRecognizer(pan)
-    }
-    
-    func setupPinch() {
-        let pinch = UIPinchGestureRecognizer(target: self, action: "handlePinch:")
-        pinch.delegate = self
-        wordView.addGestureRecognizer(pinch)
-    }
-    
-    func setupRotate() {
-        let rotate = UIRotationGestureRecognizer(target: self, action: "handleRotation:")
-        rotate.delegate = self
-        wordView.addGestureRecognizer(rotate)
-    }
-    
-    func handleTap (sender: UITapGestureRecognizer) {
-        print("tap")
-        wordView.backgroundColor = GradientColor(UIGradientStyle.LeftToRight, frame: wordView.frame, colors: [FlatPurple(), wordView.backgroundColor!, FlatYellow(), FlatRed(), FlatPlum()])
-    }
-    
-    func handlePan (sender: UIPanGestureRecognizer) {
-        let translation = sender.translationInView(self.view)
-        if let view = sender.view {
-            view.center = CGPoint(x:view.center.x + translation.x,
-                y:view.center.y + translation.y)
         }
-        sender.setTranslation(CGPointZero, inView: self.view)
-        
-        if sender.state == UIGestureRecognizerState.Ended {
-            // 1
-            let velocity = sender.velocityInView(self.view)
-            let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
-            let slideMultiplier = magnitude / 200
-            print("magnitude: \(magnitude), slideMultiplier: \(slideMultiplier)")
-            
-            // 2
-            let slideFactor = 0.1 * slideMultiplier     //Increase for more of a slide
-            // 3
-            var finalPoint = CGPoint(x:sender.view!.center.x + (velocity.x * slideFactor),
-                y:sender.view!.center.y + (velocity.y * slideFactor))
-            // 4
-            finalPoint.x = min(max(finalPoint.x, 0), self.view.bounds.size.width)
-            finalPoint.y = min(max(finalPoint.y, 0), self.view.bounds.size.height)
-            
-            // 5
-            UIView.animateWithDuration(Double(slideFactor * 2),
-                delay: 0,
-                // 6
-                options: UIViewAnimationOptions.CurveEaseOut,
-                animations: {sender.view!.center = finalPoint },
-                completion: nil)
-        }
-    }
-    
-    func handlePinch(sender : UIPinchGestureRecognizer) {
-        if let view = sender.view {
-            view.transform = CGAffineTransformScale(view.transform,
-                sender.scale, sender.scale)
-            sender.scale = 1
-        }
-    }
-    
-    func handleRotation(sender: UIRotationGestureRecognizer) {
-        if let view = sender.view {
-            view.transform = CGAffineTransformRotate(view.transform, sender.rotation)
-            sender.rotation = 0
-        }
-    }
-    
-    
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,
-        shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
-            return true
-    }
-
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
