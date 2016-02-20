@@ -13,8 +13,9 @@ import AVKit
 import CoreMedia
 import CoreImage
 import Photos
+import MobileCoreServices // Necessary to import videos from UIImagePicker
 
-class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
+class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     var model = FlowMo.SingletonModel
     
@@ -41,14 +42,20 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     var flowmoAudioStartTime : NSTimeInterval?
     //define device screen brightness
     var screenBrightness : CGFloat?
-    let flashLayer = CALayer()
+    let flashLayer = CALayer() // White layer for Front Flash
     var flowMoImageArray: [UIImage] = []
     // error handling for GCD group
     typealias BatchImageGenerationCompletionClosure = (error: NSError?) -> Void
     //recordingUI
     let innerCircle = CAShapeLayer()
     let outerCircle = CAShapeLayer()
-    let flashContainer = CAShapeLayer()
+    
+    //UI ELEMENTS
+    let elements = AnimationLayers()
+    var flashTopLayer = CAShapeLayer()
+    var flashBottomLayer = CAShapeLayer()
+    let flashScalingConstant : CGFloat = 0.3825
+    
     //MARK: GCD Helper Variables
     var GlobalMainQueue: dispatch_queue_t {
         return dispatch_get_main_queue()
@@ -65,7 +72,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     var GlobalBackgroundQueue: dispatch_queue_t {
         return dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
     }
-    
+
     
     //MARK: METHODS
     //MARK: AUDIO METHODS
@@ -153,66 +160,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         captureSession.commitConfiguration()
     }
     
-    func uploadVideo() {
-    print("upload video")
-    }
-    
-//    
-//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        let touchCount = touches.count
-//        let touch = touches.first as UITouch!
-//        //        foco(touch)
-//        var screenSize = view.bounds.size
-//        
-//        
-//        if let device = currentDevice {
-//            do {
-//                try device.lockForConfiguration()
-//            } catch {
-//                print(error)
-//                return
-//            }
-//            
-//            if (device.focusPointOfInterestSupported) {
-//                device.focusPointOfInterest = touch.locationInView(self.view)
-//                device.focusMode = AVCaptureFocusMode.AutoFocus
-//                device.exposurePointOfInterest = touch.locationInView(self.view)
-//                device.exposureMode = AVCaptureExposureMode.AutoExpose
-//                device.unlockForConfiguration()
-//            }
-//        }
-//    }
-    
-
-    
-//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        let touchPoint = touches.first as UITouch!
-//        let screenSize = self.view.bounds.size
-//        //let focusPoint = touchPoint.locationInView(self.view)
-//        var focusPoint = CGPoint(x: touchPoint.locationInView(self.view).y / screenSize.height, y: 1.0 - touchPoint.locationInView(self.view).x / screenSize.width)
-//
-//        if let device = currentDevice {
-//            do {
-//                try device.lockForConfiguration()
-//            } catch {
-//                print(error)
-//                return
-//            }
-//            
-//            if device.focusPointOfInterestSupported {
-//                print("focus supported")
-//                device.focusPointOfInterest = focusPoint
-//                device.focusMode = AVCaptureFocusMode.AutoFocus
-//            }
-//            if device.exposurePointOfInterestSupported {
-//                 print("exposure supported")
-//                device.exposurePointOfInterest = focusPoint
-//                device.exposureMode = AVCaptureExposureMode.AutoExpose
-//                }
-//            device.unlockForConfiguration()
-//        }
-//    }
-
     func captureAnimationBar() {
         let coloredSquare = UIView()
         coloredSquare.backgroundColor = UIColor.blueColor()
@@ -256,34 +203,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
 // MARK: INTERFACE ELEMENTS AND ANIMATIONS
     
-    func flashElements() {
-        flashContainer.bounds = CGRect(x:0,y:0,width:70,height:70)
-        flashContainer.position = CGPoint(x: 50, y: 45)
-        view.layer.addSublayer(flashContainer)
-        flashContainer.fillColor = UIColor.clearColor().CGColor
-        flashContainer.strokeColor = UIColor.grayColor().CGColor
-        
-        //// Color Declarations
-        let yellowGreen = UIColor(red: 0.626, green: 0.795, blue: 0.164, alpha: 1.000)
-        
-        //// flashOnFill Drawing
-        var flashFillPath = UIBezierPath()
-        flashFillPath.moveToPoint(CGPointMake(18.46, 1.55))
-        flashFillPath.addLineToPoint(CGPointMake(18.93, 19.21))
-        flashFillPath.addLineToPoint(CGPointMake(37.11, 19.21))
-        flashFillPath.addLineToPoint(CGPointMake(18.07, 48.19))
-        flashFillPath.addLineToPoint(CGPointMake(17.99, 30.61))
-        flashFillPath.addLineToPoint(CGPointMake(1.38, 30.69))
-        flashFillPath.addLineToPoint(CGPointMake(18.46, 1.55))
-        flashFillPath.closePath()
-        flashFillPath.miterLimit = 4;
-        
-        flashFillPath.usesEvenOddFillRule = true;
-        
-        //yellowGreen.setFill()
-        flashFillPath.fill()
-        flashContainer.path = flashFillPath.CGPath
-    }
     
     func recordingElements() {
         
@@ -295,8 +214,7 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         let outerBounds = CGRect(x: xyOffset, y:xyOffset, width: outerDiameter, height: outerDiameter)
         let outerCircleBounds = CGRect(x: xyOffset - 2.0, y: xyOffset - 2.0, width: outerDiameter + 4.0, height: outerDiameter + 4.0)
         
-        // Create CAShapeLayerS
-        //let innerCircle = CAShapeLayer()
+        // Create CAShapeLayer
         innerCircle.bounds = innerBounds
         innerCircle.position = CGPoint(x:self.view.frame.size.width - CGFloat(innerOffset), y: CGFloat(innerOffset))
         view.layer.addSublayer(innerCircle)
@@ -311,10 +229,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         
         // fill
         innerCircle.fillColor = UIColor.redColor().CGColor
-        // 1
-        // begin with a circle with a 50 points radius
+        
         let startShape = UIBezierPath(ovalInRect: innerBounds).CGPath
-        // animation end with a large circle with 500 points radius
         let endShape = UIBezierPath(ovalInRect: outerBounds).CGPath
         // set initial shape
         innerCircle.path = startShape
@@ -353,27 +269,157 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         
     }
     
+    func flashElements () {
+        
+        let flashTopPath = elements.getPathForShape("flashTop")
+        let flashBottomPath = elements.getPathForShape("flashBottom")
+        
+        let transformScale = CGAffineTransformMakeScale(flashScalingConstant, flashScalingConstant)
+        flashTopPath.applyTransform(transformScale)
+        flashBottomPath.applyTransform(transformScale)
+        
+        flashTopLayer = elements.makeShapeLayer(flashTopPath)
+        flashBottomLayer = elements.makeShapeLayer(flashBottomPath)
+        
+        print("flashtopLayberbounds \(flashTopLayer.bounds), bottom \(flashBottomLayer.bounds)")
+        
+        
+        let center = self.view.center
+        //let centerx = center.x
+        print(center)
+        
+        flashTopLayer.fillColor = UIColor.clearColor().CGColor
+        flashTopLayer.strokeColor = UIColor.clearColor().CGColor
+        flashTopLayer.lineWidth = 2.0
+        flashTopLayer.position = CGPoint(x: (self.view.frame.size.width)/1.6666, y: flashTopLayer.bounds.height)
+        
+        flashBottomLayer.fillColor = UIColor.clearColor().CGColor
+        flashBottomLayer.strokeColor = UIColor.clearColor().CGColor
+        flashBottomLayer.lineWidth = 2.0
+        flashBottomLayer.position = CGPoint(x: flashTopLayer.position.x + (flashTopLayer.bounds.width), y: flashTopLayer.position.y)
+        
+        self.view.layer.addSublayer(flashTopLayer)
+        self.view.layer.addSublayer(flashBottomLayer)
+        
+        print(flashBottomLayer.bounds)
+        print(flashBottomLayer.position)
+        print(flashTopLayer.bounds)
+        
+    }
+    
+    func flashAppear() {
+        let duration = 0.75
+        
+        let animateStrokeEnd = CABasicAnimation(keyPath: "strokeEnd")
+        animateStrokeEnd.duration = duration
+        animateStrokeEnd.fromValue = 0.0
+        animateStrokeEnd.toValue = 0.868
+        animateStrokeEnd.removedOnCompletion = false
+        animateStrokeEnd.fillMode = kCAFillModeBoth
+        
+        let toPoint: CGPoint = CGPointMake(0.0, (15.75 * flashScalingConstant))
+        let fromPoint : CGPoint = CGPointZero
+        let upPoint: CGPoint = CGPointMake(0.0, (-15.75 * flashScalingConstant))
+        
+        let animatePosition = CABasicAnimation(keyPath: "position")
+        animatePosition.duration = duration
+        animatePosition.fromValue = NSValue(CGPoint: fromPoint)
+        animatePosition.toValue = NSValue(CGPoint: toPoint)
+        animatePosition.additive = true
+        animatePosition.fillMode = kCAFillModeBoth // keep to value after finishing
+        animatePosition.removedOnCompletion = false // don't remove after finishing
+        
+        let topAnimation = CABasicAnimation(keyPath: "position")
+        topAnimation.duration = duration
+        topAnimation.fromValue = NSValue(CGPoint: fromPoint)
+        topAnimation.toValue = NSValue(CGPoint: upPoint)
+        topAnimation.additive = true
+        topAnimation.fillMode = kCAFillModeBoth
+        topAnimation.removedOnCompletion = false
+        
+        // add the animation
+        flashTopLayer.addAnimation(animateStrokeEnd, forKey: "animate stroke end animation")
+        flashBottomLayer.addAnimation(animateStrokeEnd, forKey: "animate stroke end animation")
+        flashTopLayer.strokeColor = UIColor.whiteColor().CGColor
+        flashBottomLayer.strokeColor = UIColor.whiteColor().CGColor
+        flashBottomLayer.addAnimation(animatePosition, forKey: "position")
+        flashTopLayer.addAnimation(topAnimation, forKey:"positionUp")
+        
+        delay(duration) {
+            self.flashTopLayer.fillColor = UIColor.yellowColor().CGColor
+            self.flashBottomLayer.fillColor = UIColor.yellowColor().CGColor
+        }
+        
+    }
+
+    func flashDisappear() {
+        let duration = 0.75
+        
+        let animateStrokeEnd = CABasicAnimation(keyPath: "strokeEnd")
+        animateStrokeEnd.duration = duration
+        animateStrokeEnd.fromValue = 0.868
+        animateStrokeEnd.toValue = 0.0
+        animateStrokeEnd.removedOnCompletion = false
+        animateStrokeEnd.fillMode = kCAFillModeBoth
+        
+        let toPoint: CGPoint = CGPointMake(0.0, (15.75 * flashScalingConstant))
+        let fromPoint : CGPoint = CGPointZero
+        let upPoint: CGPoint = CGPointMake(0.0, (-15.75 * flashScalingConstant))
+        
+        let animatePosition = CABasicAnimation(keyPath: "position")
+        animatePosition.duration = duration
+        animatePosition.fromValue = NSValue(CGPoint: toPoint)
+        animatePosition.toValue = NSValue(CGPoint: fromPoint)
+        animatePosition.additive = true
+        animatePosition.fillMode = kCAFillModeBoth // keep to value after finishing
+        animatePosition.removedOnCompletion = false // don't remove after finishing
+        
+        let topAnimation = CABasicAnimation(keyPath: "position")
+        topAnimation.duration = duration
+        topAnimation.fromValue = NSValue(CGPoint: upPoint)
+        topAnimation.toValue = NSValue(CGPoint: fromPoint)
+        topAnimation.additive = true
+        topAnimation.fillMode = kCAFillModeBoth
+        topAnimation.removedOnCompletion = false
+        
+        // add the animation
+        flashTopLayer.addAnimation(animateStrokeEnd, forKey: "animate stroke end animation")
+        flashBottomLayer.addAnimation(animateStrokeEnd, forKey: "animate stroke end animation")
+        flashBottomLayer.addAnimation(animatePosition, forKey: "position")
+        flashTopLayer.addAnimation(topAnimation, forKey:"positionUp")
+        
+        delay(duration) {
+            self.flashTopLayer.fillColor = UIColor.clearColor().CGColor
+            self.flashBottomLayer.fillColor = UIColor.clearColor().CGColor
+            self.flashTopLayer.fillColor = UIColor.clearColor().CGColor
+            self.flashBottomLayer.fillColor = UIColor.clearColor().CGColor
+
+        }
+    }
     
 // MARK: FLASH METHODS
     
     func fireTorch(sender: AnyObject) {
-        print("Called", currentDevice!)
-        if (currentDevice!.hasTorch && torchState==1) {
-            do {
-                print("Torch mode is working")
-                try currentDevice!.lockForConfiguration()
-                if (currentDevice!.torchMode == AVCaptureTorchMode.On) {
-                    currentDevice!.torchMode = AVCaptureTorchMode.Off
-                } else {
-                    do {
-                        try currentDevice!.setTorchModeOnWithLevel(1.0)
-                    } catch {
-                        print(error)
+        
+    if let device = currentDevice {
+            
+            if (device.hasTorch && torchState==1) {
+                do {
+                    print("Torch mode is working")
+                    try device.lockForConfiguration()
+                    if (device.torchMode == AVCaptureTorchMode.On) {
+                        device.torchMode = AVCaptureTorchMode.Off
+                    } else {
+                        do {
+                            try device.setTorchModeOnWithLevel(1.0)
+                        } catch {
+                            print(error)
+                        }
                     }
+                    device.unlockForConfiguration()
+                } catch {
+                    print(error)
                 }
-                currentDevice!.unlockForConfiguration()
-            } catch {
-                print(error)
             }
         }
     }
@@ -382,11 +428,13 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         if (torchState == 0)
         {
             torchState++
+            flashAppear()
             print(torchState, "has changed")
         }
         else
         {
             torchState = 0
+            flashDisappear()
         }
     }
     
@@ -402,6 +450,55 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         }
     }
     
+    // MARK: VIDEO UPLOAD METHODS
+    
+    func uploadVideo() {
+        let picker = UIImagePickerController()
+        print(picker.mediaTypes)
+        picker.allowsEditing = false
+        picker.delegate = self
+        picker.mediaTypes = [kUTTypeMovie as String]
+        presentViewController(picker, animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        
+        print(info)
+        let videoString = info[UIImagePickerControllerMediaURL]
+        print(videoString)
+        if let vString = videoString {
+            let string = String(vString)
+            print(string)
+            let videoURL = NSURL(string: string)
+            print("transform \(videoURL)")
+            generateImageSequence(videoURL!)
+        }
+       // print(videoString)
+       
+//        let videoURL = NSURL(fileURLWithPath: videoString)
+//        print(videoURL)
+//        generateImageSequence(videoURL)
+
+        
+//        var newImage: UIImage
+//        
+//        if let possibleImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+//            newImage = possibleImage
+//        } else if let possibleImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+//            newImage = possibleImage
+//        } else {
+//            return
+//        }
+        
+        // do something interesting here!
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
    // MARK: FILE PROCESSING METHODS
     func captureOutput(captureOutput: AVCaptureFileOutput!, didFinishRecordingToOutputFileAtURL outputFileURL: NSURL!, fromConnections connections: [AnyObject]!, error: NSError!) {
         if error != nil {
@@ -409,7 +506,8 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             return
         }
         let urlString = outputFileURL.absoluteString
-        //saveVideoToCameraRoll(outputFileURL)
+        print(outputFileURL)
+        saveVideoToCameraRoll(outputFileURL)
         generateImageSequence(outputFileURL)
     }
     
@@ -421,9 +519,12 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         })
     }
     
+    func extractAudioFromVideo(outputFileURL: NSURL) {
+        
+    }
     
     func generateImageSequence(outputFileURL: NSURL) {
-      //  , completion: BatchImageGenerationCompletionClosure
+        //print("generate \(outputFileURL)")
         let avURLAsset = AVURLAsset(URL: outputFileURL, options:nil)
         
         let imageGenerator = AVAssetImageGenerator.init(asset: avURLAsset)
@@ -454,8 +555,6 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
         imageGenerator.generateCGImagesAsynchronouslyForTimes(imageHashRate) {(requestedTime, image, actualTime, result, error) -> Void in
             if (result == .Succeeded) {
                 self.flowMoImageArray.append(UIImage(CGImage: image!, scale:1.0, orientation: UIImageOrientation.Right))
-                print(count)
-                print(self.flowMoImageArray.count)
                 if (count == self.flowMoImageArray.count) {
                     self.presentFlowMoDisplayController(self.flowMoImageArray)
                 }
@@ -470,17 +569,18 @@ class FlowMoController: UIViewController, AVCaptureFileOutputRecordingDelegate {
             self.outerCircle.removeFromSuperlayer()
             self.outerCircle.strokeStart = 0.0
             //set model
+            print(self.audioRecorder.audioRecorder.url.description)
             self.model.setNewAudio(self.audioRecorder.audioRecorder.url)
             self.model.setNewFlowMo(self.flowMoImageArray)
             self.model.setFlowMoAudioStartTime(self.flowmoAudioStartTime!)
             self.model.setFlowMoAudioDuration(self.flowmoAudioDuration!)
-//            flowMoDisplayController.flowmoAudioStartTime = self.flowmoAudioStartTime
-//            flowMoDisplayController.flowmoAudioDuration = self.flowmoAudioDuration
             let flowMoDisplayController = FlowMoDisplayController()
             self.flowMoImageArray.removeAll()
             self.presentViewController(flowMoDisplayController, animated: false, completion: nil)
         }
     }
+
+
     
 }
 

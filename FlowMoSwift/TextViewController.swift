@@ -39,8 +39,7 @@ class TextViewController: UIViewController{
 
         ]
 
-        let word = string
-        let wordArray = Array(word.characters)
+        let wordArray = Array(string.characters)
         let wordPath = UIBezierPath()
         
         for letter in wordArray {

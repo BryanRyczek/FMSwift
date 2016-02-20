@@ -14,7 +14,13 @@ import CoreMedia
 
 class FlowMoCam: FlowMoController {
     
-//    let permissions = PermissionScope()
+    let bottomButtonView = UIView()
+    let upSwipe = UISwipeGestureRecognizer()
+    let downSwipe = UISwipeGestureRecognizer()
+    var tripTap = UITapGestureRecognizer()
+    
+    
+    //    let permissions = PermissionScope()
     
     // MARK: SETUP METHODS
     override func viewDidLoad() {
@@ -26,7 +32,7 @@ class FlowMoCam: FlowMoController {
         audioLoad()
         setupDoubleTapGesture()
         setupTripleTapGesture()
-        flashElements()
+        //  flashElements()
         
         //Code to load Camera
 //        let status = permissions.statusCamera()
@@ -70,12 +76,7 @@ class FlowMoCam: FlowMoController {
 //            return
 //        }
 //        
-        print(self.view?.multipleTouchEnabled)
-        self.view?.multipleTouchEnabled = true
-        print(self.view?.multipleTouchEnabled)
-        print(self.view?.userInteractionEnabled)
-        print(super.view.userInteractionEnabled)
-  }
+}
     
     // MARK: BUTTON METHODS
     func cameraViewLoad() {
@@ -95,17 +96,18 @@ class FlowMoCam: FlowMoController {
     
     func buttonsView() {
         //Button Setup
-        bottomButtonView()
-        toggleTorchButton()
         captureButton()
-        toggleCameraButton()
-        importVideoButton()
-       
+        addBottomButtonView()
+        setupUpSwipeGesture()
+        setupDownSwipeGesture()
+        flashElements()
+        
     }
     
+    //MARK: CAMERA INTERFACE GESTURES
     func setupTripleTapGesture() {
-        let tripTap = UISwipeGestureRecognizer(target: self, action: "setTorchMode:")
-        tripTap.numberOfTouchesRequired = 3
+        tripTap.addTarget(self, action: "setTorchMode:")
+        tripTap.numberOfTapsRequired = 3
         tripTap.delaysTouchesBegan = false
         view.addGestureRecognizer(tripTap)
     }
@@ -113,36 +115,86 @@ class FlowMoCam: FlowMoController {
     func setupDoubleTapGesture() {
     let tap = UITapGestureRecognizer(target: self, action: "toggleCamera:")
     tap.numberOfTapsRequired = 2
+    tap.requireGestureRecognizerToFail(tripTap)
     tap.delaysTouchesBegan = false
     view.addGestureRecognizer(tap)
     }
   
+    func setupUpSwipeGesture() {
+        upSwipe.addTarget(self, action: "showBottomButtonView")
+        upSwipe.direction = .Up
+        upSwipe.delaysTouchesBegan = false
+        view.addGestureRecognizer(upSwipe)
+    }
 
+    func setupDownSwipeGesture() {
+        downSwipe.addTarget(self, action: "hideBottomButtonView")
+        downSwipe.direction = .Down
+        downSwipe.delaysTouchesBegan = false
+        downSwipe.enabled = false
+        view.addGestureRecognizer(downSwipe)
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         print("touches began")
     }
-//    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        print("touches ended")
-//    }
+   // MARK: BOTTOM BUTTON UI ELEMENTS
+    func showBottomButtonView() {
+        upSwipe.enabled = false
+        UIView.animateWithDuration(1.0, animations: {
+            self.bottomButtonView.center.y -= 70
+        })
+        downSwipe.enabled = true
+    }
     
-    func bottomButtonView() {
-        let bottomButtonView = UIView()
-        bottomButtonView.frame = CGRect(x: ((self.view.frame.size.width - 210)/2),y: self.view.frame.size.height-70,width: 210,height: 70)
+    func hideBottomButtonView() {
+        downSwipe.enabled = false
+        UIView.animateWithDuration(1.0, animations: {
+            self.bottomButtonView.center.y += 70
+        })
+        upSwipe.enabled = true
+    }
+    
+    func addBottomButtonView() {
+        
+        bottomButtonView.frame = CGRect(x: ((self.view.frame.size.width - 210)/2),y: self.view.frame.size.height,width: 210,height: 70)
         bottomButtonView.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(bottomButtonView)
         
-    }
+        toggleTorchButton()
+        toggleCameraButton()
+        importVideoButton()
 
+        
+    }
     
     func toggleTorchButton() {
         let toggleTorchButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
-        toggleTorchButton.frame = CGRectMake(((self.view.frame.size.width)/2) + 35, self.view.frame.size.height-70, 70, 70)
+        toggleTorchButton.frame = CGRectMake(140, 0, 70, 70)
         toggleTorchButton.backgroundColor = UIColor.blueColor()
         toggleTorchButton.alpha = 0.5
         toggleTorchButton.addTarget(self, action: "setTorchMode:", forControlEvents: .TouchUpInside)
-        self.view.addSubview(toggleTorchButton)
+        bottomButtonView.addSubview(toggleTorchButton)
     }
     
+    func toggleCameraButton() {
+        let toggleCameraButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
+        toggleCameraButton.frame = CGRectMake(70, 0, 70, 70)
+        toggleCameraButton.backgroundColor = UIColor.redColor()
+        toggleCameraButton.alpha = 0.5
+        toggleCameraButton.addTarget(self, action: "toggleCamera:", forControlEvents: .TouchUpInside)
+        bottomButtonView.addSubview(toggleCameraButton)
+    }
+    
+    func importVideoButton() {
+        let importVideoButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
+        importVideoButton.frame = CGRectMake(0, 0, 70, 70)
+        importVideoButton.backgroundColor = UIColor.greenColor()
+        importVideoButton.alpha = 0.5
+        importVideoButton.addTarget(self, action: "uploadVideo", forControlEvents: .TouchUpInside)
+        bottomButtonView.addSubview(importVideoButton)
+    }
+   //MARK: CAPTURE BUTTON
     func captureButton() {
         let captureButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
         captureButton.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
@@ -154,30 +206,21 @@ class FlowMoCam: FlowMoController {
         
     }
     
-    func toggleCameraButton() {
-        let toggleCameraButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
-        toggleCameraButton.frame = CGRectMake(((self.view.frame.size.width)/2) - 35, self.view.frame.size.height-70, 70, 70)
-        toggleCameraButton.backgroundColor = UIColor.redColor()
-        toggleCameraButton.alpha = 0.5
-        toggleCameraButton.addTarget(self, action: "toggleCamera:", forControlEvents: .TouchUpInside)
-        self.view.addSubview(toggleCameraButton)
-    }
-    
-    func importVideoButton() {
-        let importVideoButton = UIButton(type: UIButtonType.RoundedRect) as UIButton
-        importVideoButton.frame = CGRectMake(((self.view.frame.size.width)/2) - 105, self.view.frame.size.height-70, 70, 70)
-        importVideoButton.backgroundColor = UIColor.greenColor()
-        importVideoButton.alpha = 0.5
-        importVideoButton.addTarget(self, action: "uploadVideo", forControlEvents: .TouchUpInside)
-        self.view.addSubview(importVideoButton)
-    }
-    
-    
     //MARK: HELPER METHODS
     //hide iphone status bar
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
+    }
+
         /*
     // MARK: - Navigation
 

@@ -11,11 +11,15 @@
 		9341D86E1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9341D86D1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift */; };
 		935D254A1C4C66F500386F23 /* Chameleon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 935D25491C4C66F500386F23 /* Chameleon.framework */; };
 		9382707E1C15E1F60092E0D9 /* FlowMoCam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */; };
+		938474241C69336C00C4D319 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938474231C69336C00C4D319 /* main.swift */; };
+		938474261C6933FD00C4D319 /* DelayApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938474251C6933FD00C4D319 /* DelayApplication.swift */; };
+		938474281C69347500C4D319 /* gcdDelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938474271C69347500C4D319 /* gcdDelay.swift */; };
 		9388B7CE1C2C3D6700D3F365 /* FlowMoDisplayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9388B7CD1C2C3D6700D3F365 /* FlowMoDisplayController.swift */; };
 		93B5B14D1C2A542B00F5B517 /* PermissionScope.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B5B14C1C2A542B00F5B517 /* PermissionScope.framework */; };
 		93BAA05E1C3C21C700818F15 /* BezierObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BAA05D1C3C21C700818F15 /* BezierObjects.swift */; };
 		93BAA0601C401F8000818F15 /* FlowMoTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BAA05F1C401F8000818F15 /* FlowMoTextField.swift */; };
 		93D99F8F1C2357AC00DEA183 /* ScreenBufferTestCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D99F8E1C2357AC00DEA183 /* ScreenBufferTestCode.swift */; };
+		93DC2C401C77DCC800593D01 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DC2C3F1C77DCC800593D01 /* Animations.swift */; };
 		93E2E84F1C1734040092F589 /* FlowMo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2E84E1C1734040092F589 /* FlowMo.swift */; };
 		93E2E8511C17340A0092F589 /* FlowMoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2E8501C17340A0092F589 /* FlowMoController.swift */; };
 		93E2E85E1C1776A70092F589 /* FlowMoSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E2E85D1C1776A70092F589 /* FlowMoSlider.swift */; };
@@ -51,11 +55,15 @@
 		9341D86D1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoAudioRecorderPlayer.swift; sourceTree = "<group>"; };
 		935D25491C4C66F500386F23 /* Chameleon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Chameleon.framework; path = Carthage/Build/iOS/Chameleon.framework; sourceTree = "<group>"; };
 		9382707D1C15E1F60092E0D9 /* FlowMoCam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoCam.swift; path = ../FlowMoCam.swift; sourceTree = "<group>"; };
+		938474231C69336C00C4D319 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		938474251C6933FD00C4D319 /* DelayApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayApplication.swift; sourceTree = "<group>"; };
+		938474271C69347500C4D319 /* gcdDelay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = gcdDelay.swift; sourceTree = "<group>"; };
 		9388B7CD1C2C3D6700D3F365 /* FlowMoDisplayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoDisplayController.swift; path = ../FlowMoDisplayController.swift; sourceTree = "<group>"; };
 		93B5B14C1C2A542B00F5B517 /* PermissionScope.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PermissionScope.framework; path = Carthage/Build/iOS/PermissionScope.framework; sourceTree = "<group>"; };
 		93BAA05D1C3C21C700818F15 /* BezierObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierObjects.swift; sourceTree = "<group>"; };
 		93BAA05F1C401F8000818F15 /* FlowMoTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowMoTextField.swift; path = ../FlowMoTextField.swift; sourceTree = "<group>"; };
 		93D99F8E1C2357AC00DEA183 /* ScreenBufferTestCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenBufferTestCode.swift; sourceTree = "<group>"; };
+		93DC2C3F1C77DCC800593D01 /* Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		93E2E84E1C1734040092F589 /* FlowMo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMo.swift; sourceTree = "<group>"; };
 		93E2E8501C17340A0092F589 /* FlowMoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoController.swift; sourceTree = "<group>"; };
 		93E2E85D1C1776A70092F589 /* FlowMoSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowMoSlider.swift; sourceTree = "<group>"; };
@@ -112,6 +120,7 @@
 				93E2E84E1C1734040092F589 /* FlowMo.swift */,
 				93BAA05D1C3C21C700818F15 /* BezierObjects.swift */,
 				93E2E85F1C1777780092F589 /* TextViewController.swift */,
+				93DC2C3F1C77DCC800593D01 /* Animations.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -173,6 +182,9 @@
 				93E2E8641C17B0AB0092F589 /* Controller */,
 				93E2E8621C17AF880092F589 /* TestingFIles */,
 				93F4D3641C10C0E100A8014F /* AppDelegate.swift */,
+				938474231C69336C00C4D319 /* main.swift */,
+				938474251C6933FD00C4D319 /* DelayApplication.swift */,
+				938474271C69347500C4D319 /* gcdDelay.swift */,
 				93F4D3681C10C0E100A8014F /* Main.storyboard */,
 				93F4D36E1C10C0E100A8014F /* Assets.xcassets */,
 				93F4D3701C10C0E100A8014F /* LaunchScreen.storyboard */,
@@ -352,16 +364,20 @@
 			files = (
 				93D99F8F1C2357AC00DEA183 /* ScreenBufferTestCode.swift in Sources */,
 				93F4D36D1C10C0E100A8014F /* FlowMoSwift.xcdatamodeld in Sources */,
+				93DC2C401C77DCC800593D01 /* Animations.swift in Sources */,
 				93F4D3651C10C0E100A8014F /* AppDelegate.swift in Sources */,
 				93BAA05E1C3C21C700818F15 /* BezierObjects.swift in Sources */,
 				93E2E85E1C1776A70092F589 /* FlowMoSlider.swift in Sources */,
 				9341D86E1C3465D900920AB8 /* FlowMoAudioRecorderPlayer.swift in Sources */,
+				938474281C69347500C4D319 /* gcdDelay.swift in Sources */,
 				93E2E8511C17340A0092F589 /* FlowMoController.swift in Sources */,
 				9388B7CE1C2C3D6700D3F365 /* FlowMoDisplayController.swift in Sources */,
+				938474241C69336C00C4D319 /* main.swift in Sources */,
 				932A3BEA1C19C15900D194E4 /* AnimationTestingViewController.swift in Sources */,
 				93E2E84F1C1734040092F589 /* FlowMo.swift in Sources */,
 				93E2E8601C1777780092F589 /* TextViewController.swift in Sources */,
 				93BAA0601C401F8000818F15 /* FlowMoTextField.swift in Sources */,
+				938474261C6933FD00C4D319 /* DelayApplication.swift in Sources */,
 				9382707E1C15E1F60092E0D9 /* FlowMoCam.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

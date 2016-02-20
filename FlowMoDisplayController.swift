@@ -27,7 +27,6 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
     //define audio player
     let audioPlayer = FlowMoAudioRecorderPlayer()
     var textField = UITextField()
-    var textFieldString : String?
     var wordView : UIView?
     var wordLayer = CAShapeLayer()
     weak var playbackTimer : NSTimer?
@@ -45,6 +44,7 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
     override func viewDidLoad() {
         super.viewDidLoad()
         flowMoAudioFile = FlowMoController().model.getAudio()
+        print(flowMoAudioFile)
         flowMoImageArray = FlowMoController().model.getFlowMo()
         flowmoAudioStartTime = FlowMoController().model.getFlowMoAudioStartTime()
         
@@ -99,7 +99,6 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
     
     func drawCursive(string: String?) -> UIBezierPath {
         
-        print(string)
         let wordArray = Array(string!.characters)
         var wordOffset : CGFloat = 0
         
@@ -127,7 +126,7 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
     func bezPathIntoLayer () -> CAShapeLayer {
         
         let wordLayer = CAShapeLayer()
-        wordLayer.strokeColor = UIColor.blackColor().CGColor
+        wordLayer.strokeColor = UIColor.whiteColor().CGColor
         wordLayer.lineWidth = 2.0
         wordLayer.fillColor = UIColor.clearColor().CGColor
         return wordLayer
@@ -142,16 +141,19 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
         animateWord.duration = 1.0
         animateWord.fromValue = 0.0
         animateWord.toValue = 1.0
+        animateWord.fillMode = kCAFillModeBoth
     
         wordLayer = shapeLayer
         wordLayer.addAnimation(animateWord, forKey: "animate")
         wordLayer.speed = 0.0
         wordLayer.path = bezierPath.CGPath
+        wordLayer.timeOffset = 0
+        wordLayer.strokeEnd = 1
         let wordView = UIView()
         wordView.frame = CGPathGetBoundingBox(bezierPath.CGPath)
         wordView.center = CGPoint(x:view.center.x,
             y:view.center.y)
-        wordView.backgroundColor = UIColor.cyanColor()
+        wordView.backgroundColor = UIColor.clearColor()
         wordView.alpha = 0.5
         let transformScale = CGAffineTransformMakeScale(3.0, 3.0)
         wordView.transform = transformScale
@@ -159,7 +161,6 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
         return wordView
         
         }
-        
     
     func sliderValueDidChange (sender: UISlider) {
         
@@ -169,11 +170,11 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
         flowmoAudioCurrentTime = (Double(currentImageIndex) / 30.00) + Double(flowmoAudioStartTime!)
         
         let sliderValue = (sender.value / flowMoDisplaySlider!.maximumValue)
-        print("sliderValue \(sliderValue)")
+        //print("sliderValue \(sliderValue)")
         let timeInterval = CFTimeInterval(sliderValue)
-        print("timeInterval \(timeInterval)")
+        //print("timeInterval \(timeInterval)")
         wordLayer.timeOffset = timeInterval
-        print("timeOffset \(wordLayer.timeOffset)")
+        //print("timeOffset \(wordLayer.timeOffset)")
     }
     
     func flowMoPlaybackTimer() {
@@ -203,6 +204,15 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
             audioPlayback(flowmoAudioCurrentTime!)
             currentPlaybackState = .Playing
         } else if (currentPlaybackState == .Playing) {
+            playbackTimer?.invalidate()
+            audioPlayer.audioPlayer.pause()
+            flowmoAudioCurrentTime = audioPlayer.audioPlayer.currentTime
+            currentPlaybackState  = .Paused
+        }
+    }
+    
+    func pauseFlomo () {
+        if (currentPlaybackState == .Playing) {
             playbackTimer?.invalidate()
             audioPlayer.audioPlayer.pause()
             flowmoAudioCurrentTime = audioPlayer.audioPlayer.currentTime
@@ -245,6 +255,7 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
     
     func handleTap (sender: UITapGestureRecognizer) {
         print("tap")
+        wordLayer.strokeColor = RandomFlatColorWithShade(.Light).CGColor
        // wordView.backgroundColor = GradientColor(UIGradientStyle.LeftToRight, frame: wordView.frame, colors: [FlatPurple(), wordView.backgroundColor!, FlatYellow(), FlatRed(), FlatPlum()])
     }
     
@@ -333,7 +344,17 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
         let textFieldString = textField.text
         print(textFieldString)
         textField.removeFromSuperview()
-        wordView = layerIntoView(drawCursive(textFieldString!), shapeLayer: bezPathIntoLayer())
+        
+        pauseFlomo()
+        
+        if let slider = flowMoDisplaySlider {
+        slider.value = 0
+        flowmoAudioCurrentTime = Double(flowmoAudioStartTime!)
+        }
+        print(flowmoAudioCurrentTime)
+        if let string = textFieldString {
+        wordView = layerIntoView(drawCursive(string), shapeLayer: bezPathIntoLayer())
+        }
         
         if let wordyView = wordView {
         view.addSubview(wordyView)
@@ -342,9 +363,9 @@ class FlowMoDisplayController: UIViewController, UITextFieldDelegate, UIGestureR
         setupPinch(wordyView)
         setupRotate(wordyView)
         setupTap(wordyView)
-            
-        }
         
+        }
+        togglePausePlay()
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
